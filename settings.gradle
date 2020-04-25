@@ -1,0 +1,2 @@
+rootProject.name='verdantu'
+include ':app'
