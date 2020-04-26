@@ -22,17 +22,17 @@
             android:layout_marginTop="50dp"
             android:layout_gravity="center_horizontal" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/addFoodItems"
-            android:layout_width="170dp"
-            android:layout_height="60dp"
-            android:layout_marginBottom="24dp"
-            android:layout_marginTop="75dp"
-            android:clickable="true"
-            android:layout_gravity="bottom|end"
-            app:maxImageSize="50dp"
-            app:srcCompat="@drawable/ic_playlist_add_black_24dp"
-            tools:ignore="VectorDrawableCompat" />
+        <Button
+            android:id="@+id/searchButton"
+            android:layout_width="124dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="100dp"
+            android:layout_marginBottom="25dp"
+            android:background="@color/colorPrimary"
+            android:text="Today's List" />
+
+
 
     </LinearLayout>
 </ScrollView>

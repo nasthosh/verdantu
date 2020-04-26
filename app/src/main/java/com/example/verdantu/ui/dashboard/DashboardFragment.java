@@ -1,19 +1,21 @@
 package com.example.verdantu.ui.dashboard;
 
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.verdantu.R;
@@ -27,34 +29,72 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ * This class is the fragment for listing the food items in the bottom navigation activity
+ *
+ *
+ */
+
 public class DashboardFragment extends Fragment {
 
     private DashboardViewModel dashboardViewModel;
     TableLayout tableLayout;
     TableRow tableRow;
-    TextView t1;
-    TextView t2;
+    TextView text01;
+    TextView text02;
     View root;
-
+    EditText editText;
+    Button search;
+    List<FoodEmissions> foodEmissionsList;
+    List<FoodEmissions> tableFoodList;
+    int count = 0;
+    String editTextFood;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         dashboardViewModel =
                 ViewModelProviders.of(this).get(DashboardViewModel.class);
-        root = inflater.inflate(R.layout.fragment_food_items, container, false);
-        tableLayout = root.findViewById(R.id.TableLayout01);
+        root = inflater.inflate(R.layout.fragment_food_items, container, false); // Inflating the view model
 
+        tableLayout = root.findViewById(R.id.TableLayout01); // Identifying layouts using the corresponding ID's
 
-//        final TextView textView = root.findViewById(R.id.text_dashboard);
-//        dashboardViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                textView.setText(s);
-//            }
-//        });
-
-        FoodItemsAsyncTask getFoodItem = new FoodItemsAsyncTask();
+        FoodItemsAsyncTask getFoodItem = new FoodItemsAsyncTask(); // Calling the asynctask method to get the data from the database
         getFoodItem.execute();
 
+        editText = root.findViewById(R.id.editText);
+        search = root.findViewById(R.id.searchButton);
+        search.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("WrongConstant")
+            public void onClick(View v) {  // Defining the button on click activity for search
+                for (FoodEmissions foodItem : foodEmissionsList) {
+                    editTextFood = editText.getText().toString();
+                    if(foodItem.getFoodItems().equalsIgnoreCase(editTextFood)){ // Checking if the searched item is present in the list
+
+                        tableRow = new TableRow(root.getContext());
+
+                        text01 = new TextView(root.getContext());
+                        text02 = new TextView(root.getContext());
+
+                        String foodName = foodItem.getFoodItems();
+                        String foodEmissions = foodItem.getCarbonEmissions();
+
+                        //Clean the Table after every search
+                        cleanTable(tableLayout,1);
+
+                        text01.setText(foodName);
+                        text02.setText(foodEmissions);
+
+                        // Add the data to the view
+                        tableRow.addView(text01);
+                        tableRow.addView(text02);
+                        tableLayout.addView(tableRow, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
+                    }else if(editTextFood.equalsIgnoreCase("")  ){
+                        cleanTable(tableLayout,0);
+                        Toast.makeText(getActivity(),"Invalid Input",10).show();
+                    }
+                }
+            }
+        });
 
         return root;
     }
@@ -63,36 +103,17 @@ public class DashboardFragment extends Fragment {
         @Override
         protected String doInBackground(String... params) {
             return RestClient.getItemsList();
-        }
+        } // Rest client call to send request to the server
 
         protected void onPostExecute(String result) {
-            System.out.println("JSON Data : " + result);
-            List<FoodEmissions> foodEmissionsList = getFoodItems(result);
-            for (FoodEmissions emission : foodEmissionsList) {
-                LinearLayout ll = new LinearLayout(root.getContext());
-
-                tableRow = new TableRow(root.getContext());
-
-                t1 = new TextView(root.getContext());
-                t2 = new TextView(root.getContext());
-                String foodName = emission.getFoodItems();
-                String foodEmissions = emission.getCarbonEmissions();
-                t1.setText(foodName);
-                t2.setText(foodEmissions);
-                ll.addView(t1);
-                ll.addView(t2);
-                tableRow.addView(ll);
-               // tableLayout.addView(tableRow);
-                tableLayout.addView(tableRow, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
-            }
-
-            //tableLayout.addView(tableRow, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
+            emissionFromFoods(result);
         }
     }
 
     public List<FoodEmissions> getFoodItems(String result) {
         List<FoodEmissions> emissionsList = new ArrayList<>();
         try {
+            // Converting the result to a JSON object
             JSONObject jsonObject = new JSONObject(result);
             JSONArray jsonArray = jsonObject.getJSONArray("recordset");
             if (jsonArray != null && jsonArray.length() > 0) {
@@ -107,23 +128,37 @@ public class DashboardFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        System.out.println("Emissions list inside method : " + emissionsList);
         return emissionsList;
     }
+
+    public void emissionFromFoods(String result){
+        foodEmissionsList = getFoodItems(result);
+        tableFoodList = foodEmissionsList;
+        for (FoodEmissions emission : tableFoodList) {
+            LinearLayout ll = new LinearLayout(root.getContext());
+            tableRow = new TableRow(root.getContext());
+            text01 = new TextView(root.getContext());
+            text02 = new TextView(root.getContext());
+            String foodName = emission.getFoodItems();
+            String foodEmissions = emission.getCarbonEmissions();
+            text01.setText(foodName);
+            text02.setText(foodEmissions);
+            tableRow.addView(text01);
+            tableRow.addView(text02);
+            tableLayout.addView(tableRow, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
+        }
+    }
+
+    private void cleanTable(TableLayout table, int count) {
+
+        int childCount = table.getChildCount();
+
+        if (childCount > count) {
+            table.removeViews(count, childCount - count);
+        }
+    }
+
+
+
 }
 
-//    public  void listTable(String result){
-//        List<FoodEmissions> foodEmissionList = getFoodItems(result);
-//        for(FoodEmissions emission : foodEmissionList){
-//            t1 = new TextView(root.getContext());
-//            t2 = new TextView(root.getContext());
-//            String foodName = emission.getFoodItems();
-//            String foodEmissions = emission.getCarbonEmissions();
-//            t1.setText(foodName);
-//            t2.setText(foodEmissions);
-//            tableRow.addView(t1);
-//            tableRow.addView(t2);
-//
-//        }
-//        tableLayout.addView(tableRow,new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
-//    }

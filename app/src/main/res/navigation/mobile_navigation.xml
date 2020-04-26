@@ -22,4 +22,6 @@
         android:name="com.example.verdantu.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_profile" />
+
+
 </navigation>

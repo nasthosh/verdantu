@@ -4,13 +4,19 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+/**
+ *
+ * View Model for the items fragment
+ *
+ *
+ */
+
 public class DashboardViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
     public DashboardViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is dashboard fragment");
     }
 
     public LiveData<String> getText() {

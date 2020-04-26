@@ -1,10 +1,19 @@
 package com.example.verdantu.models;
 
+
+/**
+ *
+ * This class is the model for the food emissions database
+ * The attributes are based on the database schema
+ *
+ */
+
 public class FoodEmissions {
     int emissionId;
     String foodItems;
     String carbonEmissions;
 
+    // Constructor for the food emission class
     public FoodEmissions(int emissionId, String foodItems, String carbonEmissions) {
         this.emissionId = emissionId;
         this.foodItems = foodItems;
@@ -16,6 +25,7 @@ public class FoodEmissions {
         this.carbonEmissions = carbonEmissions;
     }
 
+    // Defining getter and setter methods
     public String getFoodItems() {
         return foodItems;
     }
