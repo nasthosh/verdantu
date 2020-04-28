@@ -23,7 +23,7 @@
             android:layout_gravity="center_horizontal" />
 
         <Button
-            android:id="@+id/searchButton"
+            android:id="@+id/addFood"
             android:layout_width="124dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

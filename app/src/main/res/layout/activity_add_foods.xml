@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddFoods">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/textView_FoodType"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:width="200dp"
+            android:textSize="25sp"
+            android:textAppearance="@style/Widget.AppCompat.ActionBar.Solid"
+            android:textAllCaps="true"
+            android:text="Category"/>
+
+        <RadioGroup
+            android:id="@+id/radioCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView_FoodType">
+
+            <RadioButton
+                android:id="@+id/radioFruit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fruits"
+                android:checked="true" />
+
+            <RadioButton
+                android:id="@+id/radioVeggies"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Veggies" />
+
+            <RadioButton
+                android:id="@+id/radioMeat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Meat"
+                android:checked="true" />
+
+            <RadioButton
+                android:id="@+id/radioOthers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Others" />
+
+        </RadioGroup>
+
+        <TextView android:id="@+id/emptyText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text=""
+            android:layout_below="@+id/radioCategory"/>
+
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#32CD32"
+            android:layout_weight="1"
+            android:drawSelectorOnTop="false"
+            android:layout_below="@+id/emptyText"/>
+
+        <TextView android:id="@android:id/empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#32CD32"
+            android:text=""
+            android:layout_below="@+id/listView"/>
+
+<!--        <Spinner-->
+<!--            android:id="@+id/food_Details"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="20sp"-->
+<!--            android:layout_below="@+id/radioCategory"/>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/textView_Quantity"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Quantity"-->
+<!--            android:textSize="25sp"-->
+<!--            android:textAppearance="@style/Widget.AppCompat.ActionBar.Solid"-->
+<!--            android:textAllCaps="true"-->
+<!--            android:layout_below="@+id/food_Details"/>-->
+
+<!--        <EditText-->
+<!--            android:id="@+id/edit_Quantity"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:hint="Quantity"-->
+<!--            android:layout_below= "@+id/radioCategory"/>-->
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/buttonLinear"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:layout_below= "@+id/edit_Quantity">-->
+
+<!--            <Button android:id="@+id/addButton"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Add"-->
+<!--                android:backgroundTint="#32CD32"-->
+<!--                android:width="175dp" />-->
+<!--            <Button android:id="@+id/clearButton"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:width="175dp"-->
+<!--                android:backgroundTint="#32CD32"-->
+<!--                android:text="Clear" />-->
+
+<!--        </LinearLayout>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/textViewAddedItems"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:width="200dp"-->
+<!--            android:textSize="25sp"-->
+<!--            android:textAppearance="@style/Widget.AppCompat.ActionBar.Solid"-->
+<!--            android:textAllCaps="true"-->
+<!--            android:text=""-->
+
+<!--            android:layout_below= "@+id/buttonLinear"/>-->
+
+<!--        <Button android:id="@+id/showFootPrint"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:width="175dp"-->
+<!--            android:text="show footprint"-->
+<!--            android:backgroundTint="#32CD32"-->
+<!--            android:layout_below= "@+id/textViewAddedItems"/>-->
+
+
+
+    </RelativeLayout>
+    </ScrollView>
+
