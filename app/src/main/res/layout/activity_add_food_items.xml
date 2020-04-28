@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.AddFoodItems">
+
+    <TextView
+        android:id="@+id/textView_FoodName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:width="200dp"
+        android:layout_marginTop="25dp"
+        android:textSize="20sp"
+        android:textAppearance="@style/Widget.AppCompat.ActionBar.Solid"
+        android:textAllCaps="true"
+        android:text=""
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints"/>
+
+    <TextView
+        android:id="@+id/textView_FoodEmissions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:width="200dp"
+        android:layout_marginTop="25dp"
+        android:textSize="20sp"
+        android:textAppearance="@style/Widget.AppCompat.ActionBar.Solid"
+        android:textAllCaps="true"
+        android:text=""
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_below="@+id/textView_FoodName"
+        tools:ignore="MissingConstraints"/>
+
+    <EditText
+        android:id="@+id/editTextView_Qty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Quantity(grams)"
+        android:width="200dp"
+        android:layout_marginTop="25dp"
+        android:textSize="20sp"
+        android:inputType="numberDecimal"
+        android:layout_below="@+id/textView_FoodEmissions"/>
+
+    <Button
+        android:id="@+id/btn_ShowCarbonFootPrint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:width="200dp"
+        android:layout_marginTop="25dp"
+        android:textSize="20sp"
+        android:text="Show Carbon footprint"
+        android:layout_below="@+id/editTextView_Qty" />
+
+    <TextView
+        android:id="@+id/textView_TotalFoodEmissions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:width="200dp"
+        android:layout_marginTop="25dp"
+        android:textSize="20sp"
+        android:textAppearance="@style/Widget.AppCompat.ActionBar.Solid"
+        android:textAllCaps="true"
+        android:text=""
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_below="@+id/btn_ShowCarbonFootPrint"
+        tools:ignore="MissingConstraints"/>
+
+</RelativeLayout>

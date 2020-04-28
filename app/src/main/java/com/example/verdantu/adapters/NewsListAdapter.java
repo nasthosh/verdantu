@@ -2,6 +2,7 @@ package com.example.verdantu.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -18,6 +19,9 @@ import java.util.List;
 import java.util.UUID;
 
 import android.view.LayoutInflater;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
 
 
 public class NewsListAdapter extends BaseAdapter {
@@ -69,11 +73,30 @@ public class NewsListAdapter extends BaseAdapter {
 
         urlButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                intent.setData(Uri.parse(String.valueOf(newsList.get(position).getUrl())));
-                ctx.startActivity(intent);
+
+                AlertDialog alertDialog = new AlertDialog.Builder(ctx).setIcon(android.R.drawable.ic_dialog_map)
+                        .setTitle("Surf the internet?").setMessage("Do you like to read the article ?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //set what would happen when positive button is clicked
+                                Intent intent = new Intent();
+                                intent.setAction(Intent.ACTION_VIEW);
+                                intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                                intent.setData(Uri.parse(String.valueOf(newsList.get(position).getUrl())));
+                                ctx.startActivity(intent);
+                            }
+                        })
+
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //set what should happen when negative button is clicked
+                                Toast.makeText(ctx.getApplicationContext(),"Back to News",Toast.LENGTH_LONG).show();
+                            }
+                        })
+                        .show();
+
             }
         });
         return convertView;

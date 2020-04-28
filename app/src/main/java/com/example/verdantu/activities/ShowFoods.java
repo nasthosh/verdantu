@@ -2,6 +2,7 @@ package com.example.verdantu.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -39,7 +40,7 @@ public class ShowFoods extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_foods);
+        setContentView(R.layout.activity_show_foods);
         listView = findViewById(R.id.listFoods);
 
         foodCategory = findViewById(R.id.radioCategory);
@@ -80,8 +81,12 @@ public class ShowFoods extends AppCompatActivity {
 
                 String foodItem = foodList.get(i).getFoodItems();
                 String foodCarbonEmisiion = foodList.get(i).getCarbonEmissions();
+                Intent intent = new Intent(ShowFoods.this,
+                        AddFoodItems.class);
+                intent.putExtra("foodItems", foodItem);
+                intent.putExtra("carbonEmissions", foodCarbonEmisiion);
+                startActivity(intent);
                 Toast.makeText(getApplicationContext(), foodCarbonEmisiion, Toast.LENGTH_LONG).show();
-
             }
         });
     }
