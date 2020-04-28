@@ -1,7 +1,8 @@
-package com.example.verdantu;
+package com.example.verdantu.activities;
 
 import android.os.Bundle;
 
+import com.example.verdantu.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;

@@ -11,6 +11,11 @@ package com.example.verdantu.models;
 public class FoodEmissions {
     int emissionId;
     String foodItems;
+
+    public FoodEmissions(String foodItems) {
+        this.foodItems = foodItems;
+    }
+
     String carbonEmissions;
 
     // Constructor for the food emission class

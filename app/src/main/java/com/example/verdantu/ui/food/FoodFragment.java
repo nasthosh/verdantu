@@ -1,4 +1,4 @@
-package com.example.verdantu.ui.dashboard;
+package com.example.verdantu.ui.food;
 
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
@@ -36,9 +36,9 @@ import java.util.List;
  *
  */
 
-public class DashboardFragment extends Fragment {
+public class FoodFragment extends Fragment {
 
-    private DashboardViewModel dashboardViewModel;
+    private FoodViewModel foodViewModel;
     TableLayout tableLayout;
     TableRow tableRow;
     TextView text01;
@@ -52,8 +52,8 @@ public class DashboardFragment extends Fragment {
     String editTextFood;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel =
-                ViewModelProviders.of(this).get(DashboardViewModel.class);
+        foodViewModel =
+                ViewModelProviders.of(this).get(FoodViewModel.class);
         root = inflater.inflate(R.layout.fragment_food_items, container, false); // Inflating the view model
 
         tableLayout = root.findViewById(R.id.TableLayout01); // Identifying layouts using the corresponding ID's

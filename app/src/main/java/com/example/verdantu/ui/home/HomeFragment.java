@@ -6,15 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.verdantu.AddFoods;
+import com.example.verdantu.activities.ShowFoods;
 import com.example.verdantu.R;
 
 public class HomeFragment extends Fragment {
@@ -30,7 +27,7 @@ public class HomeFragment extends Fragment {
         addFood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent addFoods = new Intent(getActivity(), AddFoods.class);
+                Intent addFoods = new Intent(getActivity(), ShowFoods.class);
                 startActivity(addFoods);
             }
         });

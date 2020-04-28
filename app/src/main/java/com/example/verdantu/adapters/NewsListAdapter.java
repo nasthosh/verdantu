@@ -1,4 +1,4 @@
-package com.example.verdantu.ui.notifications;
+package com.example.verdantu.adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,28 +15,23 @@ import com.example.verdantu.R;
 import com.example.verdantu.models.NewsModel;
 
 import java.util.List;
+import java.util.UUID;
 
 import android.view.LayoutInflater;
 
 
 public class NewsListAdapter extends BaseAdapter {
 
-    //private List<ListViewItemDTO> listViewItemDtoList = null;
-
     List<NewsModel> newsList;
-    //private Activity activity;
     Context ctx;
+    String id = UUID.randomUUID().toString();
+
 
 
     public NewsListAdapter(List<NewsModel> newsList, Context ctx) {
         this.newsList = newsList;
         this.ctx = ctx;
     }
-
-    public NewsListAdapter(List<NewsModel> newsList) {
-        this.newsList = newsList;
-    }
-
 
     @Override
     public int getCount() {
@@ -66,16 +61,11 @@ public class NewsListAdapter extends BaseAdapter {
 
         if (convertView == null)
             convertView = LayoutInflater.from(ctx).inflate(R.layout.activity_list_row,parent,false);
-            //LayoutInflater inflater = (LayoutInflater) activity.getSystemService(activity.LAYOUT_INFLATER_SERVICE);
-
 
         TextView listTitle = (TextView) convertView.findViewById(R.id.text_title);
         listTitle.setText(newsList.get(position).getTitle());
         Button urlButton = convertView.findViewById(R.id.urlButton);
-        //urlButton.setVisibility(View.GONE);
-       // urlButton.setVisibility(View.INVISIBLE);
         urlButton.setBackgroundColor(Color.TRANSPARENT);
-       // urlButton.setClickable(false);
 
         urlButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -84,12 +74,8 @@ public class NewsListAdapter extends BaseAdapter {
                 intent.addCategory(Intent.CATEGORY_BROWSABLE);
                 intent.setData(Uri.parse(String.valueOf(newsList.get(position).getUrl())));
                 ctx.startActivity(intent);
-
             }
         });
-
-
-
         return convertView;
     }
 }

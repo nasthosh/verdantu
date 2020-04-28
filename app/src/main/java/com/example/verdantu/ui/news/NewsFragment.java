@@ -1,14 +1,10 @@
-package com.example.verdantu.ui.notifications;
+package com.example.verdantu.ui.news;
 
-import android.content.Intent;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TableLayout;
@@ -17,17 +13,13 @@ import android.widget.TextView;
 
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.verdantu.AddFoods;
 import com.example.verdantu.R;
+import com.example.verdantu.adapters.NewsListAdapter;
 import com.example.verdantu.models.NewsModel;
 import com.example.verdantu.rest.NewsAPI;
-import com.example.verdantu.rest.RestClient;
-import com.example.verdantu.ui.dashboard.DashboardFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,15 +27,13 @@ import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
-public class NotificationsFragment extends Fragment {
+public class NewsFragment extends Fragment {
 
-    private NotificationsViewModel notificationsViewModel;
+    private NewsViewModel newsViewModel;
     Button news;
     List<NewsModel> newsList;
     List<NewsModel> newsArticleList;
@@ -56,31 +46,10 @@ public class NotificationsFragment extends Fragment {
     View root;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        notificationsViewModel =
-                ViewModelProviders.of(this).get(NotificationsViewModel.class);
-        root = inflater.inflate(R.layout.fragment_profile, container, false);
-        //tableLayout = root.findViewById(R.id.TableLayout01);
-
+        newsViewModel =
+                ViewModelProviders.of(this).get(NewsViewModel.class);
+        root = inflater.inflate(R.layout.fragment_news, container, false);
         listView = root.findViewById(R.id.list);
-
-//        final TextView textView = root.findViewById(R.id.textNotifications);
-//        notificationsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                textView.setText(s);
-//            }
-//        });
-
-//        news = root.findViewById(R.id.news);
-//        news.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                NewsAsyncTask getFoodItem = new NewsAsyncTask(); // Calling the asynctask method to get the data from the database
-//                getFoodItem.execute();
-//            }
-//        });
-
-        //ArrayAdapter<String> listDataAdapter = new ArrayAdapter<String>(this, R.layout.activity_list_row,R.id.list_view_item_text,newsArticleList);
 
         NewsAsyncTask getFoodItem = new NewsAsyncTask(); // Calling the asynctask method to get the data from the database
         getFoodItem.execute();
@@ -101,10 +70,8 @@ public class NotificationsFragment extends Fragment {
 
     public void getRelatedNewsArticles(String result){
             newsArticleList = getNewsArticles(result);
-
             listViewDataAdapter = new NewsListAdapter(newsArticleList, root.getContext());
             listView.setAdapter(listViewDataAdapter);
-
     }
 
     public List<NewsModel> getNewsArticles(String result) {
@@ -125,9 +92,7 @@ public class NotificationsFragment extends Fragment {
 
                     String articleURLImage = NewsModelList.getString("urlToImage");
                     newURL = new URL(articleURL);
-                    //image = new URI(articleURLImage);
                     NewsModel newsArticle = new NewsModel(articleTitle, articleDescription, newURL );
-                    //NewsModel newsArticle = new NewsModel(articleTitle, articleDescription, newURL, image );
                     newsList.add(newsArticle);
 
                 }

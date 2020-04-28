@@ -55,4 +55,46 @@ public class RestClient {
         return carbonEmissions;
 
     }
+
+    public static String getFoodsByCategory(String category) {
+        final String methodPath = "api/food_Carbon_Emission_" + category; // Calling the server API
+        URL url = null;
+        HttpURLConnection conn = null;
+        String categoryEmissions = "";
+        try
+        {
+            url = new URL(BASE_URL + methodPath);
+            System.out.println("URL Carbon Emission : " + url);
+
+            //open the connection
+            conn = (HttpURLConnection) url.openConnection();
+            conn = (HttpURLConnection) url.openConnection();
+
+            //set the timeout
+            conn.setReadTimeout(10000);
+            conn.setConnectTimeout(15000);
+
+            //set the connection method to GET
+            conn.setRequestMethod("GET");
+
+            //add http headers to set your response type to json
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Accept", "application/json");
+
+            //Read the response
+            Scanner inStream = new Scanner(conn.getInputStream());
+
+            //read the input steream and store it as string
+            while (inStream.hasNextLine()) {
+                categoryEmissions += inStream.nextLine();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            conn.disconnect();
+        }
+
+        return categoryEmissions;
+
+    }
 }

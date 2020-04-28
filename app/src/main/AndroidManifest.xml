@@ -12,11 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".AddFoods"></activity>
+        <activity android:name=".activities.ShowFoods"></activity>
         <activity
-            android:name=".HomeScreen"
+            android:name=".activities.HomeScreen"
             android:label="@string/title_activity_home_screen" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

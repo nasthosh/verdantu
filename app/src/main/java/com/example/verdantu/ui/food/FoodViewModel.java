@@ -1,4 +1,4 @@
-package com.example.verdantu.ui.dashboard;
+package com.example.verdantu.ui.food;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -11,11 +11,11 @@ import androidx.lifecycle.ViewModel;
  *
  */
 
-public class DashboardViewModel extends ViewModel {
+public class FoodViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public DashboardViewModel() {
+    public FoodViewModel() {
         mText = new MutableLiveData<>();
     }
 
