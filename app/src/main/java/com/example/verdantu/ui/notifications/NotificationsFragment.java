@@ -34,6 +34,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +47,7 @@ public class NotificationsFragment extends Fragment {
     Button news;
     List<NewsModel> newsList;
     List<NewsModel> newsArticleList;
-    ListView listViewWithCheckbox;
+    ListView listView;
     NewsListAdapter listViewDataAdapter;
     TableLayout tableLayout;
     TableRow tableRow;
@@ -57,7 +59,10 @@ public class NotificationsFragment extends Fragment {
         notificationsViewModel =
                 ViewModelProviders.of(this).get(NotificationsViewModel.class);
         root = inflater.inflate(R.layout.fragment_profile, container, false);
-        tableLayout = root.findViewById(R.id.TableLayout01);
+        //tableLayout = root.findViewById(R.id.TableLayout01);
+
+        listView = root.findViewById(R.id.list);
+
 //        final TextView textView = root.findViewById(R.id.textNotifications);
 //        notificationsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
 //            @Override
@@ -95,21 +100,10 @@ public class NotificationsFragment extends Fragment {
     }
 
     public void getRelatedNewsArticles(String result){
-        newsArticleList = getNewsArticles(result);
-        for (NewsModel articleList : newsArticleList) {
-            tableRow = new TableRow(root.getContext());
-            text01 = new TextView(root.getContext());
-            String title = articleList.getTitle();
-            String description = articleList.getDescription();
-            text01.setText(title);
-            text01.setText(description);
-            tableRow.addView(text01);
-            tableLayout.addView(tableRow, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
-        }
-//       // for (NewsModel articleList : newsArticleList) {
-//            listViewWithCheckbox = root.findViewById(R.id.list);
-//            listViewDataAdapter = new NewsListAdapter(newsArticleList);
-//            listViewWithCheckbox.setAdapter(listViewDataAdapter);
+            newsArticleList = getNewsArticles(result);
+
+            listViewDataAdapter = new NewsListAdapter(newsArticleList, root.getContext());
+            listView.setAdapter(listViewDataAdapter);
 
     }
 
@@ -117,7 +111,7 @@ public class NotificationsFragment extends Fragment {
         System.out.println("Get news aricle inside JSON : " + result);
         newsList = new ArrayList<>();
         URL newURL;
-       // URL newURLImage;
+        URI image;
         try {
             // Converting the result to a JSON object
             JSONObject jsonObject = new JSONObject(result);
@@ -131,11 +125,11 @@ public class NotificationsFragment extends Fragment {
 
                     String articleURLImage = NewsModelList.getString("urlToImage");
                     newURL = new URL(articleURL);
-                    //newURLImage = new URL (articleURLImage);
-                    //Image urlImage = ImageIo.read(newURLImage);
+                    //image = new URI(articleURLImage);
                     NewsModel newsArticle = new NewsModel(articleTitle, articleDescription, newURL );
-                   // NewsModel newsArticle = new NewsModel(articleTitle, articleDescription, newURL, newURLImage );
+                    //NewsModel newsArticle = new NewsModel(articleTitle, articleDescription, newURL, image );
                     newsList.add(newsArticle);
+
                 }
             }
         } catch (JSONException | MalformedURLException e) {

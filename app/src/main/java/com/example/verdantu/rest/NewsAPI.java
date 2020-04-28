@@ -14,7 +14,7 @@ public class NewsAPI {
         String textResult = "";
 
         try {
-            url = new URL("http://newsapi.org/v2/everything?q=globalwarming&from=2020-03-27&sortBy=publishedAt&apiKey=" + API_KEY );
+            url = new URL("http://newsapi.org/v2/everything?q=globalwarming&sortBy=publishedAt&apiKey=" + API_KEY );
             connection = (HttpURLConnection)url.openConnection();
             connection.setReadTimeout(10000);
             connection.setConnectTimeout(15000);

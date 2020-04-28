@@ -2,6 +2,7 @@ package com.example.verdantu.models;
 
 import android.media.Image;
 
+import java.net.URI;
 import java.net.URL;
 
 public class NewsModel {
@@ -9,7 +10,14 @@ public class NewsModel {
 String title;
 String description;
 URL url;
+URI urlToImage;
 
+    public NewsModel(String title, String description, URL url, URI urlToImage) {
+        this.title = title;
+        this.description = description;
+        this.url = url;
+        this.urlToImage = urlToImage;
+    }
 
     public NewsModel(String title, String description, URL url) {
         this.title = title;
