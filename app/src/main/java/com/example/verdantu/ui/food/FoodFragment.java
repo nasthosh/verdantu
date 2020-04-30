@@ -67,9 +67,11 @@ public class FoodFragment extends Fragment {
             @SuppressLint("WrongConstant")
             public void onClick(View v) {  // Defining the button on click activity for search
                 for (FoodEmissions foodItem : foodEmissionsList) {
+                    System.out.println("Entering search food item : ");
                     editTextFood = editText.getText().toString();
+                    System.out.println("Food Name searched: " + editTextFood);
                     if(foodItem.getFoodItems().equalsIgnoreCase(editTextFood)){ // Checking if the searched item is present in the list
-
+                        System.out.println("Searched Item : " + editTextFood);
                         tableRow = new TableRow(root.getContext());
 
                         text01 = new TextView(root.getContext());
@@ -128,6 +130,7 @@ public class FoodFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        System.out.println("Emission from food in JSOn : " + emissionsList);
         return emissionsList;
     }
 
