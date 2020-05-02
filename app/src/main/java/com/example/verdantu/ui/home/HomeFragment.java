@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.verdantu.activities.ShowFoods;
 import com.example.verdantu.R;
+import com.example.verdantu.ui.viewmodels.HomeViewModel;
 
 public class HomeFragment extends Fragment {
 

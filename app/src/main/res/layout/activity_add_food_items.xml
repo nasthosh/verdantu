@@ -68,4 +68,25 @@
         android:layout_below="@+id/btn_ShowCarbonFootPrint"
         tools:ignore="MissingConstraints"/>
 
+    <Button
+        android:id="@+id/btn_Add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:width="200dp"
+        android:layout_marginTop="30dp"
+        android:textSize="20sp"
+        android:text="Add"
+        android:layout_below="@+id/textView_TotalFoodEmissions" />
+
+    <Button
+        android:id="@+id/btn_Cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:width="200dp"
+        android:layout_marginTop="30dp"
+        android:textSize="20sp"
+        android:text="Cancel"
+        android:layout_below="@+id/btn_Add" />
+
+
 </RelativeLayout>

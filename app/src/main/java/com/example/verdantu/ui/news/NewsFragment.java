@@ -20,6 +20,7 @@ import com.example.verdantu.R;
 import com.example.verdantu.adapters.NewsListAdapter;
 import com.example.verdantu.models.NewsModel;
 import com.example.verdantu.rest.NewsAPI;
+import com.example.verdantu.ui.viewmodels.NewsViewModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.verdantu.R;
 import com.example.verdantu.models.FoodEmissions;
 import com.example.verdantu.rest.RestClient;
+import com.example.verdantu.ui.viewmodels.FoodViewModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -67,11 +68,10 @@ public class FoodFragment extends Fragment {
             @SuppressLint("WrongConstant")
             public void onClick(View v) {  // Defining the button on click activity for search
                 for (FoodEmissions foodItem : foodEmissionsList) {
-                    System.out.println("Entering search food item : ");
                     editTextFood = editText.getText().toString();
-                    System.out.println("Food Name searched: " + editTextFood);
-                    if(foodItem.getFoodItems().equalsIgnoreCase(editTextFood)){ // Checking if the searched item is present in the list
-                        System.out.println("Searched Item : " + editTextFood);
+                    if(foodItem.getFoodItems().contains(editTextFood)){ // Checking if the searched item is present in the list
+
+                        System.out.println("Searched food item : " + foodItem.getFoodItems());
                         tableRow = new TableRow(root.getContext());
 
                         text01 = new TextView(root.getContext());
@@ -90,7 +90,7 @@ public class FoodFragment extends Fragment {
                         tableRow.addView(text01);
                         tableRow.addView(text02);
                         tableLayout.addView(tableRow, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
-                    }else if(editTextFood.equalsIgnoreCase("")  ){
+                    }else if(editTextFood.contains("")  ){
                         cleanTable(tableLayout,0);
                         Toast.makeText(getActivity(),"Invalid Input",10).show();
                     }

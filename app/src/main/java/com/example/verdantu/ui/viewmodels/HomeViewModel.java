@@ -1,16 +1,17 @@
-package com.example.verdantu.ui.news;
+package com.example.verdantu.ui.viewmodels;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class NewsViewModel extends ViewModel {
+public class HomeViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public NewsViewModel() {
+    public HomeViewModel() {
         mText = new MutableLiveData<>();
-   }
+      //  mText.setValue("This is home fragment");
+    }
 
     public LiveData<String> getText() {
         return mText;

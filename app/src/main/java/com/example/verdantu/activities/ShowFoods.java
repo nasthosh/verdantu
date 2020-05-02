@@ -36,6 +36,8 @@ public class ShowFoods extends AppCompatActivity {
 
     ListView listView;
     FoodListAdapter listViewDataAdapter;
+    int rgSelected;
+    String rgCategorySelectedInt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,8 @@ public class ShowFoods extends AppCompatActivity {
         listView = findViewById(R.id.listFoods);
 
         foodCategory = findViewById(R.id.radioCategory);
+        //rgSelected = foodCategory.getCheckedRadioButtonId();
+        //rgCategorySelectedInt = String.valueOf(rgSelected);
         foodCategory.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId)
@@ -85,6 +89,7 @@ public class ShowFoods extends AppCompatActivity {
                         AddFoodItems.class);
                 intent.putExtra("foodItems", foodItem);
                 intent.putExtra("carbonEmissions", foodCarbonEmisiion);
+                intent.putExtra("checkedFoodCategory", strFoodCategory);
                 startActivity(intent);
                 Toast.makeText(getApplicationContext(), foodCarbonEmisiion, Toast.LENGTH_LONG).show();
             }
