@@ -1,6 +1,7 @@
 package com.example.verdantu.ui.food;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,8 +20,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.verdantu.R;
+import com.example.verdantu.modelinterfaces.GetService;
+import com.example.verdantu.models.Food;
 import com.example.verdantu.models.FoodEmissions;
 import com.example.verdantu.rest.RestClient;
+import com.example.verdantu.rest.RetrofitClientInstance;
 import com.example.verdantu.ui.viewmodels.FoodViewModel;
 
 import org.json.JSONArray;
@@ -29,6 +33,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  *
@@ -47,10 +55,12 @@ public class FoodFragment extends Fragment {
     View root;
     EditText editText;
     Button search;
-    List<FoodEmissions> foodEmissionsList;
-    List<FoodEmissions> tableFoodList;
+    List<Food> foodEmissionsList;
+    List<Food> tableFoodList;
+    List<Food> emissionsListRetro;
     int count = 0;
     String editTextFood;
+    ProgressDialog progressDoalog;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         foodViewModel =
@@ -59,32 +69,56 @@ public class FoodFragment extends Fragment {
 
         tableLayout = root.findViewById(R.id.TableLayout01); // Identifying layouts using the corresponding ID's
 
-        FoodItemsAsyncTask getFoodItem = new FoodItemsAsyncTask(); // Calling the asynctask method to get the data from the database
-        getFoodItem.execute();
+        progressDoalog = new ProgressDialog(root.getContext());
+        progressDoalog.setMessage("Loading....");
+        progressDoalog.show();
+
+//        FoodItemsAsyncTask getFoodItem = new FoodItemsAsyncTask(); // Calling the asynctask method to get the data from the database
+//        getFoodItem.execute();
+
+        GetService service = RetrofitClientInstance.getRetrofitInstance().create(GetService.class);
+        Call<List<Food>> call = service.getFood();
+        emissionsListRetro = new ArrayList<>();
+        call.enqueue(new Callback<List<Food>>() {
+            @Override
+            public void onResponse(Call<List<Food>> call, Response<List<Food>> response) {
+                progressDoalog.dismiss();
+                emissionsListRetro = response.body();
+                emissionFromFoods();
+                System.out.println("List from retrofit : " + emissionsListRetro);
+            }
+
+            @Override
+            public void onFailure(Call<List<Food>> call, Throwable t) {
+                progressDoalog.dismiss();
+                Toast.makeText(root.getContext(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
+                System.out.println(" Throwable error : " + t);
+            }
+        });
 
         editText = root.findViewById(R.id.editText);
         search = root.findViewById(R.id.searchButton);
         search.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("WrongConstant")
             public void onClick(View v) {  // Defining the button on click activity for search
-                for (FoodEmissions foodItem : foodEmissionsList) {
+                for (Food foodItem : foodEmissionsList) {
                     editTextFood = editText.getText().toString();
-                    if(foodItem.getFoodItems().contains(editTextFood)){ // Checking if the searched item is present in the list
+                    if(foodItem.getFoodName().contains(editTextFood)){ // Checking if the searched item is present in the list
 
-                        System.out.println("Searched food item : " + foodItem.getFoodItems());
+                        System.out.println("Searched food item : " + foodItem.getFoodName());
                         tableRow = new TableRow(root.getContext());
 
                         text01 = new TextView(root.getContext());
                         text02 = new TextView(root.getContext());
 
-                        String foodName = foodItem.getFoodItems();
-                        String foodEmissions = foodItem.getCarbonEmissions();
-
+                        String foodName = foodItem.getFoodName();
+                        float foodEmissions = foodItem.getFoodEmissions();
+                        String foodEmissionsStr = String.valueOf(foodEmissions);
                         //Clean the Table after every search
                         cleanTable(tableLayout,1);
 
                         text01.setText(foodName);
-                        text02.setText(foodEmissions);
+                        text02.setText(foodEmissionsStr);
 
                         // Add the data to the view
                         tableRow.addView(text01);
@@ -101,16 +135,7 @@ public class FoodFragment extends Fragment {
         return root;
     }
 
-    public class FoodItemsAsyncTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... params) {
-            return RestClient.getItemsList();
-        } // Rest client call to send request to the server
 
-        protected void onPostExecute(String result) {
-            emissionFromFoods(result);
-        }
-    }
 
     public List<FoodEmissions> getFoodItems(String result) {
         List<FoodEmissions> emissionsList = new ArrayList<>();
@@ -118,6 +143,7 @@ public class FoodFragment extends Fragment {
             // Converting the result to a JSON object
             JSONObject jsonObject = new JSONObject(result);
             JSONArray jsonArray = jsonObject.getJSONArray("recordset");
+            System.out.println("Emission json array : " + jsonArray);
             if (jsonArray != null && jsonArray.length() > 0) {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject foodEmissionsList = jsonArray.getJSONObject(i);
@@ -134,18 +160,19 @@ public class FoodFragment extends Fragment {
         return emissionsList;
     }
 
-    public void emissionFromFoods(String result){
-        foodEmissionsList = getFoodItems(result);
+    public void emissionFromFoods(){
+        foodEmissionsList = emissionsListRetro;
         tableFoodList = foodEmissionsList;
-        for (FoodEmissions emission : tableFoodList) {
+        for (Food emission : tableFoodList) {
             LinearLayout ll = new LinearLayout(root.getContext());
             tableRow = new TableRow(root.getContext());
             text01 = new TextView(root.getContext());
             text02 = new TextView(root.getContext());
-            String foodName = emission.getFoodItems();
-            String foodEmissions = emission.getCarbonEmissions();
+            String foodName = emission.getFoodName();
+            float foodEmissions = emission.getFoodEmissions();
+            String foodEmissionStr = String.valueOf(foodEmissions);
             text01.setText(foodName);
-            text02.setText(foodEmissions);
+            text02.setText(foodEmissionStr);
             tableRow.addView(text01);
             tableRow.addView(text02);
             tableLayout.addView(tableRow, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));

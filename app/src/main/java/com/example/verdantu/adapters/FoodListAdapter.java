@@ -59,15 +59,6 @@ public class FoodListAdapter extends BaseAdapter {
 
         TextView listFood = (TextView) convertView.findViewById(R.id.text_listFood);
         listFood.setText(foodsList.get(position).getFoodItems());
-//        Button addButton = convertView.findViewById(R.id.addButton);
-//        addButton.setBackgroundColor(Color.TRANSPARENT);
-//
-//
-//        addButton.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//
-//            }
-//        });
         return convertView;
     }
 }
