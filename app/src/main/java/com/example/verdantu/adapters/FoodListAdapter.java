@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.verdantu.R;
+import com.example.verdantu.models.Food;
 import com.example.verdantu.models.FoodEmissions;
 
 import java.util.List;
@@ -16,11 +17,11 @@ import java.util.List;
 public class FoodListAdapter extends BaseAdapter {
 
 
-    List<FoodEmissions> foodsList;
+    List<Food> foodsList;
     Context ctx;
     Activity getBaseActivity;
 
-    public FoodListAdapter(List<FoodEmissions> foodsList, Context ctx) {
+    public FoodListAdapter(List<Food> foodsList, Context ctx) {
         this.foodsList = foodsList;
         this.ctx = ctx;
     }
@@ -58,7 +59,7 @@ public class FoodListAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(ctx).inflate(R.layout.activity_show_foods_list,parent,false);
 
         TextView listFood = (TextView) convertView.findViewById(R.id.text_listFood);
-        listFood.setText(foodsList.get(position).getFoodItems());
+        listFood.setText(foodsList.get(position).getFoodName());
         return convertView;
     }
 }

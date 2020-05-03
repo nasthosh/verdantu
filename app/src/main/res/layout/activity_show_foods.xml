@@ -37,7 +37,7 @@
                 android:id="@+id/radioVeggies"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Veggies" />
+                android:text="Vegetables" />
 
             <RadioButton
                 android:id="@+id/radioMeat"
@@ -50,7 +50,7 @@
                 android:id="@+id/radioOthers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Others" />
+                android:text="Other" />
 
         </RadioGroup>
 

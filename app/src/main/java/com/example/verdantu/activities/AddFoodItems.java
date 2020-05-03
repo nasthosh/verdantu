@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,8 +19,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.verdantu.R;
+import com.example.verdantu.modelinterfaces.PostService;
 import com.example.verdantu.models.Consumption;
+import com.example.verdantu.models.Food;
 import com.example.verdantu.rest.RestClient;
+import com.example.verdantu.rest.RetrofitClientInstance;
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AddFoodItems extends AppCompatActivity {
     String foodName;
@@ -70,26 +84,39 @@ public class AddFoodItems extends AppCompatActivity {
                 System.out.println("Name : " + foodName + "Emission" + finalTotalEmissions + "Category"+ foodCategory);
                 addFood.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-                        ConsumptionAsyncTask foodConsumed = new ConsumptionAsyncTask();
-                        //foodConsumed.execute(userId,foodItemName.getText().toString(),finalTotalEmissions,foodCategory);
-                        foodConsumed.execute(foodName);
+                        PostService service = RetrofitClientInstance.getRetrofitInstance().create(PostService.class);
+                        Gson gson = new Gson();
+                        ArrayList<Consumption> consumedData = new ArrayList<>();
+                        Consumption addConsumed = new Consumption(deviceId, foodName, roundDecimalTotalFoodEmission, foodCategory);
+                        consumedData.add(addConsumed);
+                        RequestBody postData = RequestBody.create(MediaType.parse("application/json"),gson.toJson(consumedData));
+                        service.addConsumption(postData).enqueue(new Callback<List<Food>>() {
+                            @Override
+                            public void onResponse(Call<List<Food>> call, Response<List<Food>> response) {
+                                if (response.isSuccessful()) {
+                                    if (response.body() != null) {
+                                        Log.i("onSuccess", response.body().toString());
+                                    } else {
+                                        Log.i("onEmptyResponse", "Returned empty response");//Toast.makeText(getContext(),"Nothing returned",Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<List<Food>> call, Throwable t) {
+                                Toast.makeText(getApplicationContext(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
+                                System.out.println(" Throwable error : " + t);
+                            }
+
+
+                        });
+
+
+
                     }
                 });
             }
         });
-    }
-
-    public class ConsumptionAsyncTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... params) {
-            //Consumption addConsumed =new Consumption(deviceId,foodItemName.getText().toString(),Float.parseFloat(finalTotalEmissions),foodCategory);
-            RestClient.testData(params[0]);
-            return "Consumption Added";
-        }
-
-        protected void onPostExecute(String result) {
-            Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
-        }
     }
 
     @SuppressLint("MissingPermission")

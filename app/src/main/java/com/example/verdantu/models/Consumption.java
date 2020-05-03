@@ -1,13 +1,23 @@
 package com.example.verdantu.models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Consumption {
-    String userId;
+
+    @SerializedName("deviceID")
+    String deviceId;
+
+    @SerializedName("foods")
     String foods;
+
+    @SerializedName("emission")
     float emission;
+
+    @SerializedName("categoryName")
     String categoryName;
 
-    public Consumption(String userId, String foods, float emission, String categoryName) {
-        this.userId = userId;
+    public Consumption(String deviceId, String foods, float emission, String categoryName) {
+        this.deviceId = deviceId;
         this.foods = foods;
         this.emission = emission;
         this.categoryName = categoryName;
@@ -16,19 +26,19 @@ public class Consumption {
     @Override
     public String toString() {
         return "Consumption{" +
-                "userId=" + userId +
+                "userId=" + deviceId +
                 ", foods='" + foods + '\'' +
                 ", emission=" + emission +
                 ", categoryName='" + categoryName + '\'' +
                 '}';
     }
 
-    public String getUserId() {
-        return userId;
+    public String getDeviceId() {
+        return deviceId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 
     public String getFoods() {

@@ -2,6 +2,7 @@ package com.example.verdantu.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,8 +15,11 @@ import android.widget.Toast;
 
 import com.example.verdantu.R;
 import com.example.verdantu.adapters.FoodListAdapter;
+import com.example.verdantu.modelinterfaces.GetService;
+import com.example.verdantu.models.Food;
 import com.example.verdantu.models.FoodEmissions;
 import com.example.verdantu.rest.RestClient;
+import com.example.verdantu.rest.RetrofitClientInstance;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,6 +28,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class ShowFoods extends AppCompatActivity {
 
     RadioGroup foodCategory;
@@ -31,13 +39,14 @@ public class ShowFoods extends AppCompatActivity {
     RadioButton checkedRadioButtonCategory;
     String strFoodCategory;
 
-    List<FoodEmissions> foodByCategory;
-    List<FoodEmissions> foodList;
+    List<Food> foodByCategory;
+    List<Food> foodList;
+
+    List<Food> emissionsListByCategory;
 
     ListView listView;
     FoodListAdapter listViewDataAdapter;
-    int rgSelected;
-    String rgCategorySelectedInt;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +55,6 @@ public class ShowFoods extends AppCompatActivity {
         listView = findViewById(R.id.listFoods);
 
         foodCategory = findViewById(R.id.radioCategory);
-        //rgSelected = foodCategory.getCheckedRadioButtonId();
-        //rgCategorySelectedInt = String.valueOf(rgSelected);
         foodCategory.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId)
@@ -55,26 +62,31 @@ public class ShowFoods extends AppCompatActivity {
                 radioID = foodCategory.getCheckedRadioButtonId();
                 checkedRadioButtonCategory = findViewById(radioID);
                 strFoodCategory = checkedRadioButtonCategory.getText().toString();
-                FoodCategoryAsyncTask getEmissionsByCategories= new FoodCategoryAsyncTask();
-                getEmissionsByCategories.execute(strFoodCategory);
+                GetService service = RetrofitClientInstance.getRetrofitInstance().create(GetService.class);
+                Call<List<Food>> call = service.getFoodByCategory(strFoodCategory);
+                emissionsListByCategory = new ArrayList<>();
+                call.enqueue(new Callback<List<Food>>() {
+                    @Override
+                    public void onResponse(Call<List<Food>> call, Response<List<Food>> response) {
+                        emissionsListByCategory = response.body();
+                        foodByCategory();
+                        System.out.println("List from retrofit : " + emissionsListByCategory);
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Food>> call, Throwable t) {
+                       Toast.makeText(getApplicationContext(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
+                        System.out.println(" Throwable error : " + t);
+                    }
+                });
+
             }
 
         });
     }
 
-    public class FoodCategoryAsyncTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... params) {
-            return RestClient.getFoodsByCategory(params[0]);
-        }
-
-        protected void onPostExecute(String result) {
-            foodByCategory(result);
-        }
-    }
-
-    public void foodByCategory(String result){
-        foodByCategory = getFoodItemsByCategory(result);
+    public void foodByCategory(){
+        foodByCategory = emissionsListByCategory;
         foodList = foodByCategory;
         listViewDataAdapter = new FoodListAdapter(foodList, ShowFoods.this);
         listView.setClickable(true);
@@ -83,38 +95,18 @@ public class ShowFoods extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                String foodItem = foodList.get(i).getFoodItems();
-                String foodCarbonEmisiion = foodList.get(i).getCarbonEmissions();
+                String foodItem = foodList.get(i).getFoodName();
+                float foodCarbonEmisiion = foodList.get(i).getFoodEmissions();
+                String carbonEmissionStr = String.valueOf(foodCarbonEmisiion);
                 Intent intent = new Intent(ShowFoods.this,
                         AddFoodItems.class);
                 intent.putExtra("foodItems", foodItem);
-                intent.putExtra("carbonEmissions", foodCarbonEmisiion);
+                intent.putExtra("carbonEmissions", carbonEmissionStr);
                 intent.putExtra("checkedFoodCategory", strFoodCategory);
                 startActivity(intent);
-                Toast.makeText(getApplicationContext(), foodCarbonEmisiion, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), carbonEmissionStr, Toast.LENGTH_LONG).show();
             }
         });
     }
 
-    public List<FoodEmissions> getFoodItemsByCategory(String result) {
-        List<FoodEmissions> foodByCategory = new ArrayList<>();
-        try {
-            // Converting the result to a JSON object
-            JSONObject jsonObject = new JSONObject(result);
-            JSONArray jsonArray = jsonObject.getJSONArray("recordset");
-            if (jsonArray != null && jsonArray.length() > 0) {
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject foodEmissionsList = jsonArray.getJSONObject(i);
-                    String foodName = foodEmissionsList.getString("Foods");
-                    String foodEmission = foodEmissionsList.getString("Emissions");
-                    FoodEmissions foodItemsEmissions = new FoodEmissions(foodName,foodEmission);
-                    foodByCategory.add(foodItemsEmissions);
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        System.out.println("Returning food category list : " + foodByCategory);
-        return foodByCategory;
-    }
 }

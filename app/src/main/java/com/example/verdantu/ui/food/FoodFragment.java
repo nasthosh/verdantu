@@ -73,9 +73,6 @@ public class FoodFragment extends Fragment {
         progressDoalog.setMessage("Loading....");
         progressDoalog.show();
 
-//        FoodItemsAsyncTask getFoodItem = new FoodItemsAsyncTask(); // Calling the asynctask method to get the data from the database
-//        getFoodItem.execute();
-
         GetService service = RetrofitClientInstance.getRetrofitInstance().create(GetService.class);
         Call<List<Food>> call = service.getFood();
         emissionsListRetro = new ArrayList<>();
@@ -136,29 +133,6 @@ public class FoodFragment extends Fragment {
     }
 
 
-
-    public List<FoodEmissions> getFoodItems(String result) {
-        List<FoodEmissions> emissionsList = new ArrayList<>();
-        try {
-            // Converting the result to a JSON object
-            JSONObject jsonObject = new JSONObject(result);
-            JSONArray jsonArray = jsonObject.getJSONArray("recordset");
-            System.out.println("Emission json array : " + jsonArray);
-            if (jsonArray != null && jsonArray.length() > 0) {
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject foodEmissionsList = jsonArray.getJSONObject(i);
-                    String foodName = foodEmissionsList.getString("Foods");
-                    String foodEmission = foodEmissionsList.getString("Emissions");
-                    FoodEmissions foodItemsEmissions = new FoodEmissions(foodName, foodEmission);
-                    emissionsList.add(foodItemsEmissions);
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        System.out.println("Emission from food in JSOn : " + emissionsList);
-        return emissionsList;
-    }
 
     public void emissionFromFoods(){
         foodEmissionsList = emissionsListRetro;
