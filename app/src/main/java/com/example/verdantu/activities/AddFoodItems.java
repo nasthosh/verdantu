@@ -95,7 +95,7 @@ public class AddFoodItems extends AppCompatActivity {
                             public void onResponse(Call<List<Food>> call, Response<List<Food>> response) {
                                 if (response.isSuccessful()) {
                                     if (response.body() != null) {
-                                        Log.i("onSuccess", response.body().toString());
+                                        Toast.makeText(getApplicationContext(), "Consumption Added", Toast.LENGTH_SHORT).show();
                                     } else {
                                         Log.i("onEmptyResponse", "Returned empty response");//Toast.makeText(getContext(),"Nothing returned",Toast.LENGTH_LONG).show();
                                     }

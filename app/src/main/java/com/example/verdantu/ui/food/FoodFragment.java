@@ -100,7 +100,7 @@ public class FoodFragment extends Fragment {
             public void onClick(View v) {  // Defining the button on click activity for search
                 for (Food foodItem : foodEmissionsList) {
                     editTextFood = editText.getText().toString();
-                    if(foodItem.getFoodName().contains(editTextFood)){ // Checking if the searched item is present in the list
+                    if(foodItem.getFoodName().equalsIgnoreCase(editTextFood)){ // Checking if the searched item is present in the list
 
                         System.out.println("Searched food item : " + foodItem.getFoodName());
                         tableRow = new TableRow(root.getContext());
