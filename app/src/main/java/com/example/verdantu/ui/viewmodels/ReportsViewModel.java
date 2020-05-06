@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class NewsViewModel extends ViewModel {
+public class ReportsViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public NewsViewModel() {
+    public ReportsViewModel() {
         mText = new MutableLiveData<>();
    }
 

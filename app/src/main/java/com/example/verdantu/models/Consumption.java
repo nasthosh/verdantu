@@ -10,11 +10,22 @@ public class Consumption {
     @SerializedName("foods")
     String foods;
 
-    @SerializedName("emission")
+    @SerializedName("Emission")
     float emission;
 
     @SerializedName("categoryName")
     String categoryName;
+
+    @SerializedName("Date")
+    String day;
+
+    public Consumption(String deviceId, String foods, float emission, String categoryName, String day) {
+        this.deviceId = deviceId;
+        this.foods = foods;
+        this.emission = emission;
+        this.categoryName = categoryName;
+        this.day = day;
+    }
 
     public Consumption(String deviceId, String foods, float emission, String categoryName) {
         this.deviceId = deviceId;
@@ -23,14 +34,30 @@ public class Consumption {
         this.categoryName = categoryName;
     }
 
+    public Consumption(float emission, String categoryName) {
+
+        this.emission = emission;
+        this.categoryName = categoryName;
+    }
+
+
     @Override
     public String toString() {
         return "Consumption{" +
-                "userId=" + deviceId +
+                "deviceId='" + deviceId + '\'' +
                 ", foods='" + foods + '\'' +
                 ", emission=" + emission +
                 ", categoryName='" + categoryName + '\'' +
+                ", now=" + day +
                 '}';
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
     }
 
     public String getDeviceId() {
