@@ -2,6 +2,7 @@ package com.example.verdantu.modelinterfaces;
 
 import com.example.verdantu.models.Consumption;
 import com.example.verdantu.models.Food;
+import com.example.verdantu.models.Recipe;
 
 import java.util.List;
 
@@ -22,4 +23,10 @@ public interface GetService {
 
     @GET("/api/weekly_category_wise")
     Call<List<Consumption>> getReportByCategory();
+
+    @GET("api/Recipe_Carbon_Emission")
+    Call<List<Recipe>> getRecipeEmissions();
+
+    @GET("api/Landing_page")
+    Call<List<Consumption>> getEmissionForCurrentDay();
 }

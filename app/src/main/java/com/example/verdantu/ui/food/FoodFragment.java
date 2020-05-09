@@ -2,7 +2,6 @@ package com.example.verdantu.ui.food;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,14 +21,8 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.verdantu.R;
 import com.example.verdantu.modelinterfaces.GetService;
 import com.example.verdantu.models.Food;
-import com.example.verdantu.models.FoodEmissions;
-import com.example.verdantu.rest.RestClient;
 import com.example.verdantu.rest.RetrofitClientInstance;
 import com.example.verdantu.ui.viewmodels.FoodViewModel;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +54,7 @@ public class FoodFragment extends Fragment {
     int count = 0;
     String editTextFood;
     ProgressDialog progressDoalog;
+    Boolean isElementPresent = false;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         foodViewModel =
@@ -98,11 +92,16 @@ public class FoodFragment extends Fragment {
         search.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("WrongConstant")
             public void onClick(View v) {  // Defining the button on click activity for search
-                for (Food foodItem : foodEmissionsList) {
+                for (Food foodItem : tableFoodList) {
                     editTextFood = editText.getText().toString();
+                    //isElementPresent = foodItem.getFoodName().contains(editTextFood);
+                    System.out.print("Edittext food : " + editTextFood);
+
+                    System.out.print("Boolean Contains : " + isElementPresent);
+
                     if(foodItem.getFoodName().equalsIgnoreCase(editTextFood)){ // Checking if the searched item is present in the list
 
-                        System.out.println("Searched food item : " + foodItem.getFoodName());
+                        System.out.println("              Searched food item : " + foodItem.getFoodName());
                         tableRow = new TableRow(root.getContext());
 
                         text01 = new TextView(root.getContext());
@@ -117,13 +116,18 @@ public class FoodFragment extends Fragment {
                         text01.setText(foodName);
                         text02.setText(foodEmissionsStr);
 
+                        System.out.println("              Searched food item emissions : " + foodEmissionsStr);
+
                         // Add the data to the view
                         tableRow.addView(text01);
                         tableRow.addView(text02);
                         tableLayout.addView(tableRow, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
-                    }else if(editTextFood.contains("")  ){
+                    }
+                    else if(editTextFood.equalsIgnoreCase("") ){
                         cleanTable(tableLayout,0);
                         Toast.makeText(getActivity(),"Invalid Input",10).show();
+                        break;
+                        //emissionFromFoods();
                     }
                 }
             }

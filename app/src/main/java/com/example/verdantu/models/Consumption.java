@@ -10,7 +10,7 @@ public class Consumption {
     @SerializedName("foods")
     String foods;
 
-    @SerializedName("Emission")
+    @SerializedName("emission")
     float emission;
 
     @SerializedName("categoryName")
@@ -18,6 +18,18 @@ public class Consumption {
 
     @SerializedName("Date")
     String day;
+
+    @SerializedName("quantity")
+    float foodQuantity;
+
+    public Consumption(String deviceId, String foods, float emission, String categoryName,  float foodQuantity) {
+        this.deviceId = deviceId;
+        this.foods = foods;
+        this.emission = emission;
+        this.categoryName = categoryName;
+
+        this.foodQuantity = foodQuantity;
+    }
 
     public Consumption(String deviceId, String foods, float emission, String categoryName, String day) {
         this.deviceId = deviceId;
@@ -48,8 +60,17 @@ public class Consumption {
                 ", foods='" + foods + '\'' +
                 ", emission=" + emission +
                 ", categoryName='" + categoryName + '\'' +
-                ", now=" + day +
+                ", day='" + day + '\'' +
+                ", foodQuantity=" + foodQuantity +
                 '}';
+    }
+
+    public float getFoodQuantity() {
+        return foodQuantity;
+    }
+
+    public void setFoodQuantity(float foodQuantity) {
+        this.foodQuantity = foodQuantity;
     }
 
     public String getDay() {

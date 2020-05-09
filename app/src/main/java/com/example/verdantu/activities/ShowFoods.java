@@ -1,10 +1,6 @@
 package com.example.verdantu.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,17 +9,13 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.verdantu.R;
 import com.example.verdantu.adapters.FoodListAdapter;
 import com.example.verdantu.modelinterfaces.GetService;
 import com.example.verdantu.models.Food;
-import com.example.verdantu.models.FoodEmissions;
-import com.example.verdantu.rest.RestClient;
 import com.example.verdantu.rest.RetrofitClientInstance;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,7 +96,7 @@ public class ShowFoods extends AppCompatActivity {
                 intent.putExtra("carbonEmissions", carbonEmissionStr);
                 intent.putExtra("checkedFoodCategory", strFoodCategory);
                 startActivity(intent);
-                Toast.makeText(getApplicationContext(), carbonEmissionStr, Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), carbonEmissionStr, Toast.LENGTH_LONG).show();
             }
         });
     }

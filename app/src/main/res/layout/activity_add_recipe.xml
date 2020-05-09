@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.AddFoodItems">
+    tools:context=".activities.AddRecipe">
 
     <TextView
-        android:id="@+id/textView_FoodName"
+        android:id="@+id/textView_RecipeName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:width="200dp"
@@ -19,7 +19,7 @@
         tools:ignore="MissingConstraints"/>
 
     <TextView
-        android:id="@+id/textView_FoodEmissions"
+        android:id="@+id/textView_RecipeEmissions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:width="200dp"
@@ -28,32 +28,32 @@
         android:textAppearance="@style/Widget.AppCompat.ActionBar.Solid"
         android:text=""
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_below="@+id/textView_FoodName"
+        android:layout_below="@+id/textView_RecipeName"
         tools:ignore="MissingConstraints"/>
 
     <EditText
-        android:id="@+id/editTextView_Qty"
+        android:id="@+id/editTextView_Serving"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Quantity(grams)"
+        android:hint="Quantity(Servings)"
         android:width="200dp"
         android:layout_marginTop="25dp"
         android:textSize="20sp"
         android:inputType="numberDecimal"
-        android:layout_below="@+id/textView_FoodEmissions"/>
+        android:layout_below="@+id/textView_RecipeEmissions"/>
 
     <Button
-        android:id="@+id/btn_ShowCarbonFootPrint"
+        android:id="@+id/btn_ShowRecipeCarbonFootPrint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:width="200dp"
         android:layout_marginTop="25dp"
         android:textSize="20sp"
         android:text="Show Carbon footprint"
-        android:layout_below="@+id/editTextView_Qty" />
+        android:layout_below="@+id/editTextView_Serving" />
 
     <TextView
-        android:id="@+id/textView_TotalFoodEmissions"
+        android:id="@+id/textView_TotalRecipeEmissions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:width="200dp"
@@ -63,28 +63,28 @@
         android:textAllCaps="true"
         android:text=""
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_below="@+id/btn_ShowCarbonFootPrint"
+        android:layout_below="@+id/btn_ShowRecipeCarbonFootPrint"
         tools:ignore="MissingConstraints"/>
 
     <Button
-        android:id="@+id/btn_Add"
+        android:id="@+id/btn_AddRecipe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:width="200dp"
         android:layout_marginTop="30dp"
         android:textSize="20sp"
         android:text="Add"
-        android:layout_below="@+id/textView_TotalFoodEmissions" />
+        android:layout_below="@+id/textView_TotalRecipeEmissions" />
 
     <Button
-        android:id="@+id/btn_Cancel"
+        android:id="@+id/btn_CancelRecipeAdd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:width="200dp"
         android:layout_marginTop="30dp"
         android:textSize="20sp"
         android:text="Cancel"
-        android:layout_below="@+id/btn_Add" />
+        android:layout_below="@+id/btn_AddRecipe" />
 
 
 </RelativeLayout>

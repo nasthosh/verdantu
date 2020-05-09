@@ -1,16 +1,9 @@
 package com.example.verdantu.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
 import android.annotation.SuppressLint;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -18,11 +11,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.verdantu.R;
 import com.example.verdantu.modelinterfaces.PostService;
 import com.example.verdantu.models.Consumption;
 import com.example.verdantu.models.Food;
-import com.example.verdantu.rest.RestClient;
 import com.example.verdantu.rest.RetrofitClientInstance;
 import com.google.gson.Gson;
 
@@ -36,27 +31,31 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AddFoodItems extends AppCompatActivity {
-    String foodName;
-    String foodCarbonFootPrints;
-    TextView foodItemName;
-    TextView foodItemCarbonEmission;
-    TextView totalFoodEmissions;
-    EditText foodQuantity;
-    String foodQty;
-    Button showCarbonFootPrint;
-    String deviceId;
-    String foodCategory;
-    int rgCategorySelected;
-    Button addFood;
-    String finalTotalEmissions;
-    String userId = "10";
+    private String foodName;
+    private String foodCarbonFootPrints;
+    private TextView foodItemName;
+    private TextView foodItemCarbonEmission;
+    private TextView totalFoodEmissions;
+    private EditText foodQuantity;
+    private String foodQty;
+    private Button showCarbonFootPrint;
+    private Button cancel;
+    private String deviceId;
+    private String foodCategory;
+    private int rgCategorySelected;
+    private Button addFood;
+    private String finalTotalEmissions;
+    private String userId = "10";
+    private Boolean isFootPrintShown = false;
+    private float qty;
+    private float roundDecimalTotalFoodEmission;
 
     @SuppressLint("MissingPermission")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_food_items);
-        deviceId = getDeviceId(getApplicationContext());
+        deviceId = DeviceData.getDeviceId(getApplicationContext());
         System.out.println("Device ID  : " + deviceId);
         Intent intent = getIntent();
         foodName = intent.getStringExtra("foodItems");
@@ -70,75 +69,105 @@ public class AddFoodItems extends AppCompatActivity {
         foodQuantity = findViewById(R.id.editTextView_Qty);
         showCarbonFootPrint = findViewById(R.id.btn_ShowCarbonFootPrint);
         addFood = findViewById(R.id.btn_Add);
+        cancel = findViewById(R.id.btn_Cancel);
+        // System.out.println(" Food Quantity : " + foodQty);
         showCarbonFootPrint.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                foodQty = foodQuantity.getText().toString();
-                float qty = Float.parseFloat(foodQty);
-                float convertKgToGram = qty/1000;
-                float totalCarbonEmissions = convertKgToGram * (Float.parseFloat(foodCarbonFootPrints));
-                totalFoodEmissions = findViewById(R.id.textView_TotalFoodEmissions);
-                final float roundDecimalTotalFoodEmission = (float) ((double) Math.round(totalCarbonEmissions * 100000d) / 100000d);
-                finalTotalEmissions = String.valueOf(roundDecimalTotalFoodEmission);
-                totalFoodEmissions.setText("Total Emissions : " + finalTotalEmissions +  " Kg/Co2");
-                System.out.println("Emission : " + foodName);
-                System.out.println("Name : " + foodName + "Emission" + finalTotalEmissions + "Category"+ foodCategory);
-                addFood.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        PostService service = RetrofitClientInstance.getRetrofitInstance().create(PostService.class);
-                        Gson gson = new Gson();
-                        ArrayList<Consumption> consumedData = new ArrayList<>();
-                        Consumption addConsumed = new Consumption(deviceId, foodName, roundDecimalTotalFoodEmission, foodCategory);
-                        consumedData.add(addConsumed);
-                        RequestBody postData = RequestBody.create(MediaType.parse("application/json"),gson.toJson(consumedData));
-                        service.addConsumption(postData).enqueue(new Callback<List<Food>>() {
-                            @Override
-                            public void onResponse(Call<List<Food>> call, Response<List<Food>> response) {
-                                if (response.isSuccessful()) {
-                                    if (response.body() != null) {
-                                        Toast.makeText(getApplicationContext(), "Consumption Added", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Log.i("onEmptyResponse", "Returned empty response");//Toast.makeText(getContext(),"Nothing returned",Toast.LENGTH_LONG).show();
-                                    }
-                                }
-                            }
+                showCarbonFootPrint();
+            }
+        });
 
-                            @Override
-                            public void onFailure(Call<List<Food>> call, Throwable t) {
-                                Toast.makeText(getApplicationContext(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
-                                System.out.println(" Throwable error : " + t);
-                            }
+        addFood.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                addFood();
+            }
+        });
 
+        cancel.setOnClickListener(new View.OnClickListener() {
 
-                        });
-
-
-
-                    }
-                });
+            public void onClick(View v) {
+                cancelFood();
             }
         });
     }
 
-    @SuppressLint("MissingPermission")
-    public static String getDeviceId(Context context) {
-
-        String deviceId;
-
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            deviceId = Settings.Secure.getString(
-                    context.getContentResolver(),
-                    Settings.Secure.ANDROID_ID);
-        } else {
-            final TelephonyManager mTelephony = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-            if (mTelephony.getDeviceId() != null) {
-                deviceId = mTelephony.getDeviceId();
-            } else {
-                deviceId = Settings.Secure.getString(
-                        context.getContentResolver(),
-                        Settings.Secure.ANDROID_ID);
-            }
+    public void showCarbonFootPrint()
+    {
+        foodQty = foodQuantity.getText().toString();
+            if (!foodQty.equalsIgnoreCase("")) {
+            qty = Float.parseFloat(foodQty);
+            float convertKgToGram = qty / 1000;
+            float totalCarbonEmissions = convertKgToGram * (Float.parseFloat(foodCarbonFootPrints));
+            totalFoodEmissions = findViewById(R.id.textView_TotalFoodEmissions);
+            roundDecimalTotalFoodEmission = (float) ((double) Math.round(totalCarbonEmissions * 100000d) / 100000d);
+            finalTotalEmissions = String.valueOf(roundDecimalTotalFoodEmission);
+            totalFoodEmissions.setText("Total Emissions : " + finalTotalEmissions + " KgCo2/100g");
+            foodQuantity.setText("");
+            System.out.println("Emission : " + foodName);
+            System.out.println("Name : " + foodName + "Emission" + finalTotalEmissions + "Category" + foodCategory);
+            isFootPrintShown = true;
+        } else if (foodQty.equalsIgnoreCase("")) {
+            Toast.makeText(getApplicationContext(), "Please enter the quantity", Toast.LENGTH_SHORT).show();
         }
 
-        return deviceId;
     }
+
+    public void addFood(){
+        if (isFootPrintShown){
+            PostService service = RetrofitClientInstance.getRetrofitInstance().create(PostService.class);
+            Gson gson = new Gson();
+            ArrayList<Consumption> consumedData = new ArrayList<>();
+            System.out.println("Emission value from ad food itesm : " + roundDecimalTotalFoodEmission);
+            Consumption addConsumed = new Consumption(deviceId, foodName, roundDecimalTotalFoodEmission, foodCategory,qty);
+            consumedData.add(addConsumed);
+            RequestBody postData = RequestBody.create(MediaType.parse("application/json"), gson.toJson(consumedData));
+            service.addConsumption(postData).enqueue(new Callback<List<Food>>() {
+                @Override
+                public void onResponse(Call<List<Food>> call, Response<List<Food>> response) {
+                    System.out.println("Body response " + response.body());
+                    if (response.isSuccessful()) {
+                        if (response.body() != null) {
+                            Toast.makeText(getApplicationContext(), "Consumption Added", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Log.i("onEmptyResponse", "Returned empty response");//Toast.makeText(getContext(),"Nothing returned",Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<Food>> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
+                    System.out.println(" Throwable error : " + t);
+                }
+            });
+        }
+        else  {
+            Toast.makeText(getApplicationContext(), "Please enter the quantity", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void cancelFood() {
+
+        AlertDialog alertDialog = new AlertDialog.Builder(AddFoodItems.this).setIcon(android.R.drawable.ic_dialog_map)
+                .setTitle("Exit?").setMessage("Are you sure to exit ?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //set what would happen when positive button is clicked
+                        Intent intent = new Intent(AddFoodItems.this,ShowFoods.class);
+                        startActivity(intent);
+                    }
+                })
+
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //set what should happen when negative button is clicked
+                        Toast.makeText(AddFoodItems.this,"Back to Add",Toast.LENGTH_LONG).show();
+                    }
+                })
+                .show();
+    }
+
+
 }

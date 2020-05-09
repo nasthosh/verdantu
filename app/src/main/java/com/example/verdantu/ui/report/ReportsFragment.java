@@ -172,10 +172,11 @@ public class ReportsFragment extends Fragment {
                 barChart.getDescription().setEnabled(false);
                 barChart.setNoDataText("");
                 //data.setBarWidth(1f);
-                data.setBarWidth(0.25f);
+                data.setBarWidth(0.5f);
                // barDataSet.setBarBorderWidth(1f);
                 barChart.invalidate();
                 barDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+                barDataSet.setValueTextSize(12.5f);
                // barChart.setFitBars(true);
                 barChart.animateXY(2000, 2000);
                 barChart.setDrawValueAboveBar(false);
