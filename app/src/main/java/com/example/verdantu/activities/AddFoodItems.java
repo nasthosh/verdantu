@@ -65,7 +65,7 @@ public class AddFoodItems extends AppCompatActivity {
         foodItemName = findViewById(R.id.textView_FoodName);
         foodItemName.setText("Selected Food : " + foodName);
         foodItemCarbonEmission = findViewById(R.id.textView_FoodEmissions);
-        foodItemCarbonEmission.setText("Emission : " + foodCarbonFootPrints + " Kg/Co2");
+        foodItemCarbonEmission.setText("Emission : " + foodCarbonFootPrints + " KgCo2/100g");
         foodQuantity = findViewById(R.id.editTextView_Qty);
         showCarbonFootPrint = findViewById(R.id.btn_ShowCarbonFootPrint);
         addFood = findViewById(R.id.btn_Add);
@@ -96,7 +96,7 @@ public class AddFoodItems extends AppCompatActivity {
         foodQty = foodQuantity.getText().toString();
             if (!foodQty.equalsIgnoreCase("")) {
             qty = Float.parseFloat(foodQty);
-            float convertKgToGram = qty / 1000;
+            float convertKgToGram = qty/100;
             float totalCarbonEmissions = convertKgToGram * (Float.parseFloat(foodCarbonFootPrints));
             totalFoodEmissions = findViewById(R.id.textView_TotalFoodEmissions);
             roundDecimalTotalFoodEmission = (float) ((double) Math.round(totalCarbonEmissions * 100000d) / 100000d);
@@ -153,9 +153,7 @@ public class AddFoodItems extends AppCompatActivity {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        //set what would happen when positive button is clicked
-                        Intent intent = new Intent(AddFoodItems.this,ShowFoods.class);
-                        startActivity(intent);
+                        finish();
                     }
                 })
 

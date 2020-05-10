@@ -7,54 +7,18 @@ public class Recipe {
     @SerializedName("RecipeName")
     String recipeName;
 
-    @SerializedName("totalEmission")
+    @SerializedName("EmissionsPerServe")
     float recipeEmission;
 
 
 
-    @SerializedName("deviceID")
-    String deviceId;
-
-    @SerializedName("serves")
-    float servingAmount;
 
     public Recipe(String recipeName, float recipeEmission) {
         this.recipeName = recipeName;
         this.recipeEmission = recipeEmission;
     }
 
-    public Recipe(String deviceId, String recipeName,  float recipeEmission, float servingAmount) {
-        this.recipeName = recipeName;
-        this.deviceId = deviceId;
-        this.recipeEmission = recipeEmission;
-        this.servingAmount = servingAmount;
-    }
 
-    @Override
-    public String toString() {
-        return "Recipe{" +
-                "recipeName='" + recipeName + '\'' +
-                ", recipeEmission=" + recipeEmission +
-                ", deviceId='" + deviceId + '\'' +
-                ", servingAmount=" + servingAmount +
-                '}';
-    }
-
-    public String getDeviceId() {
-        return deviceId;
-    }
-
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
-    }
-
-    public float getServingAmount() {
-        return servingAmount;
-    }
-
-    public void setServingAmount(float servingAmount) {
-        this.servingAmount = servingAmount;
-    }
 
     public String getRecipeName() {
         return recipeName;

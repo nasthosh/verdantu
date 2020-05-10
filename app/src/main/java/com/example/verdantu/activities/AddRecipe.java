@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.verdantu.R;
 import com.example.verdantu.modelinterfaces.PostService;
-import com.example.verdantu.models.Recipe;
+import com.example.verdantu.models.RecipeConsumption;
 import com.example.verdantu.rest.RetrofitClientInstance;
 import com.google.gson.Gson;
 
@@ -102,14 +102,14 @@ public class AddRecipe extends AppCompatActivity {
         if(isValueShown){
             PostService service = RetrofitClientInstance.getRetrofitInstance().create(PostService.class);
             Gson gson = new Gson();
-            ArrayList<Recipe> recipeConsumption = new ArrayList<>();
+            ArrayList<RecipeConsumption> recipeConsumption = new ArrayList<>();
             System.out.println("Emission value from ad food itesm : " + recipeCarbonFootPrint);
-            Recipe addRecipeConsumption = new Recipe(deviceId, recipeName, Float.parseFloat(recipeCarbonFootPrint), servingAmount);
+            RecipeConsumption addRecipeConsumption = new RecipeConsumption(deviceId, recipeName, Float.parseFloat(recipeCarbonFootPrint), servingAmount);
             recipeConsumption.add(addRecipeConsumption);
             RequestBody postData = RequestBody.create(MediaType.parse("application/json"), gson.toJson(recipeConsumption));
-            service.addRecipeConsumption(postData).enqueue(new Callback<List<Recipe>>() {
+            service.addRecipeConsumption(postData).enqueue(new Callback<List<RecipeConsumption>>() {
                 @Override
-                public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
+                public void onResponse(Call<List<RecipeConsumption>> call, Response<List<RecipeConsumption>> response) {
                     System.out.println("Body response " + response.body());
                     if (response.isSuccessful()) {
                         if (response.body() != null) {
@@ -121,7 +121,7 @@ public class AddRecipe extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(Call<List<Recipe>> call, Throwable t) {
+                public void onFailure(Call<List<RecipeConsumption>> call, Throwable t) {
                     Toast.makeText(getApplicationContext(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
                     System.out.println(" Throwable error : " + t);
                 }
@@ -141,8 +141,7 @@ public class AddRecipe extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //set what would happen when positive button is clicked
-                        Intent intent = new Intent(AddRecipe.this,RecipeActivity.class);
-                        startActivity(intent);
+                        finish();
                     }
                 })
 

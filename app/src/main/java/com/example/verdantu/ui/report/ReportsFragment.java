@@ -3,6 +3,7 @@ package com.example.verdantu.ui.report;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,10 +28,14 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
@@ -40,7 +45,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ReportsFragment extends Fragment {
+public class ReportsFragment extends Fragment implements OnChartValueSelectedListener {
 
     private ReportsViewModel reportsViewModel;
     TextView text01;
@@ -96,6 +101,7 @@ public class ReportsFragment extends Fragment {
     public void showPieChartByCategory() {
 
         pieChart = root.findViewById(R.id.pieChart);
+        pieChart.setUsePercentValues(true);
         GetService service = RetrofitClientInstance.getRetrofitInstance().create(GetService.class);
         Call<List<Consumption>> call = service.getReportByCategory();
         emissionsListByCategory = new ArrayList<>();
@@ -117,12 +123,16 @@ public class ReportsFragment extends Fragment {
                 PieDataSet pieDataSet = new PieDataSet(pieEntries, "Category Report");
                 pieDataSet.setColors(colors);
                 PieData pieData = new PieData(pieDataSet);
+                pieData.setValueFormatter(new PercentFormatter());
                 pieData.setDataSet(pieDataSet);
                 pieChart.getDescription().setEnabled(false);
                 pieChart.setData(pieData);
                 pieChart.animateXY(5000, 5000);
                 pieChart.invalidate();
+                pieChart.setDrawHoleEnabled(true);
                 pieDataSet.setValueTextSize(15f);
+                //pieChart.setHoleRadius(10);
+                pieChart.setOnChartValueSelectedListener(ReportsFragment.this);
  }
 
             @Override
@@ -133,6 +143,25 @@ public class ReportsFragment extends Fragment {
         });
 
 
+    }
+
+    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
+
+        if (e == null)
+            return;
+        Log.i("VAL SELECTED",
+                "Value: " + e.getData() + ", xIndex: " + e.getX()
+                        + ", DataSet index: " + dataSetIndex);
+    }
+
+
+    @Override
+    public void onValueSelected(Entry e, Highlight h) {
+
+    }
+
+    public void onNothingSelected() {
+        Log.i("PieChart", "nothing selected");
     }
 
     public void showBarChartByWeek() {
@@ -151,7 +180,7 @@ public class ReportsFragment extends Fragment {
                 ArrayList<BarEntry> barEntries = new ArrayList<>();
                 ArrayList<Integer> colors = new ArrayList<>();
                ArrayList<String> labels = new ArrayList<>();
-                Integer[] productColors = {Color.DKGRAY, Color.RED, Color.GREEN, Color.BLUE};
+                Integer[] productColors = {Color.DKGRAY, Color.RED, Color.GREEN, Color.BLUE,Color.BLACK, Color.YELLOW,Color.CYAN};
                 for(int i = 0 ; i < emissionsListByDay.size() ; i++) {
                     barEntries.add(new BarEntry(i,emissionsListByDay.get(i).getEmission()));
                     XAxis xAxis = barChart.getXAxis();
@@ -162,6 +191,8 @@ public class ReportsFragment extends Fragment {
                     xAxis.setGranularity(1f);
                     xAxis.setValueFormatter(formatter);
                     colors.add(productColors[i]);
+
+
                 }
                 BarDataSet barDataSet = new BarDataSet(barEntries,"Report by day");
                // barDataSet.setBarBorderWidth(0.9f);
@@ -169,8 +200,8 @@ public class ReportsFragment extends Fragment {
 
 
                 barChart.setData(data);
-                barChart.getDescription().setEnabled(false);
-                barChart.setNoDataText("");
+//                barChart.getDescription().setEnabled(false);
+//                barChart.setNoDataText("");
                 //data.setBarWidth(1f);
                 data.setBarWidth(0.5f);
                // barDataSet.setBarBorderWidth(1f);
@@ -181,7 +212,8 @@ public class ReportsFragment extends Fragment {
                 barChart.animateXY(2000, 2000);
                 barChart.setDrawValueAboveBar(false);
                 barChart.getDescription().setEnabled(false);
-                barChart.getLegend().setEnabled(false);
+                barChart.setNoDataText("");
+                barChart.getLegend().setEnabled(true);
             }
 
             @Override

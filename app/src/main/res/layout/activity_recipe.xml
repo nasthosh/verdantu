@@ -13,7 +13,6 @@
         android:divider="#FFFFFF"
         android:dividerHeight="5dp"
         android:paddingLeft="1dp"
-        android:layout_below="@+id/radioCategory"
         tools:ignore="MissingConstraints" />
 
 </RelativeLayout>

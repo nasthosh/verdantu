@@ -1,7 +1,7 @@
 package com.example.verdantu.modelinterfaces;
 
 import com.example.verdantu.models.Food;
-import com.example.verdantu.models.Recipe;
+import com.example.verdantu.models.RecipeConsumption;
 
 import java.util.List;
 
@@ -20,5 +20,5 @@ public interface PostService {
 
     @Headers("Content-Type: application/json")
     @POST("api/add_recipe_emission")
-    Call<List<Recipe>> addRecipeConsumption(@Body RequestBody recipeConsumption);
+    Call<List<RecipeConsumption>> addRecipeConsumption(@Body RequestBody recipeConsumption);
 }

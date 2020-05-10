@@ -94,36 +94,37 @@ public class FoodFragment extends Fragment {
             public void onClick(View v) {  // Defining the button on click activity for search
                 for (Food foodItem : tableFoodList) {
                     editTextFood = editText.getText().toString();
-                    //isElementPresent = foodItem.getFoodName().contains(editTextFood);
+                    isElementPresent = foodItem.getFoodName().contains(editTextFood);
                     System.out.print("Edittext food : " + editTextFood);
 
                     System.out.print("Boolean Contains : " + isElementPresent);
+                    if (isElementPresent){
+                        if (foodItem.getFoodName().equalsIgnoreCase(editTextFood)) { // Checking if the searched item is present in the list
 
-                    if(foodItem.getFoodName().equalsIgnoreCase(editTextFood)){ // Checking if the searched item is present in the list
+                            System.out.println("              Searched food item : " + foodItem.getFoodName());
+                            tableRow = new TableRow(root.getContext());
 
-                        System.out.println("              Searched food item : " + foodItem.getFoodName());
-                        tableRow = new TableRow(root.getContext());
+                            text01 = new TextView(root.getContext());
+                            text02 = new TextView(root.getContext());
 
-                        text01 = new TextView(root.getContext());
-                        text02 = new TextView(root.getContext());
+                            String foodName = foodItem.getFoodName();
+                            float foodEmissions = foodItem.getFoodEmissions();
+                            String foodEmissionsStr = String.valueOf(foodEmissions);
+                            //Clean the Table after every search
+                            cleanTable(tableLayout, 1);
 
-                        String foodName = foodItem.getFoodName();
-                        float foodEmissions = foodItem.getFoodEmissions();
-                        String foodEmissionsStr = String.valueOf(foodEmissions);
-                        //Clean the Table after every search
-                        cleanTable(tableLayout,1);
+                            text01.setText(foodName);
+                            text02.setText(foodEmissionsStr);
 
-                        text01.setText(foodName);
-                        text02.setText(foodEmissionsStr);
+                            System.out.println("              Searched food item emissions : " + foodEmissionsStr);
 
-                        System.out.println("              Searched food item emissions : " + foodEmissionsStr);
-
-                        // Add the data to the view
-                        tableRow.addView(text01);
-                        tableRow.addView(text02);
-                        tableLayout.addView(tableRow, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
-                    }
-                    else if(editTextFood.equalsIgnoreCase("") ){
+                            // Add the data to the view
+                            tableRow.addView(text01);
+                            tableRow.addView(text02);
+                            tableLayout.addView(tableRow, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
+                        }
+                }
+                    else {
                         cleanTable(tableLayout,0);
                         Toast.makeText(getActivity(),"Invalid Input",10).show();
                         break;
