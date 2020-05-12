@@ -107,11 +107,13 @@ public class AddRecipe extends AppCompatActivity {
             RecipeConsumption addRecipeConsumption = new RecipeConsumption(deviceId, recipeName, Float.parseFloat(recipeCarbonFootPrint), servingAmount);
             recipeConsumption.add(addRecipeConsumption);
             RequestBody postData = RequestBody.create(MediaType.parse("application/json"), gson.toJson(recipeConsumption));
+            System.out.println(" Reaching here !!!!!!");
             service.addRecipeConsumption(postData).enqueue(new Callback<List<RecipeConsumption>>() {
                 @Override
                 public void onResponse(Call<List<RecipeConsumption>> call, Response<List<RecipeConsumption>> response) {
                     System.out.println("Body response " + response.body());
                     if (response.isSuccessful()) {
+                        System.out.println(" Response is successfulllllllll   ");
                         if (response.body() != null) {
                             Toast.makeText(getApplicationContext(), "Recipe Added", Toast.LENGTH_SHORT).show();
                         } else {

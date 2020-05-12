@@ -2,8 +2,11 @@ package com.example.verdantu.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -27,8 +30,10 @@ public class RecipeActivity extends AppCompatActivity {
     List<Recipe> emissionListByRecipe;
     List<Recipe> recipeItems;
     List<Recipe> recipeList;
+    List<Recipe> searchRecipeList;
     RecipeListAdapter listViewDataAdapter;
     ListView listView;
+    EditText inputSearch;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +49,42 @@ public class RecipeActivity extends AppCompatActivity {
                 emissionListByRecipe = response.body();
                 System.out.println("List from retrofit in recipe activity : " + emissionListByRecipe);
                 recipeItems();
+                inputSearch=findViewById(R.id.inputSearch);
+                searchRecipeList = new ArrayList<>(recipeList);
+                inputSearch.addTextChangedListener(new TextWatcher() {
+
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        //get the text in the EditText
+                        String searchString=inputSearch.getText().toString();
+                        int textLength=searchString.length();
+
+                        //clear the initial data set
+                        searchRecipeList.clear();
+
+                        for(int i=0;i<recipeList.size();i++)
+                        {
+                            String recipe=recipeList.get(i).getRecipeName();
+                            if(textLength<=recipe.length()){
+                                //compare the String in EditText with Names in the ArrayList
+                                if(searchString.equalsIgnoreCase(recipe.substring(0,textLength)))
+                                    searchRecipeList.add(recipeList.get(i));
+                            }
+                        }
+
+                        listViewDataAdapter.notifyDataSetChanged();
+                    }
+
+                    public void beforeTextChanged(CharSequence s, int start, int count,
+                                                  int after) {
+
+
+                    }
+
+                    public void afterTextChanged(Editable s) {
+
+
+                    }
+                });
 
             }
 

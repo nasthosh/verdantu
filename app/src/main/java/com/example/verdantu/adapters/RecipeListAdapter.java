@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.verdantu.R;
@@ -17,8 +18,10 @@ public class RecipeListAdapter extends BaseAdapter {
 
 
     List<Recipe> recipeList;
+    List<Recipe> searchRecipe;
     Context ctx;
     Activity getBaseActivity;
+    EditText inputSearch;
 
     public RecipeListAdapter(List<Recipe> recipeList, Context ctx) {
         this.recipeList = recipeList;
@@ -55,6 +58,7 @@ public class RecipeListAdapter extends BaseAdapter {
 
         TextView listRecipe = (TextView) convertView.findViewById(R.id.text_listRecipe);
         listRecipe.setText(recipeList.get(position).getRecipeName());
+
         return convertView;
     }
 }

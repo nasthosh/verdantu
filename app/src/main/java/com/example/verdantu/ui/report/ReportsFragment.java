@@ -101,6 +101,7 @@ public class ReportsFragment extends Fragment implements OnChartValueSelectedLis
     public void showPieChartByCategory() {
 
         pieChart = root.findViewById(R.id.pieChart);
+
         pieChart.setUsePercentValues(true);
         GetService service = RetrofitClientInstance.getRetrofitInstance().create(GetService.class);
         Call<List<Consumption>> call = service.getReportByCategory();
@@ -120,6 +121,7 @@ public class ReportsFragment extends Fragment implements OnChartValueSelectedLis
                     pieEntries.add(pieEntry);
                     colors.add(productColors[i]);
                 }
+
                 PieDataSet pieDataSet = new PieDataSet(pieEntries, "Category Report");
                 pieDataSet.setColors(colors);
                 PieData pieData = new PieData(pieDataSet);
@@ -132,6 +134,7 @@ public class ReportsFragment extends Fragment implements OnChartValueSelectedLis
                 pieChart.setDrawHoleEnabled(true);
                 pieDataSet.setValueTextSize(15f);
                 //pieChart.setHoleRadius(10);
+
                 pieChart.setOnChartValueSelectedListener(ReportsFragment.this);
  }
 
@@ -182,15 +185,16 @@ public class ReportsFragment extends Fragment implements OnChartValueSelectedLis
                ArrayList<String> labels = new ArrayList<>();
                 Integer[] productColors = {Color.DKGRAY, Color.RED, Color.GREEN, Color.BLUE,Color.BLACK, Color.YELLOW,Color.CYAN};
                 for(int i = 0 ; i < emissionsListByDay.size() ; i++) {
-                    barEntries.add(new BarEntry(i,emissionsListByDay.get(i).getEmission()));
-                    XAxis xAxis = barChart.getXAxis();
-                    xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-                    String day = emissionsListByDay.get(i).getDay();
-                    labels.add(day);
-                    IndexAxisValueFormatter formatter = new IndexAxisValueFormatter(labels);
-                    xAxis.setGranularity(1f);
-                    xAxis.setValueFormatter(formatter);
-                    colors.add(productColors[i]);
+                   // if(emissionsListByDay.get(i).getEmission()>0) {
+                        barEntries.add(new BarEntry(i, emissionsListByDay.get(i).getEmission()));
+                        XAxis xAxis = barChart.getXAxis();
+                        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                        String day = emissionsListByDay.get(i).getDay();
+                        labels.add(day);
+                        IndexAxisValueFormatter formatter = new IndexAxisValueFormatter(labels);
+                        xAxis.setGranularity(1f);
+                        xAxis.setValueFormatter(formatter);
+                        colors.add(productColors[i]);
 
 
                 }

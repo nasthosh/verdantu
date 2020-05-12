@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.example.verdantu.R;
 import com.example.verdantu.models.Food;
-import com.example.verdantu.models.FoodEmissions;
 
 import java.util.List;
 
@@ -58,8 +57,10 @@ public class FoodListAdapter extends BaseAdapter {
         if (convertView == null)
             convertView = LayoutInflater.from(ctx).inflate(R.layout.activity_show_foods_list,parent,false);
 
-        TextView listFood = (TextView) convertView.findViewById(R.id.text_listFood);
+        TextView listFood = (TextView) convertView.findViewById(R.id.list_food);
+        TextView listEmissions = (TextView)convertView.findViewById(R.id.list_emissions);
         listFood.setText(foodsList.get(position).getFoodName());
+        listEmissions.setText(String.valueOf(foodsList.get(position).getFoodEmissions()));
         return convertView;
     }
 }

@@ -88,10 +88,10 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<List<Consumption>> call, Response<List<Consumption>> response) {
 
                 dailyEmission = response.body();
-                System.out.println("List From Retro " + dailyEmission);
+                System.out.println("List From Retro in daily emission " + dailyEmission);
                 if(dailyEmission.get(0).getEmission() == 0.0) {
 
-                    dailyEmissionText.setText("Lets add some food for today!!");
+                    dailyEmissionText.setText("   Lets add some food for today!!");
                     dailyEmissionText.setTextSize(25f);
                     System.out.println("Daily Emissions is called inside null");
                 }
@@ -100,7 +100,8 @@ public class HomeFragment extends Fragment {
                 {
                     float foodEmissionsDaily = dailyEmission.get(0).getEmission();
                     String foodEmissionsDailyString = String.valueOf(foodEmissionsDaily);
-                    dailyEmissionText.setText("   Your Carbon Emissions for Today " +"\n                 " + "\n              "+foodEmissionsDailyString + " KgCo2/100g");
+                    dailyEmissionText.setText("   Your Carbon Emission for Today ");
+                    textView1.setText("       " + foodEmissionsDailyString + " KgCo2/100g");
                     dailyEmissionText.setTextSize(25f);
                     System.out.println("Daily Emissions is called inside some value");
                 }

@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-<!--    <TextView-->
-<!--        android:id="@+id/text_listFood"-->
-<!--        android:layout_width="fill_parent"-->
-<!--        android:layout_height="fill_parent"-->
-<!--        android:layout_weight="9" />-->
+    <TextView
+        android:id="@+id/list_food"
+        android:layout_width="250dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="60dp"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
 
     <TextView
-        android:id="@+id/text_listFood"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="20dp"/>
+        android:id="@+id/list_emissions"
+        android:layout_width="50dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginRight="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="MissingConstraints" />
 
-<!--    <Button-->
-<!--        android:id="@+id/addButton"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:textSize="20dp"-->
-<!--        />-->
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

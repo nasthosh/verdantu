@@ -50,28 +50,28 @@
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="321dp"
-        android:layout_height="99dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginLeft="40dp"
+        android:layout_width="322dp"
+        android:layout_height="45dp"
         android:layout_marginStart="40dp"
-        android:text=""
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="60dp"
         android:fontFamily="cursive"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        android:text=""
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
         app:layout_editor_absoluteX="27dp"
         app:layout_editor_absoluteY="172dp"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="27dp" />
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="319dp"
-        android:layout_height="101dp"
-        android:layout_marginTop="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="40dp"
         android:layout_marginStart="40dp"
-        android:text="    Lets Stay Green Together"
+        android:text=""
+        android:textColor="@color/colorPrimary"
         android:fontFamily="cursive"
         android:textSize="30dp"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
@@ -80,6 +80,22 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="31dp" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="333dp"
+        android:layout_height="67dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="60dp"
+        android:fontFamily="cursive"
+        android:text="     Lets Stay Green Together"
+        android:textSize="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:layout_editor_absoluteX="31dp"
+        app:layout_editor_absoluteY="350dp"
+        tools:ignore="MissingConstraints" />
 
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/floatingMenu"
@@ -91,7 +107,7 @@
         fab:menu_labels_singleLine="true"
         fab:menu_fab_label="Cancel"
         android:layout_marginTop="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView4"
+        app:layout_constraintBottom_toBottomOf="@+id/textView5"
         fab:menu_backgroundColor="#ccffffff"
         fab:menu_animationDelayPerItem="0"
         fab:menu_colorNormal="#32CD32"
