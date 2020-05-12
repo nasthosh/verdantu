@@ -2,9 +2,11 @@ package com.example.verdantu.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,12 +31,13 @@ public class RecipeActivity extends AppCompatActivity {
     List<Recipe> recipeList;
     RecipeListAdapter listViewDataAdapter;
     ListView listView;
+    SearchView search;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
         listView = findViewById(R.id.listRecipe);
-
+        search = findViewById(R.id.inputSearch);
         GetService service = RetrofitClientInstance.getRetrofitInstance().create(GetService.class);
         Call<List<Recipe>> call = service.getRecipeEmissions();
         emissionListByRecipe = new ArrayList<>();
@@ -44,6 +47,31 @@ public class RecipeActivity extends AppCompatActivity {
                 emissionListByRecipe = response.body();
                 System.out.println("List from retrofit in recipe activity : " + emissionListByRecipe);
                 recipeItems();
+                search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String s) {
+                        System.out.println(" Coming inside search 1 " );
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String s) {
+//                        System.out.println(" Coming inside search 2 " );
+//                        // Here implement search logic
+//                        listViewDataAdapter.getFilter().filter(s);
+//                        listViewDataAdapter.notifyDataSetChanged();
+//                        return false;
+
+                        if (TextUtils.isEmpty(s)){
+                            listViewDataAdapter.filter("");
+                            listView.clearTextFilter();
+                        }
+                        else {
+                            listViewDataAdapter.filter(s);
+                        }
+                        return true;
+                    }
+                });
 
             }
 
@@ -53,6 +81,8 @@ public class RecipeActivity extends AppCompatActivity {
                 System.out.println(" Throwable error : " + t);
             }
         });
+
+
     }
 
     public void recipeItems(){

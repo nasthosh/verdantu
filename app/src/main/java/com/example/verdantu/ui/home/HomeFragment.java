@@ -39,6 +39,7 @@ public class HomeFragment extends Fragment {
     FloatingActionButton fabAddByRecipe;
     TextView dailyEmissionText;
     List<Consumption> dailyEmission;
+    private TextView textView1;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class HomeFragment extends Fragment {
         fabAddByCategory = root.findViewById(R.id.fabAddByCategory);
         fabAddByRecipe = root.findViewById(R.id.fabAddProduct);
         dailyEmissionText = root.findViewById(R.id.textView3);
+        textView1 = root.findViewById(R.id.textView4);
         fabAddByCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,6 +66,14 @@ public class HomeFragment extends Fragment {
             }
         });
 
+//        textView1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent addFoodsByCategory = new Intent(getActivity(), ShowFoods.class);
+//                startActivity(addFoodsByCategory);
+//            }
+//        });
+
         return root;
     }
 
@@ -78,9 +88,11 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<List<Consumption>> call, Response<List<Consumption>> response) {
 
                 dailyEmission = response.body();
-                System.out.println("List From Retro " + dailyEmission);
+                System.out.println("List From Retro in daily emission " + dailyEmission);
                 if(dailyEmission.get(0).getEmission() == 0.0) {
-                    dailyEmissionText.setText("Lets add some food for today!!");
+
+                    dailyEmissionText.setText("   Lets add some food for today!!");
+                    dailyEmissionText.setTextSize(25f);
                     System.out.println("Daily Emissions is called inside null");
                 }
 
@@ -88,7 +100,9 @@ public class HomeFragment extends Fragment {
                 {
                     float foodEmissionsDaily = dailyEmission.get(0).getEmission();
                     String foodEmissionsDailyString = String.valueOf(foodEmissionsDaily);
-                    dailyEmissionText.setText(foodEmissionsDailyString);
+                    dailyEmissionText.setText("   Your Carbon Emission for Today ");
+                    textView1.setText("       " + foodEmissionsDailyString + " KgCo2/100g");
+                    dailyEmissionText.setTextSize(25f);
                     System.out.println("Daily Emissions is called inside some value");
                 }
             }
