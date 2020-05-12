@@ -22,6 +22,9 @@ public class Consumption {
     @SerializedName("quantity")
     float foodQuantity;
 
+    @SerializedName("ObjectID")
+    int objId;
+
     public Consumption(String deviceId, String foods, float emission, String categoryName,  float foodQuantity) {
         this.deviceId = deviceId;
         this.foods = foods;
@@ -63,6 +66,14 @@ public class Consumption {
                 ", day='" + day + '\'' +
                 ", foodQuantity=" + foodQuantity +
                 '}';
+    }
+
+    public int getObjId() {
+        return objId;
+    }
+
+    public void setObjId(int objId) {
+        this.objId = objId;
     }
 
     public float getFoodQuantity() {

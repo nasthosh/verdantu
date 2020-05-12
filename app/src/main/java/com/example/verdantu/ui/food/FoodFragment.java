@@ -1,6 +1,6 @@
 package com.example.verdantu.ui.food;
 
-import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -10,10 +10,10 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SearchView;
-import android.widget.TableLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -43,14 +43,12 @@ import retrofit2.Response;
 public class FoodFragment extends Fragment {
 
     private FoodViewModel foodViewModel;
-    TableLayout tableLayout;
     View root;
     List<Food> foodEmissionsList;
     List<Food> tableFoodList;
     List<Food> emissionsListRetro;
     FoodItemsListAdapter listAdapter;
     ListView listView;
-    ProgressDialog progressDoalog;
     RadioGroup foodType;
     int radioID;
     RadioButton checkedButton;
@@ -60,13 +58,14 @@ public class FoodFragment extends Fragment {
     List<Recipe> recipeList;
     RecipeListAdapter listViewDataAdapter;
     SearchView search;
-    Boolean isRecipeCalled = false;
+    Boolean isDialogShown = false;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         foodViewModel =
                 ViewModelProviders.of(this).get(FoodViewModel.class);
         root = inflater.inflate(R.layout.fragment_food_items, container, false); // Inflating the view model
+
 
         listView = root.findViewById(R.id.listFoodDetails);
 
@@ -131,6 +130,25 @@ public class FoodFragment extends Fragment {
             }
         });
         return root;
+    }
+
+    public void onResume() {
+
+        super.onResume();
+        if(!isDialogShown) {
+            AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).setIcon(android.R.drawable.ic_dialog_map)
+                    .setTitle("Info").setMessage("Please select the category to show the list of items based on the category that will be selected!")
+                    .setPositiveButton("Return", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Toast.makeText(getActivity(), "Thanks", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .show();
+            isDialogShown = true;
+        }
+
+
     }
 
     public void getFoodList(){

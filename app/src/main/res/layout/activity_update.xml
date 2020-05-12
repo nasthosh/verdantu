@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UpdateActivity">
+
+    <RadioGroup
+        android:id="@+id/radioCategory"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/inputSearchFragment"
+        tools:ignore="MissingConstraints">
+
+        <RadioButton
+            android:id="@+id/listConsumedFood"
+            android:layout_width="150dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            tools:ignore="MissingConstraints"
+            android:text="Raw Food"
+            android:checked="true" />
+
+        <RadioButton
+            android:id="@+id/listConsumedFoodEmissions"
+            android:layout_width="150dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="Recipe"
+            android:layout_marginEnd="50dp"
+            android:layout_marginRight="50dp" />
+
+    </RadioGroup>
+
+    <ListView
+        android:id="@+id/listFoodDetails"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#FFFFFF"
+        android:divider="#FFFFFF"
+        android:dividerHeight="5dp"
+        android:paddingTop="15dp"
+        android:layout_below="@+id/radioCategory"
+        android:paddingLeft="1dp"
+        tools:ignore="MissingConstraints" />
+
+
+</RelativeLayout>

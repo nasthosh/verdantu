@@ -103,6 +103,7 @@ public class AddRecipe extends AppCompatActivity {
         if(isValueShown){
             PostService service = RetrofitClientInstance.getRetrofitInstance().create(PostService.class);
             Gson gson = new Gson();
+
             ArrayList<RecipeConsumption> recipeConsumption = new ArrayList<>();
             System.out.println("Emission value from ad food itesm : " + recipeCarbonFootPrint);
             RecipeConsumption addRecipeConsumption = new RecipeConsumption(deviceId, recipeName, Float.parseFloat(recipeCarbonFootPrint), servingAmount);
@@ -111,9 +112,10 @@ public class AddRecipe extends AppCompatActivity {
             service.addRecipeConsumption(postData).enqueue(new Callback<List<Recipe>>() {
                 @Override
                 public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
-                    System.out.println("Body response " + response.body());
+                    System.out.println("Message response " + response.message());
+
                     if (response.isSuccessful()) {
-                        if (response.body() != null) {
+                        if(response.message().equalsIgnoreCase("Food added successfully")) {
                             Toast.makeText(getApplicationContext(), "Recipe Added", Toast.LENGTH_SHORT).show();
                         } else {
                             Log.i("onEmptyResponse", "Returned empty response");//Toast.makeText(getContext(),"Nothing returned",Toast.LENGTH_LONG).show();
@@ -123,6 +125,7 @@ public class AddRecipe extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<List<Recipe>> call, Throwable t) {
+                    //System.out.println("Body response " + response.message());
                     Toast.makeText(getApplicationContext(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
                     System.out.println(" Throwable error : " + t);
                 }

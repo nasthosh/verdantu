@@ -16,6 +16,9 @@ public class RecipeConsumption {
     @SerializedName("serves")
     float servingAmount;
 
+    @SerializedName("ObjectID")
+    int objId;
+
     public RecipeConsumption(String recipeName, float recipeEmission) {
         this.recipeName = recipeName;
         this.recipeEmission = recipeEmission;
@@ -36,6 +39,14 @@ public class RecipeConsumption {
                 ", deviceId='" + deviceId + '\'' +
                 ", servingAmount=" + servingAmount +
                 '}';
+    }
+
+    public int getObjId() {
+        return objId;
+    }
+
+    public void setObjId(int objId) {
+        this.objId = objId;
     }
 
     public String getDeviceId() {
