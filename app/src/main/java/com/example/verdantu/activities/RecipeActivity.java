@@ -47,32 +47,6 @@ public class RecipeActivity extends AppCompatActivity {
                 emissionListByRecipe = response.body();
                 System.out.println("List from retrofit in recipe activity : " + emissionListByRecipe);
                 recipeItems();
-                search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextSubmit(String s) {
-                        System.out.println(" Coming inside search 1 " );
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onQueryTextChange(String s) {
-//                        System.out.println(" Coming inside search 2 " );
-//                        // Here implement search logic
-//                        listViewDataAdapter.getFilter().filter(s);
-//                        listViewDataAdapter.notifyDataSetChanged();
-//                        return false;
-
-                        if (TextUtils.isEmpty(s)){
-                            listViewDataAdapter.filter("");
-                            listView.clearTextFilter();
-                        }
-                        else {
-                            listViewDataAdapter.filter(s);
-                        }
-                        return true;
-                    }
-                });
-
             }
 
             @Override
@@ -82,13 +56,32 @@ public class RecipeActivity extends AppCompatActivity {
             }
         });
 
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                System.out.println(" Coming inside search 1 " );
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if (TextUtils.isEmpty(s)){
+                    listViewDataAdapter.filter("");
+                    listView.clearTextFilter();
+                }
+                else {
+                    listViewDataAdapter.filter(s);
+                }
+                return true;
+            }
+        });
 
     }
 
     public void recipeItems(){
         recipeItems = emissionListByRecipe;
         recipeList = recipeItems;
-        listViewDataAdapter = new RecipeListAdapter(recipeList, RecipeActivity.this);
+        listViewDataAdapter = new RecipeListAdapter(recipeList, RecipeActivity.this,false);
         listView.setClickable(true);
         listView.setAdapter(listViewDataAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

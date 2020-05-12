@@ -22,11 +22,13 @@ public class RecipeListAdapter extends BaseAdapter {
     ArrayList<Recipe> tempRecipe;
     List<Recipe> suggestions;
     Context ctx;
+    Boolean isItemsCalled = false;
     Activity getBaseActivity;
 
-    public RecipeListAdapter(List<Recipe> recipeList, Context ctx) {
+    public RecipeListAdapter(List<Recipe> recipeList, Context ctx, Boolean isItemsCalled) {
         this.recipeList = recipeList;
         this.ctx = ctx;
+        this.isItemsCalled = isItemsCalled;
         this.tempRecipe = new ArrayList<Recipe>();
         this.tempRecipe.addAll(recipeList);
     }
@@ -59,8 +61,15 @@ public class RecipeListAdapter extends BaseAdapter {
         if (convertView == null)
             convertView = LayoutInflater.from(ctx).inflate(R.layout.activity_recipe_list,parent,false);
 
-        TextView listRecipe = (TextView) convertView.findViewById(R.id.text_listRecipe);
-        listRecipe.setText(recipeList.get(position).getRecipeName());
+        if(!isItemsCalled) {
+            TextView listRecipe = (TextView) convertView.findViewById(R.id.list_food_recipe);
+            listRecipe.setText(recipeList.get(position).getRecipeName());
+        }else{
+            TextView listRecipe = (TextView) convertView.findViewById(R.id.list_food_recipe);
+            TextView listRecipeEmissions = (TextView) convertView.findViewById(R.id.list_emissions_recipe);
+            listRecipe.setText(recipeList.get(position).getRecipeName());
+            listRecipeEmissions.setText(String.valueOf(recipeList.get(position).getRecipeEmission()));
+        }
         return convertView;
     }
 

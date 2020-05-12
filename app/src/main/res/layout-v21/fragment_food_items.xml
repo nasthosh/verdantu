@@ -1,78 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".ui.food.FoodFragment"
-    android:orientation="horizontal">
+    android:background="#FFFFFF"
+    tools:context=".activities.RecipeActivity">
 
-
-<LinearLayout
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
-
-    <EditText
-        android:id="@+id/editText"
+    <SearchView
+        android:id="@+id/inputSearchFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:width="200dp"
-        android:hint="search"
-        android:inputType="text"/>
-
-
-    <Button
-        android:id="@+id/searchButton"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_marginBottom="25dp"
-        android:text="Search" />
-
-
-
-    <TableLayout android:id="@+id/TableLayout01"
-        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:stretchColumns="0"
+        android:layout_marginBottom="10dp"
+        android:queryHint="Search" />
+
+    <RadioGroup
+        android:id="@+id/radioCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/inputSearchFragment"
         tools:ignore="MissingConstraints">
 
-        <TableRow
-            android:id="@+id/TableRow01"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+    <RadioButton
+        android:id="@+id/radioFruit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="By Raw Food"
+        android:checked="true" />
 
-            <TextView
-                android:id="@+id/TextView01"
-                android:layout_width="85dp"
-                android:layout_height="match_parent"
-                android:width="195dp"
-                android:text="FOOD"
-                android:textSize="25dp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+    <RadioButton
+        android:id="@+id/radioVeggies"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="By Recipe" />
+    </RadioGroup>
 
-            <TextView
-                android:id="@+id/TextView02"
-                android:text="EMISSIONS"
-                android:width="172dp"
-                android:textSize="25dp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                />
-        </TableRow>
-    </TableLayout>
+    <ListView
+        android:id="@+id/listFoodDetails"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#FFFFFF"
+        android:divider="#FFFFFF"
+        android:dividerHeight="5dp"
+        android:paddingTop="15dp"
+        android:layout_below="@+id/radioCategory"
+        android:paddingLeft="1dp"
+        tools:ignore="MissingConstraints" />
 
-</LinearLayout>
-
-</ScrollView>
-
-
+</RelativeLayout>

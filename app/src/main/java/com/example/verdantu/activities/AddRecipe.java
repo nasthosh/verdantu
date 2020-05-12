@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.verdantu.R;
 import com.example.verdantu.modelinterfaces.PostService;
 import com.example.verdantu.models.Recipe;
+import com.example.verdantu.models.RecipeConsumption;
 import com.example.verdantu.rest.RetrofitClientInstance;
 import com.google.gson.Gson;
 
@@ -102,9 +103,9 @@ public class AddRecipe extends AppCompatActivity {
         if(isValueShown){
             PostService service = RetrofitClientInstance.getRetrofitInstance().create(PostService.class);
             Gson gson = new Gson();
-            ArrayList<Recipe> recipeConsumption = new ArrayList<>();
+            ArrayList<RecipeConsumption> recipeConsumption = new ArrayList<>();
             System.out.println("Emission value from ad food itesm : " + recipeCarbonFootPrint);
-            Recipe addRecipeConsumption = new Recipe(deviceId, recipeName, Float.parseFloat(recipeCarbonFootPrint), servingAmount);
+            RecipeConsumption addRecipeConsumption = new RecipeConsumption(deviceId, recipeName, Float.parseFloat(recipeCarbonFootPrint), servingAmount);
             recipeConsumption.add(addRecipeConsumption);
             RequestBody postData = RequestBody.create(MediaType.parse("application/json"), gson.toJson(recipeConsumption));
             service.addRecipeConsumption(postData).enqueue(new Callback<List<Recipe>>() {
