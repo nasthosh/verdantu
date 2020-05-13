@@ -148,6 +148,7 @@ public class AddFoodItems extends AppCompatActivity {
         if (isFootPrintShown){
             PostService service = RetrofitClientInstance.getRetrofitInstance().create(PostService.class);
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+
             ArrayList<Consumption> consumedData = new ArrayList<>();
             System.out.println("Date is  : " + consumedDatePickerEditText.getText().toString());
                             try {
@@ -162,10 +163,13 @@ public class AddFoodItems extends AppCompatActivity {
             service.addConsumption(postData).enqueue(new Callback<List<Food>>() {
                 @Override
                 public void onResponse(Call<List<Food>> call, Response<List<Food>> response) {
+
                     System.out.println("Body response " + response.body());
                     if (response.isSuccessful()) {
                         if (response.body() != null) {
+
                             Toast.makeText(getApplicationContext(), "Consumption Added", Toast.LENGTH_SHORT).show();
+                            finish();
                         } else {
                             Log.i("onEmptyResponse", "Returned empty response");//Toast.makeText(getContext(),"Nothing returned",Toast.LENGTH_LONG).show();
                         }
