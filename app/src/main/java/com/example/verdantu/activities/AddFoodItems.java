@@ -1,12 +1,14 @@
 package com.example.verdantu.activities;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,8 +22,13 @@ import com.example.verdantu.models.Consumption;
 import com.example.verdantu.models.Food;
 import com.example.verdantu.rest.RetrofitClientInstance;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.MediaType;
@@ -49,6 +56,10 @@ public class AddFoodItems extends AppCompatActivity {
     private Boolean isFootPrintShown = false;
     private float qty;
     private float roundDecimalTotalFoodEmission;
+    private EditText consumedDatePickerEditText;
+    DatePickerDialog datepicker;
+    String dateFormatConsumedDate ;
+    Date consumedDate;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -57,6 +68,28 @@ public class AddFoodItems extends AppCompatActivity {
         setContentView(R.layout.activity_add_food_items);
         deviceId = DeviceData.getDeviceId(getApplicationContext());
         System.out.println("Device ID  : " + deviceId);
+        consumedDatePickerEditText = findViewById(R.id.datePicker1);
+        consumedDatePickerEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar cldr = Calendar.getInstance();
+                int day = cldr.get(Calendar.DAY_OF_MONTH);
+                int month = cldr.get(Calendar.MONTH);
+                int year = cldr.get(Calendar.YEAR);
+                // date picker dialog
+                datepicker = new DatePickerDialog(AddFoodItems.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                dateFormatConsumedDate = (year  + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                                consumedDatePickerEditText.setText(dateFormatConsumedDate);
+                            }
+                        }, year, month, day);
+                datepicker.show();
+                System.out.println("Date is  : " + datepicker.toString());
+            }
+        });
+
         Intent intent = getIntent();
         foodName = intent.getStringExtra("foodItems");
         foodCarbonFootPrints = intent.getStringExtra("carbonEmissions");
@@ -70,7 +103,6 @@ public class AddFoodItems extends AppCompatActivity {
         showCarbonFootPrint = findViewById(R.id.btn_ShowCarbonFootPrint);
         addFood = findViewById(R.id.btn_Add);
         cancel = findViewById(R.id.btn_Cancel);
-        // System.out.println(" Food Quantity : " + foodQty);
         showCarbonFootPrint.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 showCarbonFootPrint();
@@ -115,10 +147,16 @@ public class AddFoodItems extends AppCompatActivity {
     public void addFood(){
         if (isFootPrintShown){
             PostService service = RetrofitClientInstance.getRetrofitInstance().create(PostService.class);
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
             ArrayList<Consumption> consumedData = new ArrayList<>();
+            System.out.println("Date is  : " + consumedDatePickerEditText.getText().toString());
+                            try {
+                    consumedDate = new SimpleDateFormat("yyyy-MM-dd").parse(String.valueOf(consumedDatePickerEditText.getText().toString()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             System.out.println("Emission value from ad food itesm : " + roundDecimalTotalFoodEmission);
-            Consumption addConsumed = new Consumption(deviceId, foodName, roundDecimalTotalFoodEmission, foodCategory,qty);
+            Consumption addConsumed = new Consumption(deviceId, foodName, roundDecimalTotalFoodEmission, foodCategory,qty,consumedDate);
             consumedData.add(addConsumed);
             RequestBody postData = RequestBody.create(MediaType.parse("application/json"), gson.toJson(consumedData));
             service.addConsumption(postData).enqueue(new Callback<List<Food>>() {

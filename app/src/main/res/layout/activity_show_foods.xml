@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:background="#FFFFFF"
     android:padding="16dp">
 
         <TextView
@@ -58,6 +59,7 @@
         android:id="@+id/listFoods"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_marginTop="30dp"
         android:divider="#FFFFFF"
         android:dividerHeight="5dp"
         android:paddingLeft="1dp"

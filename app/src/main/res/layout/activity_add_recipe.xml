@@ -66,6 +66,15 @@
         android:layout_below="@+id/btn_ShowRecipeCarbonFootPrint"
         tools:ignore="MissingConstraints"/>
 
+    <EditText
+        android:id="@+id/datePicker2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_below="@+id/textView_TotalRecipeEmissions"
+        android:ems="10"
+        android:hint="Enter Date" />
+
     <Button
         android:id="@+id/btn_AddRecipe"
         android:layout_width="match_parent"
@@ -74,7 +83,7 @@
         android:layout_marginTop="30dp"
         android:textSize="20sp"
         android:text="Add"
-        android:layout_below="@+id/textView_TotalRecipeEmissions" />
+        android:layout_below="@+id/datePicker2" />
 
     <Button
         android:id="@+id/btn_CancelRecipeAdd"

@@ -1,11 +1,13 @@
 package com.example.verdantu.activities;
 
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,8 +21,13 @@ import com.example.verdantu.models.Recipe;
 import com.example.verdantu.models.RecipeConsumption;
 import com.example.verdantu.rest.RetrofitClientInstance;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.MediaType;
@@ -45,12 +52,37 @@ public class AddRecipe extends AppCompatActivity {
     private TextView totalRecipeEmissions;
     private float totalEmissions;
     private float roundDecimalRecipeEmission;
+    private EditText consumedDatePickerEditTextRecipe;
+    DatePickerDialog datepicker;
+    String dateFormatConsumedDate ;
+    Date consumedDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_recipe);
         deviceId = DeviceData.getDeviceId(getApplicationContext());
+        consumedDatePickerEditTextRecipe = findViewById(R.id.datePicker1);
+        consumedDatePickerEditTextRecipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar cldr = Calendar.getInstance();
+                int day = cldr.get(Calendar.DAY_OF_MONTH);
+                int month = cldr.get(Calendar.MONTH);
+                int year = cldr.get(Calendar.YEAR);
+                // date picker dialog
+                datepicker = new DatePickerDialog(AddRecipe.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                dateFormatConsumedDate = (year  + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                                consumedDatePickerEditTextRecipe.setText(dateFormatConsumedDate);
+                            }
+                        }, year, month, day);
+                datepicker.show();
+                System.out.println("Date is  : " + datepicker.toString());
+            }
+        });
         Intent intent = getIntent();
         recipeName = intent.getStringExtra("recipe");
         recipeCarbonFootPrint = intent.getStringExtra("recipeCarbonEmissions");
@@ -102,11 +134,17 @@ public class AddRecipe extends AppCompatActivity {
     {
         if(isValueShown){
             PostService service = RetrofitClientInstance.getRetrofitInstance().create(PostService.class);
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 
             ArrayList<RecipeConsumption> recipeConsumption = new ArrayList<>();
+            System.out.println("Date is  : " + consumedDatePickerEditTextRecipe.getText().toString());
+            try {
+                consumedDate = new SimpleDateFormat("yyyy-MM-dd").parse(String.valueOf(consumedDatePickerEditTextRecipe.getText().toString()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             System.out.println("Emission value from ad food itesm : " + recipeCarbonFootPrint);
-            RecipeConsumption addRecipeConsumption = new RecipeConsumption(deviceId, recipeName, Float.parseFloat(recipeCarbonFootPrint), servingAmount);
+            RecipeConsumption addRecipeConsumption = new RecipeConsumption(deviceId, recipeName, Float.parseFloat(recipeCarbonFootPrint), servingAmount,consumedDate);
             recipeConsumption.add(addRecipeConsumption);
             RequestBody postData = RequestBody.create(MediaType.parse("application/json"), gson.toJson(recipeConsumption));
             service.addRecipeConsumption(postData).enqueue(new Callback<List<Recipe>>() {

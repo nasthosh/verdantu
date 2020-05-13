@@ -2,6 +2,8 @@ package com.example.verdantu.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 public class Consumption {
 
     @SerializedName("deviceID")
@@ -25,6 +27,9 @@ public class Consumption {
     @SerializedName("ObjectID")
     int objId;
 
+    @SerializedName("date_of_entry")
+    Date consumedDate;
+
     public Consumption(String deviceId, String foods, float emission, String categoryName,  float foodQuantity) {
         this.deviceId = deviceId;
         this.foods = foods;
@@ -32,6 +37,16 @@ public class Consumption {
         this.categoryName = categoryName;
 
         this.foodQuantity = foodQuantity;
+    }
+
+    public Consumption(String deviceId, String foods, float emission, String categoryName,  float foodQuantity, Date consumedDate) {
+        this.deviceId = deviceId;
+        this.foods = foods;
+        this.emission = emission;
+        this.categoryName = categoryName;
+
+        this.foodQuantity = foodQuantity;
+        this.consumedDate = consumedDate;
     }
 
     public Consumption(String deviceId, String foods, float emission, String categoryName, String day) {

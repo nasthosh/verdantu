@@ -2,6 +2,8 @@ package com.example.verdantu.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 public class RecipeConsumption {
 
     @SerializedName("RecipeName")
@@ -19,9 +21,20 @@ public class RecipeConsumption {
     @SerializedName("ObjectID")
     int objId;
 
+    @SerializedName("date_of_entry")
+    Date consumedDate;
+
     public RecipeConsumption(String recipeName, float recipeEmission) {
         this.recipeName = recipeName;
         this.recipeEmission = recipeEmission;
+    }
+
+    public RecipeConsumption(String deviceId, String recipeName,  float recipeEmission, float servingAmount, Date consumedDate) {
+        this.recipeName = recipeName;
+        this.deviceId = deviceId;
+        this.recipeEmission = recipeEmission;
+        this.servingAmount = servingAmount;
+        this.consumedDate = consumedDate;
     }
 
     public RecipeConsumption(String deviceId, String recipeName,  float recipeEmission, float servingAmount) {

@@ -52,6 +52,7 @@
         android:text="Show Carbon footprint"
         android:layout_below="@+id/editTextView_Qty" />
 
+
     <TextView
         android:id="@+id/textView_TotalFoodEmissions"
         android:layout_width="match_parent"
@@ -66,22 +67,31 @@
         android:layout_below="@+id/btn_ShowCarbonFootPrint"
         tools:ignore="MissingConstraints"/>
 
+    <EditText
+        android:id="@+id/datePicker1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_below="@+id/textView_TotalFoodEmissions"
+        android:ems="10"
+        android:hint="Enter Date" />
+
     <Button
         android:id="@+id/btn_Add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:width="200dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:textSize="20sp"
         android:text="Add"
-        android:layout_below="@+id/textView_TotalFoodEmissions" />
+        android:layout_below="@+id/datePicker1" />
 
     <Button
         android:id="@+id/btn_Cancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:width="200dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:textSize="20sp"
         android:text="Cancel"
         android:layout_below="@+id/btn_Add" />
