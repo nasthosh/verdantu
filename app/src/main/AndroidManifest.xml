@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".UpdateActivity"></activity>
+        <activity android:name=".activities.UpdateActivity"></activity>
         <activity android:name=".activities.AddRecipe" />
         <activity android:name=".activities.RecipeActivity" />
         <activity android:name=".activities.AddFoodItems" />
