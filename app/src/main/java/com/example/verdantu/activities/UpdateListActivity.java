@@ -1,6 +1,9 @@
 package com.example.verdantu.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -46,7 +49,7 @@ public class UpdateListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
-        listView = findViewById(R.id.listFoods);
+        listView = findViewById(R.id.listItems);
 
         foodInformation = findViewById(R.id.radioCategory);
         foodInformation.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -99,6 +102,7 @@ public class UpdateListActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<RecipeConsumption>> call, Response<List<RecipeConsumption>> response) {
                 consumedRecipeList = response.body();
+                consumedRecipeList();
                // foodByCategory();
                 System.out.println("List from retrofit : " + consumedRecipeList);
             }
@@ -116,27 +120,29 @@ public class UpdateListActivity extends AppCompatActivity {
         listRawFoodAdapter = new UpdateRawFoodListAdapter(tempConsumedFoodList, UpdateListActivity.this);
         listView.setClickable(true);
         listView.setAdapter(listRawFoodAdapter);
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//
-//                String foodName = tempConsumedFoodList.get(i).getFoods();
-//                float oldFoodQuantity = tempConsumedFoodList.get(i).getFoodQuantity();
-//                String oldFoodQuantityStr = String.valueOf(oldFoodQuantity);
-        //                  int objId = tempConsumedFoodList.get(i).getObjId();
-        //          String obj = String.valueOf(objId);
-        //        String consumedType = "rawfood";
-//                Intent intent = new Intent(UpdateListActivity.this,
-//                        EditActivity.class);
-//                intent.putExtra("foodName", foodName);
-        //                intent.putExtra("typeFood", consumedType);
-        //                intent.putExtra("objId", obj);
-//                intent.putExtra("oldFoodQuantity", oldFoodQuantityStr);
-//                intent.putExtra("checkedFoodCategory", strFoodCategory);
-//                startActivity(intent);
-//                //Toast.makeText(getApplicationContext(), carbonEmissionStr, Toast.LENGTH_LONG).show();
-//            }
-//        });
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                String foodName = tempConsumedFoodList.get(i).getFoods();
+                float oldFoodQuantity = tempConsumedFoodList.get(i).getFoodQuantity();
+                String oldFoodQuantityStr = String.valueOf(oldFoodQuantity);
+                          int objId = tempConsumedFoodList.get(i).getObjId();
+                  String obj = String.valueOf(objId);
+        float foodCarbonEmisiion = tempConsumedFoodList.get(i).getEmission();
+        String carbonEmissionStr = String.valueOf(foodCarbonEmisiion);
+                String consumedType = "rawfood";
+                Intent intent = new Intent(UpdateListActivity.this,
+                        EditActivity.class);
+        intent.putExtra("foodCarbonEmissions", carbonEmissionStr);
+                intent.putExtra("foodName", foodName);
+                        intent.putExtra("type", consumedType);
+                        intent.putExtra("foodObjId", obj);
+                intent.putExtra("oldFoodQuantity", oldFoodQuantityStr);
+                startActivity(intent);
+                //Toast.makeText(getApplicationContext(), carbonEmissionStr, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     public void consumedRecipeList(){
@@ -145,26 +151,28 @@ public class UpdateListActivity extends AppCompatActivity {
         listRecipeAdapter = new UpdateRecipeListAdapter(tempConsumedRecipeList, UpdateListActivity.this);
         listView.setClickable(true);
         listView.setAdapter(listRecipeAdapter);
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//
-//                String recipeName = tempConsumedRecipeList.get(i).getRecipeName();
-//                float recipeServingAmount = tempConsumedRecipeList.get(i).getServingAmount();
-//                String recipeServingAmountString = String.valueOf(recipeServingAmount);
-  //                  int objId = tempConsumedRecipeList.get(i).getObjId();
-        //          String obj = String.valueOf(objId);
-        //          String consumedType = "recipe";
-//                Intent intent = new Intent(UpdateListActivity.this,
-//                        EditActivity.class);
-//                intent.putExtra("recipeName", recipeName);
-        //                intent.putExtra("objId", obj);
-        //          intent.putExtra("typeRecipe",consumedType);
-//                intent.putExtra("recipeServingAmount", recipeServingAmountString);
-//                intent.putExtra("checkedFoodCategory", strFoodCategory);
-//                startActivity(intent);
-//                //Toast.makeText(getApplicationContext(), carbonEmissionStr, Toast.LENGTH_LONG).show();
-//            }
-//        });
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                String recipeName = tempConsumedRecipeList.get(i).getRecipeName();
+                float recipeServingAmount = tempConsumedRecipeList.get(i).getServingAmount();
+                String recipeServingAmountString = String.valueOf(recipeServingAmount);
+                    int objId = tempConsumedRecipeList.get(i).getObjId();
+                  String obj = String.valueOf(objId);
+                  String consumedType = "recipe";
+         float foodCarbonEmisiion = tempConsumedRecipeList.get(i).getRecipeEmission();
+         String carbonEmissionStr = String.valueOf(foodCarbonEmisiion);
+                Intent intent = new Intent(UpdateListActivity.this,
+                        EditActivity.class);
+                intent.putExtra("recipeName", recipeName);
+        intent.putExtra("recipeCarbonEmissions", carbonEmissionStr);
+                        intent.putExtra("recipeObjId", obj);
+                  intent.putExtra("type",consumedType);
+                intent.putExtra("recipeServingAmount", recipeServingAmountString);
+                startActivity(intent);
+                //Toast.makeText(getApplicationContext(), carbonEmissionStr, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

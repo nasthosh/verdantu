@@ -153,8 +153,9 @@ public class AddRecipe extends AppCompatActivity {
                     System.out.println("Message response " + response.message());
 
                     if (response.isSuccessful()) {
-                        if(response.message().equalsIgnoreCase("Food added successfully")) {
+                        if(response.body()!=null) {
                             Toast.makeText(getApplicationContext(), "Recipe Added", Toast.LENGTH_SHORT).show();
+                            finish();
                         } else {
                             Log.i("onEmptyResponse", "Returned empty response");//Toast.makeText(getContext(),"Nothing returned",Toast.LENGTH_LONG).show();
                         }
@@ -183,8 +184,7 @@ public class AddRecipe extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //set what would happen when positive button is clicked
-                        Intent intent = new Intent(AddRecipe.this,RecipeActivity.class);
-                        startActivity(intent);
+                        finish();
                     }
                 })
 

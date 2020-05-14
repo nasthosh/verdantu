@@ -31,10 +31,10 @@ public interface GetService {
     @GET("api/Landing_page")
     Call<List<Consumption>> getEmissionForCurrentDay();
 
-    @GET("api/view_food_added")
+    @GET("/api/view_food_added")
     Call<List<Consumption>> getConsumedRawFood();
 
-    @GET("api/view_recipe_added")
+    @GET("/api/view_recipe_added")
     Call<List<RecipeConsumption>> getConsumedRecipe();
 
 }

@@ -30,14 +30,14 @@ public class Consumption {
     @SerializedName("date_of_entry")
     Date consumedDate;
 
-    public Consumption(String deviceId, String foods, float emission, String categoryName,  float foodQuantity) {
-        this.deviceId = deviceId;
-        this.foods = foods;
-        this.emission = emission;
-        this.categoryName = categoryName;
-
-        this.foodQuantity = foodQuantity;
-    }
+//    public Consumption(String deviceId, String foods, float emission, String categoryName,  float foodQuantity) {
+//        this.deviceId = deviceId;
+//        this.foods = foods;
+//        this.emission = emission;
+//        this.categoryName = categoryName;
+//
+//        this.foodQuantity = foodQuantity;
+//    }
 
     public Consumption(String deviceId, String foods, float emission, String categoryName,  float foodQuantity, Date consumedDate) {
         this.deviceId = deviceId;
@@ -49,26 +49,25 @@ public class Consumption {
         this.consumedDate = consumedDate;
     }
 
-    public Consumption(String deviceId, String foods, float emission, String categoryName, String day) {
-        this.deviceId = deviceId;
+    public Consumption(int objId,  float emission, float foodQuantity , String foods) {
+        this.objId = objId;
+        this.emission = emission;
+        this.foodQuantity = foodQuantity;
         this.foods = foods;
-        this.emission = emission;
-        this.categoryName = categoryName;
-        this.day = day;
     }
 
-    public Consumption(String deviceId, String foods, float emission, String categoryName) {
-        this.deviceId = deviceId;
-        this.foods = foods;
-        this.emission = emission;
-        this.categoryName = categoryName;
-    }
-
-    public Consumption(float emission, String categoryName) {
-
-        this.emission = emission;
-        this.categoryName = categoryName;
-    }
+//    public Consumption(String deviceId, String foods, float emission, String categoryName) {
+//        this.deviceId = deviceId;
+//        this.foods = foods;
+//        this.emission = emission;
+//        this.categoryName = categoryName;
+//    }
+//
+//    public Consumption(float emission, String categoryName) {
+//
+//        this.emission = emission;
+//        this.categoryName = categoryName;
+//    }
 
 
     @Override

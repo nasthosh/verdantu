@@ -44,6 +44,14 @@ public class RecipeConsumption {
         this.servingAmount = servingAmount;
     }
 
+    public RecipeConsumption(int objId, float recipeEmission, float servingAmount, String recipeName) {
+
+        this.objId = objId;
+        this.recipeEmission = recipeEmission;
+        this.servingAmount = servingAmount;
+        this.recipeName = recipeName;
+    }
+
     @Override
     public String toString() {
         return "Recipe{" +

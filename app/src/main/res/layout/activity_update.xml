@@ -37,7 +37,7 @@
     </RadioGroup>
 
     <ListView
-        android:id="@+id/listRecipe"
+        android:id="@+id/listItems"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="#FFFFFF"
