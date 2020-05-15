@@ -52,6 +52,11 @@ public class RecipeConsumption {
         this.recipeName = recipeName;
     }
 
+    public RecipeConsumption(int objId) {
+
+        this.objId = objId;
+    }
+
     @Override
     public String toString() {
         return "Recipe{" +

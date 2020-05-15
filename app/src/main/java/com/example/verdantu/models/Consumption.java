@@ -9,7 +9,7 @@ public class Consumption {
     @SerializedName("deviceID")
     String deviceId;
 
-    @SerializedName("foods")
+    @SerializedName("Foods")
     String foods;
 
     @SerializedName("emission")
@@ -54,6 +54,10 @@ public class Consumption {
         this.emission = emission;
         this.foodQuantity = foodQuantity;
         this.foods = foods;
+    }
+
+    public Consumption(int objId) {
+        this.objId = objId;
     }
 
 //    public Consumption(String deviceId, String foods, float emission, String categoryName) {
