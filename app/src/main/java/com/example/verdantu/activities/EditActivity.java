@@ -261,47 +261,20 @@ TextView recipeSelected;
 
     public void deleteRecipeFoodEmissions(int id){
         PostService service = RetrofitClientInstance.getRetrofitInstance().create(PostService.class);
-        Gson gson = new Gson();
-
-//        ArrayList<RecipeConsumption> recipeConsumptionDelete = new ArrayList<>();
-//        RecipeConsumption deleteRecipeConsumption = new RecipeConsumption(id);
-//        recipeConsumptionDelete.add(deleteRecipeConsumption);
-//        RequestBody deleteData = RequestBody.create(MediaType.parse("application/json"), gson.toJson(recipeConsumptionDelete));
-//        System.out.println("Request Sent : " + deleteData );
         Call<List<RecipeConsumption>> call = service.deleteRecipeConsumption(id);
         call.enqueue(new Callback<List<RecipeConsumption>>() {
             @Override
             public void onResponse(Call<List<RecipeConsumption>> call, Response<List<RecipeConsumption>> response) {
-                //hiding progress dialog
                 if(response.isSuccessful()){
                     Toast.makeText(getApplicationContext(), "Post Deleted", Toast.LENGTH_LONG).show();
                 }
             }
-
             @Override
             public void onFailure(Call<List<RecipeConsumption>> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-//        service.deleteRecipeConsumption(deleteData).enqueue(new Callback<List<Recipe>>() {
-//            @Override
-//            public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
-//                System.out.println("Message response " + response.message());
-//
-//                if (response.isSuccessful()) {
-//                    if(response.body()!=null) {
-//                        Toast.makeText(getApplicationContext(), "Recipe Added", Toast.LENGTH_SHORT).show();
-//                        finish();
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<Recipe>> call, Throwable t) {
-//                Toast.makeText(getApplicationContext(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
-//                System.out.println(" Throwable error : " + t);
-//            }
-//        });
+
     }
 
 }

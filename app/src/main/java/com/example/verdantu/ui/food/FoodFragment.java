@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -198,7 +199,26 @@ public class FoodFragment extends Fragment {
         listAdapter = new FoodItemsListAdapter(tableFoodList, getActivity());
         listView.setClickable(true);
         listView.setAdapter(listAdapter);
-    }
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                float foodProtein = tableFoodList.get(i).getFoodProtein();
+                float foodFat = tableFoodList.get(i).getFoodFat();
+                float foodCarbs = tableFoodList.get(i).getFoodCarbs();
+                AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).setIcon(android.R.drawable.ic_dialog_map)
+                        .setTitle("Info").setMessage("Carbs : " + String.valueOf(foodCarbs) + "\n" + "Proteins : " + String.valueOf(foodProtein) + "\n" + "Fats : " + String.valueOf(foodFat))
+                        .setPositiveButton("Return", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //Toast.makeText(getActivity(), "Thanks", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .show();
+            }
+            });
+
+        }
 
     public void recipeItems() {
         recipeItems = emissionListByRecipe;
@@ -206,6 +226,24 @@ public class FoodFragment extends Fragment {
         listViewDataAdapter = new RecipeListAdapter(recipeList, getActivity(),true);
         listView.setClickable(true);
         listView.setAdapter(listViewDataAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                float foodProtein = recipeList.get(i).getFoodProtein();
+                float foodFat = recipeList.get(i).getFoodFat();
+                float foodCarbs = recipeList.get(i).getFoodCarbs();
+                AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).setIcon(android.R.drawable.ic_dialog_map)
+                        .setTitle("Info").setMessage("Carbs : " + String.valueOf(foodCarbs) + "\n" + "Proteins : " + String.valueOf(foodProtein) + "\n" + "Fats : " + String.valueOf(foodFat))
+                        .setPositiveButton("Return", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //Toast.makeText(getActivity(), "Thanks", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .show();
+            }
+        });
     }
 
 }

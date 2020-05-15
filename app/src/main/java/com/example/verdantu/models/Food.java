@@ -13,6 +13,15 @@ public class Food {
     @SerializedName("Emissions")
     float foodEmissions;
 
+    @SerializedName("Protein")
+    private float foodProtein;
+
+    @SerializedName("Fat")
+    private float foodFat;
+
+    @SerializedName("Carbohydrate")
+    private float foodCarbs;
+
 //    @SerializedName("CategoryId")
 //    private int categoryId;
 
@@ -29,7 +38,34 @@ public class Food {
                 "emissionId=" + emissionId +
                 ", foodName='" + foodName + '\'' +
                 ", foodEmissions=" + foodEmissions +
+                ", foodProtein=" + foodProtein +
+                ", foodFat=" + foodFat +
+                ", foodCarbs=" + foodCarbs +
                 '}';
+    }
+
+    public float getFoodProtein() {
+        return foodProtein;
+    }
+
+    public void setFoodProtein(float foodProtein) {
+        this.foodProtein = foodProtein;
+    }
+
+    public float getFoodFat() {
+        return foodFat;
+    }
+
+    public void setFoodFat(float foodFat) {
+        this.foodFat = foodFat;
+    }
+
+    public float getFoodCarbs() {
+        return foodCarbs;
+    }
+
+    public void setFoodCarbs(float foodCarbs) {
+        this.foodCarbs = foodCarbs;
     }
 
     public int getEmissionId() {

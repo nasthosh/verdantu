@@ -10,9 +10,53 @@ public class Recipe {
     @SerializedName("EmissionsPerServe")
     float recipeEmission;
 
+    @SerializedName("Protein")
+    private float foodProtein;
+
+    @SerializedName("Fat")
+    private float foodFat;
+
+    @SerializedName("Carbohydrate")
+    private float foodCarbs;
+
     public Recipe(String recipeName, float recipeEmission) {
         this.recipeName = recipeName;
         this.recipeEmission = recipeEmission;
+    }
+
+    @Override
+    public String toString() {
+        return "Recipe{" +
+                "recipeName='" + recipeName + '\'' +
+                ", recipeEmission=" + recipeEmission +
+                ", foodProtein=" + foodProtein +
+                ", foodFat=" + foodFat +
+                ", foodCarbs=" + foodCarbs +
+                '}';
+    }
+
+    public float getFoodProtein() {
+        return foodProtein;
+    }
+
+    public void setFoodProtein(float foodProtein) {
+        this.foodProtein = foodProtein;
+    }
+
+    public float getFoodFat() {
+        return foodFat;
+    }
+
+    public void setFoodFat(float foodFat) {
+        this.foodFat = foodFat;
+    }
+
+    public float getFoodCarbs() {
+        return foodCarbs;
+    }
+
+    public void setFoodCarbs(float foodCarbs) {
+        this.foodCarbs = foodCarbs;
     }
 
     public String getRecipeName() {
