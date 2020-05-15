@@ -230,9 +230,9 @@ public class FoodFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                float foodProtein = recipeList.get(i).getFoodProtein();
-                float foodFat = recipeList.get(i).getFoodFat();
-                float foodCarbs = recipeList.get(i).getFoodCarbs();
+                float foodProtein = recipeList.get(i).getRecipeProtein();
+                float foodFat = recipeList.get(i).getRecipeFat();
+                float foodCarbs = recipeList.get(i).getRecipeCarbs();
                 AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).setIcon(android.R.drawable.ic_dialog_map)
                         .setTitle("Info").setMessage("Carbs : " + String.valueOf(foodCarbs) + "\n" + "Proteins : " + String.valueOf(foodProtein) + "\n" + "Fats : " + String.valueOf(foodFat))
                         .setPositiveButton("Return", new DialogInterface.OnClickListener() {

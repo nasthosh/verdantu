@@ -10,14 +10,14 @@ public class Recipe {
     @SerializedName("EmissionsPerServe")
     float recipeEmission;
 
-    @SerializedName("Protein")
-    private float foodProtein;
+    @SerializedName("RecipeProteinPerServe")
+    private float recipeProtein;
 
-    @SerializedName("Fat")
-    private float foodFat;
+    @SerializedName("RecipeFatPerServe")
+    private float recipeFat;
 
-    @SerializedName("Carbohydrate")
-    private float foodCarbs;
+    @SerializedName("RecipeCarbsPerServe")
+    private float recipeCarbs;
 
     public Recipe(String recipeName, float recipeEmission) {
         this.recipeName = recipeName;
@@ -29,34 +29,34 @@ public class Recipe {
         return "Recipe{" +
                 "recipeName='" + recipeName + '\'' +
                 ", recipeEmission=" + recipeEmission +
-                ", foodProtein=" + foodProtein +
-                ", foodFat=" + foodFat +
-                ", foodCarbs=" + foodCarbs +
+                ", foodProtein=" + recipeProtein +
+                ", foodFat=" + recipeFat +
+                ", foodCarbs=" + recipeCarbs +
                 '}';
     }
 
-    public float getFoodProtein() {
-        return foodProtein;
+    public float getRecipeProtein() {
+        return recipeProtein;
     }
 
-    public void setFoodProtein(float foodProtein) {
-        this.foodProtein = foodProtein;
+    public void setRecipeProtein(float recipeProtein) {
+        this.recipeProtein = recipeProtein;
     }
 
-    public float getFoodFat() {
-        return foodFat;
+    public float getRecipeFat() {
+        return recipeFat;
     }
 
-    public void setFoodFat(float foodFat) {
-        this.foodFat = foodFat;
+    public void setRecipeFat(float recipeFat) {
+        this.recipeFat = recipeFat;
     }
 
-    public float getFoodCarbs() {
-        return foodCarbs;
+    public float getRecipeCarbs() {
+        return recipeCarbs;
     }
 
-    public void setFoodCarbs(float foodCarbs) {
-        this.foodCarbs = foodCarbs;
+    public void setRecipeCarbs(float recipeCarbs) {
+        this.recipeCarbs = recipeCarbs;
     }
 
     public String getRecipeName() {
