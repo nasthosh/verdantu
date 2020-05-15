@@ -1,5 +1,6 @@
 package com.example.verdantu.modelinterfaces;
 
+import com.example.verdantu.models.Consumption;
 import com.example.verdantu.models.Food;
 import com.example.verdantu.models.Recipe;
 import com.example.verdantu.models.RecipeConsumption;
@@ -26,9 +27,8 @@ public interface PostService {
     @PUT("api/update_raw_food")
     Call<List<Food>> updateFoodConsumption(@Body RequestBody consumption);
 
-    @Headers("Content-Type: application/json")
-    @DELETE("api/delete_raw_food")
-    Call<List<Food>> deleteFoodConsumption(@Body RequestBody consumption);
+    @DELETE("api/delete_raw_food/{id}")
+    Call<List<Consumption>> deleteFoodConsumption(@Path("id") int id);
 
     @Headers("Content-Type: application/json")
     @POST("api/add_recipe_emission")

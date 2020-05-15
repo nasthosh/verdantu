@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/profileImageButton"
+        android:id="@+id/dailyEmissionsImageButton"
         android:layout_width="350dp"
         android:layout_height="150dp"
         android:layout_marginStart="20dp"
@@ -43,7 +43,7 @@
         android:cropToPadding="true"
         android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileImageButton"
+        app:layout_constraintTop_toBottomOf="@+id/dailyEmissionsImageButton"
         app:srcCompat="@drawable/bg4"
         tools:ignore="VectorDrawableCompat" />
 

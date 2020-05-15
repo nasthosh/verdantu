@@ -231,30 +231,17 @@ TextView recipeSelected;
 
     public void deleteRawFoodEmissions(int id){
         PostService service = RetrofitClientInstance.getRetrofitInstance().create(PostService.class);
-        Gson gson = new Gson();
-
-        ArrayList<Consumption> deleteFood = new ArrayList<>();
-        Consumption deleteConsumedFood = new Consumption(id);
-        deleteFood.add(deleteConsumedFood);
-        RequestBody deleteData = RequestBody.create(MediaType.parse("application/json"), gson.toJson(deleteFood));
-        service.deleteFoodConsumption(deleteData).enqueue(new Callback<List<Food>>() {
+        Call<List<Consumption>> call = service.deleteFoodConsumption(id);
+        call.enqueue(new Callback<List<Consumption>>() {
             @Override
-            public void onResponse(Call<List<Food>> call, Response<List<Food>> response) {
-
-                System.out.println("Body response " + response.body());
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-
-                        Toast.makeText(getApplicationContext(), "Consumption Added", Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
+            public void onResponse(Call<List<Consumption>> call, Response<List<Consumption>> response) {
+                if(response.isSuccessful()){
+                    Toast.makeText(getApplicationContext(), "Post Deleted", Toast.LENGTH_LONG).show();
                 }
             }
-
             @Override
-            public void onFailure(Call<List<Food>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
-                System.out.println(" Throwable error : " + t);
+            public void onFailure(Call<List<Consumption>> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Post Deleted", Toast.LENGTH_LONG).show();
             }
         });
     }

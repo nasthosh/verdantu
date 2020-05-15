@@ -207,7 +207,7 @@ public class FoodFragment extends Fragment {
                 float foodFat = tableFoodList.get(i).getFoodFat();
                 float foodCarbs = tableFoodList.get(i).getFoodCarbs();
                 AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).setIcon(android.R.drawable.ic_dialog_map)
-                        .setTitle("Info").setMessage("Carbs : " + String.valueOf(foodCarbs) + "\n" + "Proteins : " + String.valueOf(foodProtein) + "\n" + "Fats : " + String.valueOf(foodFat))
+                        .setTitle("Info").setMessage("Carbohyrates : " + String.valueOf(foodCarbs) + "\n" + "Proteins : " + String.valueOf(foodProtein) + "\n" + "Fats : " + String.valueOf(foodFat))
                         .setPositiveButton("Return", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -234,7 +234,7 @@ public class FoodFragment extends Fragment {
                 float foodFat = recipeList.get(i).getRecipeFat();
                 float foodCarbs = recipeList.get(i).getRecipeCarbs();
                 AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).setIcon(android.R.drawable.ic_dialog_map)
-                        .setTitle("Info").setMessage("Carbs : " + String.valueOf(foodCarbs) + "\n" + "Proteins : " + String.valueOf(foodProtein) + "\n" + "Fats : " + String.valueOf(foodFat))
+                        .setTitle("Info").setMessage("Carbohyrates : " + String.valueOf(foodCarbs) + "\n" + "Proteins : " + String.valueOf(foodProtein) + "\n" + "Fats : " + String.valueOf(foodFat))
                         .setPositiveButton("Return", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
