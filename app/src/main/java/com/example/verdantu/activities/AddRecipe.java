@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -62,7 +63,8 @@ public class AddRecipe extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_recipe);
         deviceId = DeviceData.getDeviceId(getApplicationContext());
-        consumedDatePickerEditTextRecipe = findViewById(R.id.datePicker1);
+        consumedDatePickerEditTextRecipe = findViewById(R.id.datePickerRecipe);
+        consumedDatePickerEditTextRecipe.setInputType(InputType.TYPE_NULL);
         consumedDatePickerEditTextRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,8 +77,13 @@ public class AddRecipe extends AppCompatActivity {
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                dateFormatConsumedDate = (year  + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
-                                consumedDatePickerEditTextRecipe.setText(dateFormatConsumedDate);
+                                if(monthOfYear > 9) {
+                                    dateFormatConsumedDate = (year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                                    consumedDatePickerEditTextRecipe.setText(dateFormatConsumedDate);
+                                }else{
+                                    dateFormatConsumedDate = (year + "-0" + (monthOfYear + 1) + "-" + dayOfMonth);
+                                    consumedDatePickerEditTextRecipe.setText(dateFormatConsumedDate);
+                                }
                             }
                         }, year, month, day);
                 datepicker.show();
@@ -96,13 +103,19 @@ public class AddRecipe extends AppCompatActivity {
         cancelRecipeAddition = findViewById(R.id.btn_CancelRecipeAdd);
         showCarbonEmissions.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                showRecipeCarbonEmissions();
+                if(recipeServingAmount.getText().toString().equalsIgnoreCase(""))
+                    Toast.makeText(getApplicationContext(), "Please enter the quantity", Toast.LENGTH_SHORT).show();
+                else
+                    showRecipeCarbonEmissions();
             }
         });
 
         addRecipe.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                addRecipe();
+                if(recipeServingAmount.getText().toString().equalsIgnoreCase(""))
+                    Toast.makeText(getApplicationContext(), "Please enter the quantity", Toast.LENGTH_SHORT).show();
+                else
+                    addRecipe();
             }
         });
 
@@ -116,64 +129,62 @@ public class AddRecipe extends AppCompatActivity {
 
     public void showRecipeCarbonEmissions()
     {
-        servingAmount = Float.parseFloat(recipeServingAmount.getText().toString());
-        if (servingAmount > 0){
-            totalRecipeEmissions = findViewById(R.id.textView_TotalRecipeEmissions);
-            totalEmissions = servingAmount * Float.parseFloat(recipeCarbonFootPrint);
-            roundDecimalRecipeEmission = (float) ((double) Math.round(totalEmissions * 100000d) / 100000d);
-            totalRecipeEmissions.setText("Total Emissions : " + String.valueOf(roundDecimalRecipeEmission) + " KgCo2/100g");
-            recipeServingAmount.setText("");
-            isValueShown = true;
-
-        }else
-            Toast.makeText(getApplicationContext(), "Please enter the quantity", Toast.LENGTH_SHORT).show();
+        calculateRecipeEmissions();
+        totalRecipeEmissions.setText("Total Emissions : " + String.valueOf(roundDecimalRecipeEmission) + " KgCo2/100g");
+        //recipeServingAmount.setText("");
+        isValueShown = true;
 
     }
 
     public void addRecipe()
     {
-        if(isValueShown){
-            PostService service = RetrofitClientInstance.getRetrofitInstance().create(PostService.class);
-            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        if(Float.parseFloat(recipeServingAmount.getText().toString()) > 0){
+            calculateRecipeEmissions();
+            if((!consumedDatePickerEditTextRecipe.getText().toString().equalsIgnoreCase(""))){
+                PostService service = RetrofitClientInstance.getRetrofitInstance().create(PostService.class);
+                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+                String dateEntered = consumedDatePickerEditTextRecipe.getText().toString();
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                ArrayList<RecipeConsumption> recipeConsumption = new ArrayList<>();
+                System.out.println("Date is  : " + consumedDatePickerEditTextRecipe.getText().toString());
+                try {
+                    consumedDate = formatter.parse(dateEntered);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("Emission value from ad food itesm : " + recipeCarbonFootPrint);
+                RecipeConsumption addRecipeConsumption = new RecipeConsumption(deviceId, recipeName, Float.parseFloat(recipeCarbonFootPrint), servingAmount,consumedDate);
+                recipeConsumption.add(addRecipeConsumption);
+                RequestBody postData = RequestBody.create(MediaType.parse("application/json"), gson.toJson(recipeConsumption));
+                service.addRecipeConsumption(postData).enqueue(new Callback<List<Recipe>>() {
+                    @Override
+                    public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
+                        System.out.println("Message response " + response.message());
 
-            ArrayList<RecipeConsumption> recipeConsumption = new ArrayList<>();
-            System.out.println("Date is  : " + consumedDatePickerEditTextRecipe.getText().toString());
-            try {
-                consumedDate = new SimpleDateFormat("yyyy-MM-dd").parse(String.valueOf(consumedDatePickerEditTextRecipe.getText().toString()));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            System.out.println("Emission value from ad food itesm : " + recipeCarbonFootPrint);
-            RecipeConsumption addRecipeConsumption = new RecipeConsumption(deviceId, recipeName, Float.parseFloat(recipeCarbonFootPrint), servingAmount,consumedDate);
-            recipeConsumption.add(addRecipeConsumption);
-            RequestBody postData = RequestBody.create(MediaType.parse("application/json"), gson.toJson(recipeConsumption));
-            service.addRecipeConsumption(postData).enqueue(new Callback<List<Recipe>>() {
-                @Override
-                public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
-                    System.out.println("Message response " + response.message());
-
-                    if (response.isSuccessful()) {
-                        if(response.body()!=null) {
-                            Toast.makeText(getApplicationContext(), "Recipe Added", Toast.LENGTH_SHORT).show();
-                            finish();
-                        } else {
-                            Log.i("onEmptyResponse", "Returned empty response");//Toast.makeText(getContext(),"Nothing returned",Toast.LENGTH_LONG).show();
+                        if (response.isSuccessful()) {
+                            if(response.body()!=null) {
+                                Toast.makeText(getApplicationContext(), "Recipe Added", Toast.LENGTH_SHORT).show();
+                                finish();
+                            } else {
+                                Log.i("onEmptyResponse", "Returned empty response");//Toast.makeText(getContext(),"Nothing returned",Toast.LENGTH_LONG).show();
+                            }
                         }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<List<Recipe>> call, Throwable t) {
-                    //System.out.println("Body response " + response.message());
-                    Toast.makeText(getApplicationContext(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
-                    System.out.println(" Throwable error : " + t);
-                }
-            });
-        }
-        else  {
+                    @Override
+                    public void onFailure(Call<List<Recipe>> call, Throwable t) {
+                        //System.out.println("Body response " + response.message());
+                        Toast.makeText(getApplicationContext(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
+                        System.out.println(" Throwable error : " + t);
+                    }
+                });
+            }
+            else  {
+                Toast.makeText(getApplicationContext(), "Please enter the date", Toast.LENGTH_SHORT).show();
+            }
+        } else {
             Toast.makeText(getApplicationContext(), "Please enter the quantity", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     public void cancelRecipe()
@@ -196,5 +207,12 @@ public class AddRecipe extends AppCompatActivity {
                     }
                 })
                 .show();
+    }
+
+    public void calculateRecipeEmissions(){
+        servingAmount = Float.parseFloat(recipeServingAmount.getText().toString());
+        totalRecipeEmissions = findViewById(R.id.textView_TotalRecipeEmissions);
+        totalEmissions = servingAmount * Float.parseFloat(recipeCarbonFootPrint);
+        roundDecimalRecipeEmission = (float) ((double) Math.round(totalEmissions * 100000d) / 100000d);
     }
 }

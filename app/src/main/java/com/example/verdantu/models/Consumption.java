@@ -83,6 +83,8 @@ public class Consumption {
                 ", categoryName='" + categoryName + '\'' +
                 ", day='" + day + '\'' +
                 ", foodQuantity=" + foodQuantity +
+                ", objId=" + objId +
+                ", consumedDate=" + consumedDate +
                 '}';
     }
 

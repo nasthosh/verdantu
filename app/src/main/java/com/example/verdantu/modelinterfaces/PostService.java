@@ -38,6 +38,6 @@ public interface PostService {
     @PUT("api/update_recipe_food")
     Call<List<Recipe>> updateRecipeConsumption(@Body RequestBody recipeConsumption);
 
-    @DELETE("api/delete_recipe_food_new/{id}")
+    @DELETE("api/delete_recipe_food/{id}")
     Call<List<RecipeConsumption>> deleteRecipeConsumption(@Path("id") int id);
 }

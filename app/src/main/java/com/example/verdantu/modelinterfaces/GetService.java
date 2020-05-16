@@ -16,25 +16,29 @@ public interface GetService {
     @GET("api/food_Carbon_Emission")
     Call<List<Food>> getFood();
 
-    @GET("api/food_Carbon_Emission_category/{categoryName}")
+    @GET("api/food_Carbon_Emission_category/{categoryName}") // Add device ID
     Call<List<Food>> getFoodByCategory(@Path("categoryName") String categoryName);
 
-    @GET("api/weekly_report")
-    Call<List<Consumption>> getReportByWeek();
+    @GET("api/weekly_report/{deviceId}") // device id
+    Call<List<Consumption>> getReportByWeek(@Path("deviceId") String deviceId);
 
-    @GET("/api/weekly_category_wise")
-    Call<List<Consumption>> getReportByCategory();
+    @GET("/api/weekly_category_wise/{deviceId}") // device id
+    Call<List<Consumption>> getReportByCategory(@Path("deviceId") String deviceId);
 
     @GET("api/Recipe_Carbon_Emission")
     Call<List<Recipe>> getRecipeEmissions();
 
-    @GET("api/Landing_page")
-    Call<List<Consumption>> getEmissionForCurrentDay();
+    @GET("api/Landing_page/{deviceId}") // device id
+    Call<List<Consumption>> getEmissionForCurrentDay(@Path("deviceId") String deviceId);
 
-    @GET("/api/view_food_added")
-    Call<List<Consumption>> getConsumedRawFood();
+    @GET("/api/view_food_added/{deviceId}") // device id
+    Call<List<Consumption>> getConsumedRawFood(@Path("deviceId") String deviceId);
 
-    @GET("/api/view_recipe_added")
-    Call<List<RecipeConsumption>> getConsumedRecipe();
+    @GET("/api/view_recipe_added/{deviceId}") // device id
+    Call<List<RecipeConsumption>> getConsumedRecipe(@Path("deviceId") String deviceId);
 
+    @GET("api/get_nutrition_food/{deviceId}") // device id
+    Call<List<Food>> getNutritionReport(@Path("deviceId") String deviceId);
+
+// get nutrition food needs device id
 }

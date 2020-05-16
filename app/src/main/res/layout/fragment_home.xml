@@ -106,7 +106,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/fab_add"
             fab:fab_size="mini"
-            fab:fab_label="Subcategory"/>
+            fab:fab_label="EditItems"/>
 
     </com.github.clans.fab.FloatingActionMenu>
 </androidx.constraintlayout.widget.ConstraintLayout>

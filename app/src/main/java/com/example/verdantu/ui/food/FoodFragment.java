@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.verdantu.R;
+import com.example.verdantu.activities.DeviceData;
 import com.example.verdantu.adapters.FoodItemsListAdapter;
 import com.example.verdantu.adapters.RecipeListAdapter;
 import com.example.verdantu.modelinterfaces.GetService;
@@ -50,6 +51,7 @@ public class FoodFragment extends Fragment {
     List<Food> emissionsListRetro;
     FoodItemsListAdapter listAdapter;
     ListView listView;
+    String deviceId;
     RadioGroup foodType;
     int radioID;
     RadioButton checkedButton;
@@ -67,7 +69,7 @@ public class FoodFragment extends Fragment {
                 ViewModelProviders.of(this).get(FoodViewModel.class);
         root = inflater.inflate(R.layout.fragment_food_items, container, false); // Inflating the view model
 
-
+       deviceId = DeviceData.getDeviceId(root.getContext());
         listView = root.findViewById(R.id.listFoodDetails);
 
         foodType = root.findViewById(R.id.radioCategory);

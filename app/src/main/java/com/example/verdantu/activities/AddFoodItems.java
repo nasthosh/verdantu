@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -58,7 +59,7 @@ public class AddFoodItems extends AppCompatActivity {
     private float roundDecimalTotalFoodEmission;
     private EditText consumedDatePickerEditText;
     DatePickerDialog datepicker;
-    String dateFormatConsumedDate ;
+    String dateFormatConsumedDate;
     Date consumedDate;
 
     @SuppressLint("MissingPermission")
@@ -69,6 +70,7 @@ public class AddFoodItems extends AppCompatActivity {
         deviceId = DeviceData.getDeviceId(getApplicationContext());
         System.out.println("Device ID  : " + deviceId);
         consumedDatePickerEditText = findViewById(R.id.datePicker1);
+        consumedDatePickerEditText.setInputType(InputType.TYPE_NULL);
         consumedDatePickerEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,8 +83,13 @@ public class AddFoodItems extends AppCompatActivity {
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                dateFormatConsumedDate = (year  + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
-                                consumedDatePickerEditText.setText(dateFormatConsumedDate);
+                                if(monthOfYear > 9) {
+                                    dateFormatConsumedDate = (year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                                    consumedDatePickerEditText.setText(dateFormatConsumedDate);
+                                }else{
+                                    dateFormatConsumedDate = (year + "-0" + (monthOfYear + 1) + "-" + dayOfMonth);
+                                    consumedDatePickerEditText.setText(dateFormatConsumedDate);
+                                }
                             }
                         }, year, month, day);
                 datepicker.show();
@@ -105,13 +112,19 @@ public class AddFoodItems extends AppCompatActivity {
         cancel = findViewById(R.id.btn_Cancel);
         showCarbonFootPrint.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                showCarbonFootPrint();
+                if(foodQuantity.getText().toString().equalsIgnoreCase(""))
+                    Toast.makeText(getApplicationContext(), "Please enter the quantity", Toast.LENGTH_SHORT).show();
+                else
+                    showCarbonFootPrint();
             }
         });
 
         addFood.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                addFood();
+                if(foodQuantity.getText().toString().equalsIgnoreCase(""))
+                    Toast.makeText(getApplicationContext(), "Please enter the quantity", Toast.LENGTH_SHORT).show();
+                else
+                    addFood();
             }
         });
 
@@ -123,66 +136,78 @@ public class AddFoodItems extends AppCompatActivity {
         });
     }
 
-    public void showCarbonFootPrint()
-    {
-        foodQty = foodQuantity.getText().toString();
-            if (!foodQty.equalsIgnoreCase("")) {
-            qty = Float.parseFloat(foodQty);
-            float totalCarbonEmissions = (qty/100) * (Float.parseFloat(foodCarbonFootPrints));
-            totalFoodEmissions = findViewById(R.id.textView_TotalFoodEmissions);
-            roundDecimalTotalFoodEmission = (float) ((double) Math.round(totalCarbonEmissions * 100000d) / 100000d);
-            finalTotalEmissions = String.valueOf(roundDecimalTotalFoodEmission);
-            totalFoodEmissions.setText("Total Emissions : " + finalTotalEmissions + " KgCo2/100g");
-            foodQuantity.setText("");
-            System.out.println("Emission : " + foodName);
-            System.out.println("Name : " + foodName + "Emission" + finalTotalEmissions + "Category" + foodCategory);
-            isFootPrintShown = true;
-        } else if (foodQty.equalsIgnoreCase("")) {
-            Toast.makeText(getApplicationContext(), "Please enter the quantity", Toast.LENGTH_SHORT).show();
-        }
+    public void showCarbonFootPrint() {
 
+        calculateEmissions();
+        totalFoodEmissions.setText("Total Emissions : " + finalTotalEmissions + " KgCo2/100g");
+        System.out.println("Emission : " + foodName);
+        System.out.println("Name : " + foodName + "Emission" + finalTotalEmissions + "Category" + foodCategory);
+        isFootPrintShown = true;
     }
 
-    public void addFood(){
-        if (isFootPrintShown){
-            PostService service = RetrofitClientInstance.getRetrofitInstance().create(PostService.class);
-            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 
-            ArrayList<Consumption> consumedData = new ArrayList<>();
-            System.out.println("Date is  : " + consumedDatePickerEditText.getText().toString());
-                            try {
-                    consumedDate = new SimpleDateFormat("yyyy-MM-dd").parse(String.valueOf(consumedDatePickerEditText.getText().toString()));
+    public void addFood() {
+
+        if (Float.parseFloat(foodQuantity.getText().toString()) > 0 ) {
+            calculateEmissions();
+            if (!consumedDatePickerEditText.getText().toString().equalsIgnoreCase("")) {
+                PostService service = RetrofitClientInstance.getRetrofitInstance().create(PostService.class);
+                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+                //SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                Date d1 = new Date();
+
+                String dateEntered = consumedDatePickerEditText.getText().toString();
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+                ArrayList<Consumption> consumedData = new ArrayList<>();
+                System.out.println("Date is (inside add) : " + dateEntered);
+
+                try {
+                    consumedDate = formatter.parse(dateEntered);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-            System.out.println("Emission value from ad food itesm : " + roundDecimalTotalFoodEmission);
-            Consumption addConsumed = new Consumption(deviceId, foodName, roundDecimalTotalFoodEmission, foodCategory,qty,consumedDate);
-            consumedData.add(addConsumed);
-            RequestBody postData = RequestBody.create(MediaType.parse("application/json"), gson.toJson(consumedData));
-            service.addConsumption(postData).enqueue(new Callback<List<Food>>() {
-                @Override
-                public void onResponse(Call<List<Food>> call, Response<List<Food>> response) {
+                System.out.println("Date entered by user  : " + consumedDate);
+                System.out.println("Todays date is " + formatter.format(d1));
+                if(d1.compareTo(consumedDate) > 0){
+                    System.out.println("todays date greater than entered");
+                    Consumption addConsumed = new Consumption(deviceId, foodName, roundDecimalTotalFoodEmission, foodCategory, qty, consumedDate);
+                    consumedData.add(addConsumed);
+                    RequestBody postData = RequestBody.create(MediaType.parse("application/json"), gson.toJson(consumedData));
+                    service.addConsumption(postData).enqueue(new Callback<List<Food>>() {
+                        @Override
+                        public void onResponse(Call<List<Food>> call, Response<List<Food>> response) {
 
-                    System.out.println("Body response " + response.body());
-                    if (response.isSuccessful()) {
-                        if (response.body() != null) {
+                            System.out.println("Body response " + response.body());
+                            if (response.isSuccessful()) {
+                                if (response.body() != null) {
 
-                            Toast.makeText(getApplicationContext(), "Consumption Added", Toast.LENGTH_SHORT).show();
-                            finish();
-                        } else {
-                            Log.i("onEmptyResponse", "Returned empty response");//Toast.makeText(getContext(),"Nothing returned",Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(), "Consumption Added", Toast.LENGTH_SHORT).show();
+                                    finish();
+                                } else {
+                                    Log.i("onEmptyResponse", "Returned empty response");//Toast.makeText(getContext(),"Nothing returned",Toast.LENGTH_LONG).show();
+                                }
+                            }
                         }
-                    }
+
+                        @Override
+                        public void onFailure(Call<List<Food>> call, Throwable t) {
+                            Toast.makeText(getApplicationContext(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
+                            System.out.println(" Throwable error : " + t);
+                        }
+                    });
+                } else {
+                    System.out.println("todays date less than entered");
+                    Toast.makeText(getApplicationContext(), "Date Cannot be greater than today's date", Toast.LENGTH_SHORT).show();
                 }
 
-                @Override
-                public void onFailure(Call<List<Food>> call, Throwable t) {
-                    Toast.makeText(getApplicationContext(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
-                    System.out.println(" Throwable error : " + t);
-                }
-            });
-        }
-        else  {
+
+
+
+            }else {
+                Toast.makeText(getApplicationContext(), "Please enter the date", Toast.LENGTH_SHORT).show();
+            }
+        } else {
             Toast.makeText(getApplicationContext(), "Please enter the quantity", Toast.LENGTH_SHORT).show();
         }
     }
@@ -203,11 +228,19 @@ public class AddFoodItems extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //set what should happen when negative button is clicked
-                        Toast.makeText(AddFoodItems.this,"Back to Add",Toast.LENGTH_LONG).show();
+                        Toast.makeText(AddFoodItems.this, "Back to Add", Toast.LENGTH_LONG).show();
                     }
                 })
                 .show();
     }
 
-
+    public void calculateEmissions() {
+        foodQty = foodQuantity.getText().toString();
+        qty = Float.parseFloat(foodQty);
+        float totalCarbonEmissions = (qty / 100) * (Float.parseFloat(foodCarbonFootPrints));
+        totalFoodEmissions = findViewById(R.id.textView_TotalFoodEmissions);
+        roundDecimalTotalFoodEmission = (float) ((double) Math.round(totalCarbonEmissions * 100000d) / 100000d);
+        finalTotalEmissions = String.valueOf(roundDecimalTotalFoodEmission);
+        isFootPrintShown = true;
+    }
 }

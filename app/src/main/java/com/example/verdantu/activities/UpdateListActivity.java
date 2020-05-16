@@ -41,16 +41,18 @@ public class UpdateListActivity extends AppCompatActivity {
     UpdateRawFoodListAdapter listRawFoodAdapter;
     UpdateRecipeListAdapter listRecipeAdapter;
 
+
     ListView listView;
 
     String foodInformationStr;
+    String deviceId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
         listView = findViewById(R.id.listItems);
-
+        deviceId = DeviceData.getDeviceId(getApplicationContext());
         foodInformation = findViewById(R.id.radioCategory);
         foodInformation.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -75,7 +77,7 @@ public class UpdateListActivity extends AppCompatActivity {
     public void getConsumedRawFood() {
 
         GetService service = RetrofitClientInstance.getRetrofitInstance().create(GetService.class);
-        Call<List<Consumption>> call = service.getConsumedRawFood();
+        Call<List<Consumption>> call = service.getConsumedRawFood(deviceId);
         consumedRawFoodList = new ArrayList<>();
         call.enqueue(new Callback<List<Consumption>>() {
             @Override
@@ -96,7 +98,7 @@ public class UpdateListActivity extends AppCompatActivity {
     public void getConsumedRecipe() {
 
         GetService service = RetrofitClientInstance.getRetrofitInstance().create(GetService.class);
-        Call<List<RecipeConsumption>> call = service.getConsumedRecipe();
+        Call<List<RecipeConsumption>> call = service.getConsumedRecipe(deviceId);
         consumedRecipeList = new ArrayList<>();
         call.enqueue(new Callback<List<RecipeConsumption>>() {
             @Override

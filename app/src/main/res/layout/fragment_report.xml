@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,41 +7,85 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <RadioGroup
-        android:id="@+id/radioReport"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints">
 
-        <RadioButton
-            android:id="@+id/radioDay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="By Day"
-            android:checked="true" />
-
-        <RadioButton
-            android:id="@+id/radioCat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="By Category" />
-
-    </RadioGroup>
+    <Spinner
+        android:id="@+id/spinnerActivityLevel"
+        android:layout_width="142dp"
+        android:layout_height="5dp"
+        android:drawSelectorOnTop="true"
+        android:entries="@array/array_filter_category"
+        android:spinnerMode="dropdown"
+        tools:ignore="MissingConstraints" />
 
     <com.github.mikephil.charting.charts.HorizontalBarChart
         android:id="@+id/barchart"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@+id/radioReport"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/spinnerActivityLevel"
         tools:ignore="MissingConstraints"/>
 
     <com.github.mikephil.charting.charts.PieChart
         android:id = "@+id/pieChart"
-        android:layout_width ="fill_parent"
-        android:layout_height ="fill_parent"
-        android:layout_below="@+id/radioReport"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/spinnerActivityLevel"
         tools:ignore="MissingConstraints" />
 
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/nutrition_bar_chart"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/spinnerActivityLevel" />
+
+
 </RelativeLayout>
+
+    <!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--    xmlns:tools="http://schemas.android.com/tools"-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="match_parent"-->
+    <!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--    android:orientation="vertical"-->
+    <!--    android:padding="16dp">-->
+
+    <!--    <RadioGroup-->
+    <!--        android:id="@+id/radioReport"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        tools:ignore="MissingConstraints">-->
+
+    <!--        <RadioButton-->
+    <!--            android:id="@+id/radioDay"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="By Day"-->
+    <!--            android:checked="true" />-->
+
+    <!--        <RadioButton-->
+    <!--            android:id="@+id/radioCat"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="By Category" />-->
+
+    <!--    </RadioGroup>-->
+
+    <!--    <com.github.mikephil.charting.charts.HorizontalBarChart-->
+    <!--        android:id="@+id/barchart"-->
+    <!--        android:layout_width="fill_parent"-->
+    <!--        android:layout_height="fill_parent"-->
+    <!--        android:layout_below="@+id/radioReport"-->
+    <!--        tools:ignore="MissingConstraints"/>-->
+
+    <!--    <com.github.mikephil.charting.charts.PieChart-->
+    <!--        android:id = "@+id/pieChart"-->
+    <!--        android:layout_width ="fill_parent"-->
+    <!--        android:layout_height ="fill_parent"-->
+    <!--        android:layout_below="@+id/radioReport"-->
+    <!--        tools:ignore="MissingConstraints" />-->
+
+    <!--</RelativeLayout>-->
 
 

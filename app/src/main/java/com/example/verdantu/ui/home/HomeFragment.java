@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.verdantu.R;
+import com.example.verdantu.activities.DeviceData;
 import com.example.verdantu.activities.RecipeActivity;
 import com.example.verdantu.activities.ShowFoods;
 import com.example.verdantu.activities.UpdateListActivity;
@@ -44,6 +45,7 @@ public class HomeFragment extends Fragment {
     FloatingActionButton fabEditFood;
     TextView dailyEmissionText;
     List<Consumption> dailyEmission;
+    String deviceId;
     private TextView textView1;
     ImageButton dailyEmissionButton;
 
@@ -52,6 +54,7 @@ public class HomeFragment extends Fragment {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
+        deviceId = DeviceData.getDeviceId(root.getContext());
         fabAddByCategory = root.findViewById(R.id.fabAddByCategory);
         fabAddByRecipe = root.findViewById(R.id.fabAddProduct);
         fabEditFood = root.findViewById(R.id.fabEditFood);
@@ -84,7 +87,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 GetService service = RetrofitClientInstance.getRetrofitInstance().create(GetService.class);
-                Call<List<Consumption>> call = service.getEmissionForCurrentDay();
+                Call<List<Consumption>> call = service.getEmissionForCurrentDay(deviceId);
                 dailyEmission = new ArrayList<>();
                 call.enqueue(new Callback<List<Consumption>>() {
                     @Override
@@ -110,7 +113,7 @@ public class HomeFragment extends Fragment {
                             float foodEmissionsDaily = dailyEmission.get(0).getEmission();
                             String foodEmissionsDailyString = String.valueOf(foodEmissionsDaily);
                             AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).setIcon(android.R.drawable.ic_dialog_map)
-                                    .setTitle("Info").setMessage("       " + foodEmissionsDailyString + " KgCo2/100g")
+                                    .setTitle("Info").setMessage("Emission for Today   :    " + foodEmissionsDailyString + " KgCo2/100g")
                                     .setPositiveButton("Return", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {

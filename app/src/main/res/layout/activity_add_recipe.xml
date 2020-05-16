@@ -67,12 +67,13 @@
         tools:ignore="MissingConstraints"/>
 
     <EditText
-        android:id="@+id/datePicker2"
+        android:id="@+id/datePickerRecipe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:layout_below="@+id/textView_TotalRecipeEmissions"
         android:ems="10"
+        android:inputType="date"
         android:hint="Enter Date" />
 
     <Button
@@ -83,7 +84,7 @@
         android:layout_marginTop="30dp"
         android:textSize="20sp"
         android:text="Add"
-        android:layout_below="@+id/datePicker2" />
+        android:layout_below="@+id/datePickerRecipe" />
 
     <Button
         android:id="@+id/btn_CancelRecipeAdd"

@@ -29,16 +29,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class EditActivity extends AppCompatActivity {
-String foodName;
-String recipeName;
-String foodCarbonFootPrint;
-String recipeCarbonFootPrint;
-String servingAmount;
-String foodQty;
-String foodObjId;
-String recipeObjId;
-TextView foodSelected;
-TextView recipeSelected;
+    String foodName;
+    String recipeName;
+    String foodCarbonFootPrint;
+    String recipeCarbonFootPrint;
+    String servingAmount;
+    String foodQty;
+    String foodObjId;
+    String recipeObjId;
+    TextView foodSelected;
+    TextView recipeSelected;
     TextView foodSelectedName;
     TextView recipeSelectedName;
     TextView oldFoodQty;
@@ -69,8 +69,8 @@ TextView recipeSelected;
         if (extras != null) {
             String type = extras.getString("type");
             if (type.equals("rawfood")) {
-            foodName = intent.getStringExtra("foodName");
-                 foodCarbonFootPrint = intent.getStringExtra("foodCarbonEmissions");
+                foodName = intent.getStringExtra("foodName");
+                foodCarbonFootPrint = intent.getStringExtra("foodCarbonEmissions");
                 foodQty =  intent.getStringExtra("oldFoodQuantity");
                 foodObjId = intent.getStringExtra("foodObjId");
                 foodSelected = findViewById(R.id.list_name_for_update);
@@ -87,13 +87,20 @@ TextView recipeSelected;
                 deleteFood = findViewById(R.id.button_delete_food);
                 foodCarbonEmissions.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
+
                         showFoodEmissions();
                     }
                 });
 
                 editRawFood.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-                        editRawFoodEmission();
+                        if(!(enterNewFoodQty.getText().toString().equalsIgnoreCase(""))) {
+                            calculateFoodEmissions();
+                            editRawFoodEmission();
+                        }else
+                        {
+                            Toast.makeText(getApplicationContext(), "Please enter the quantity!", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
 
@@ -114,7 +121,7 @@ TextView recipeSelected;
                 recipeSelectedName = findViewById(R.id.list_food_name_for_update);
                 recipeSelectedName.setText(recipeName);
                 oldRecipeQty = findViewById(R.id.old_qty_for_update);
-                oldRecipeQty.setText("Old Quantity : " + servingAmount);
+                oldRecipeQty.setText("Old Serving : " + servingAmount);
                 newRecipeServingAmount = findViewById(R.id.new_qty_for_update);
                 newRecipeServingAmount.setText("New Serving Amount : ");
                 enterRecipeServing = findViewById(R.id.new_qty_for_update_edit);
@@ -129,14 +136,19 @@ TextView recipeSelected;
 
                 editRecipe.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-                        editRecipeEmission();
+                        if(Float.parseFloat(enterRecipeServing.getText().toString()) > 0) {
+                            calculateRecipeEmissions();
+                            editRecipeEmission();
+                        }else{
+                            Toast.makeText(getApplicationContext(), "Please enter the servings!", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
 
                 deleteRecipe.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         deleteRecipeFoodEmissions(Integer.parseInt(recipeObjId));
-                        System.out.println("Object id for food : " + Integer.parseInt(recipeObjId) );
+                        System.out.println("Object id for recipe : " + Integer.parseInt(recipeObjId) );
                     }
                 });
             }
@@ -146,12 +158,10 @@ TextView recipeSelected;
 
     public void showFoodEmissions(){
         if(!(enterNewFoodQty.getText().toString().equalsIgnoreCase(""))){
-            foodQuantity = Float.parseFloat(enterNewFoodQty.getText().toString());
-            float totalEmissions = (foodQuantity/100) * (Float.parseFloat(foodCarbonFootPrint));
-            roundedTotalEmissions  = (float) ((double) Math.round(totalEmissions * 100000d) / 100000d);
+            calculateFoodEmissions();
             totalFoodEmissions = findViewById(R.id.new_carbon_footprint);
             totalFoodEmissions.setText("New Total Emissions : " + String.valueOf(roundedTotalEmissions) + " kgCO2/100g");
-            enterNewFoodQty.setText("");
+            //enterNewFoodQty.setText("");
         }else if (enterNewFoodQty.getText().toString().equalsIgnoreCase("")) {
             Toast.makeText(getApplicationContext(), "Please enter the quantity", Toast.LENGTH_SHORT).show();
         }
@@ -159,12 +169,11 @@ TextView recipeSelected;
     }
 
     public void showRecipeEmissions(){
-        if(Float.parseFloat(newRecipeServingAmount.getText().toString()) > 0){
-            float totalEmissionsByServingAmount = Float.parseFloat(newRecipeServingAmount.getText().toString()) * Float.parseFloat(recipeCarbonFootPrint);
-            roundedTotalEmissionsRecipe = (float) ((double) Math.round(totalEmissionsByServingAmount * 100000d) / 100000d);
+        if(Float.parseFloat(enterRecipeServing.getText().toString()) > 0){
+            calculateRecipeEmissions();
             totalRecipeEmissions = findViewById(R.id.new_carbon_footprint);
-            totalRecipeEmissions.setText("New Total Emissions : " + String.valueOf(totalRecipeEmissions) + " KgCo2/100g");
-            enterNewFoodQty.setText("");
+            totalRecipeEmissions.setText("New Total Emissions : " + String.valueOf(roundedTotalEmissionsRecipe) + " KgCo2/100g");
+            // enterNewFoodQty.setText("");
         }else
             Toast.makeText(getApplicationContext(), "Please enter the quantity", Toast.LENGTH_SHORT).show();
     }
@@ -205,7 +214,7 @@ TextView recipeSelected;
         Gson gson = new Gson();
 
         ArrayList<RecipeConsumption> recipeConsumptionUpdate = new ArrayList<>();
-        RecipeConsumption editRecipeConsumption = new RecipeConsumption(Integer.parseInt(recipeObjId), Float.parseFloat(recipeCarbonFootPrint), Float.parseFloat(newRecipeServingAmount.getText().toString()),recipeName);
+        RecipeConsumption editRecipeConsumption = new RecipeConsumption(Integer.parseInt(recipeObjId), Float.parseFloat(recipeCarbonFootPrint), Float.parseFloat(enterRecipeServing.getText().toString()),recipeName);
         recipeConsumptionUpdate.add(editRecipeConsumption);
         RequestBody putData = RequestBody.create(MediaType.parse("application/json"), gson.toJson(recipeConsumptionUpdate));
         service.updateRecipeConsumption(putData).enqueue(new Callback<List<Recipe>>() {
@@ -236,12 +245,12 @@ TextView recipeSelected;
             @Override
             public void onResponse(Call<List<Consumption>> call, Response<List<Consumption>> response) {
                 if(response.isSuccessful()){
-                    Toast.makeText(getApplicationContext(), "Post Deleted", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Post Deleted", Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
             public void onFailure(Call<List<Consumption>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Post Deleted", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Post Deleted", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -253,15 +262,25 @@ TextView recipeSelected;
             @Override
             public void onResponse(Call<List<RecipeConsumption>> call, Response<List<RecipeConsumption>> response) {
                 if(response.isSuccessful()){
-                    Toast.makeText(getApplicationContext(), "Post Deleted", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Post Deleted", Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
             public void onFailure(Call<List<RecipeConsumption>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Post Deleted", Toast.LENGTH_SHORT).show();
             }
         });
-
+        finish();
     }
 
+    public void calculateFoodEmissions(){
+        foodQuantity = Float.parseFloat(enterNewFoodQty.getText().toString());
+        float totalEmissions = (foodQuantity/100) * (Float.parseFloat(foodCarbonFootPrint));
+        roundedTotalEmissions  = (float) ((double) Math.round(totalEmissions * 100000d) / 100000d);
+    }
+
+    public void calculateRecipeEmissions(){
+        float totalEmissionsByServingAmount = Float.parseFloat(enterRecipeServing.getText().toString()) * Float.parseFloat(recipeCarbonFootPrint);
+        roundedTotalEmissionsRecipe = (float) ((double) Math.round(totalEmissionsByServingAmount * 100000d) / 100000d);
+    }
 }

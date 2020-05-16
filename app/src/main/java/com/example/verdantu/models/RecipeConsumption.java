@@ -59,11 +59,13 @@ public class RecipeConsumption {
 
     @Override
     public String toString() {
-        return "Recipe{" +
+        return "RecipeConsumption{" +
                 "recipeName='" + recipeName + '\'' +
                 ", recipeEmission=" + recipeEmission +
                 ", deviceId='" + deviceId + '\'' +
                 ", servingAmount=" + servingAmount +
+                ", objId=" + objId +
+                ", consumedDate=" + consumedDate +
                 '}';
     }
 
