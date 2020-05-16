@@ -44,7 +44,7 @@ public class IntroScreen extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        if (!restorePrefData()) {
+        if (restorePrefData()) {
 
             Intent mainActivity = new Intent(getApplicationContext(),MainActivity.class );
             startActivity(mainActivity);

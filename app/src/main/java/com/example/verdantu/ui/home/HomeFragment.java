@@ -2,12 +2,14 @@ package com.example.verdantu.ui.home;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,7 +50,8 @@ public class HomeFragment extends Fragment {
     String deviceId;
     private TextView textView1;
     ImageButton dailyEmissionButton;
-
+    ProgressBar emissionIntensity;
+    TextView intensityValues;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
@@ -59,6 +62,7 @@ public class HomeFragment extends Fragment {
         fabAddByRecipe = root.findViewById(R.id.fabAddProduct);
         fabEditFood = root.findViewById(R.id.fabEditFood);
         dailyEmissionButton = root.findViewById(R.id.dailyEmissionsImageButton);
+        intensityValues = root.findViewById(R.id.textProgressBarValues);
         fabAddByCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,6 +138,35 @@ public class HomeFragment extends Fragment {
                 });
             }
         });
+
+        emissionIntensity = root.findViewById(R.id.intensityProgress);
+        if((8.3 >= 2.05)){
+            emissionIntensity.setMax(100);
+            emissionIntensity.getProgressDrawable().setColorFilter(
+                    Color.rgb(255, 165, 0), android.graphics.PorterDuff.Mode.SRC_IN);
+            emissionIntensity.setProgress(50);
+        }
+        intensityValues.setText("    <=2.05                               =4.1                                     >=8.2");
+
+//        emissionIntensity = root.findViewById(R.id.intensityProgress);
+//
+//        if(dailyEmission.get(0).getEmission() > 8.2) {
+//            emissionIntensity.setMax(100);
+//            emissionIntensity.getProgressDrawable().setColorFilter(
+//                    Color.RED, android.graphics.PorterDuff.Mode.SRC_IN);
+//            emissionIntensity.setProgress(100);
+//        }else if((dailyEmission.get(0).getEmission() >= 4.1) && (dailyEmission.get(0).getEmission() <= 8.2)){
+//            emissionIntensity.setMax(100);
+//            emissionIntensity.getProgressDrawable().setColorFilter(
+//                    Color.YELLOW, android.graphics.PorterDuff.Mode.SRC_IN);
+//            emissionIntensity.setProgress(50);
+//        }else if((dailyEmission.get(0).getEmission() >= 2.05) && (dailyEmission.get(0).getEmission() <= 4.1)){
+//            emissionIntensity.setMax(100);
+//            emissionIntensity.getProgressDrawable().setColorFilter(
+//                    Color.GREEN, android.graphics.PorterDuff.Mode.SRC_IN);
+//            emissionIntensity.setProgress(25);
+//        }
+
 
         return root;
     }

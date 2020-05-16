@@ -47,20 +47,61 @@
         app:srcCompat="@drawable/bg4"
         tools:ignore="VectorDrawableCompat" />
 
-    <ImageButton
-        android:id="@+id/image3"
+<!--    <ImageButton-->
+<!--        android:id="@+id/image3"-->
+<!--        android:layout_width="350dp"-->
+<!--        android:layout_height="150dp"-->
+<!--        android:layout_marginStart="20dp"-->
+<!--        android:layout_marginLeft="50dp"-->
+<!--        android:layout_marginTop="5dp"-->
+<!--        android:foreground="@drawable/border_image"-->
+<!--        android:cropToPadding="true"-->
+<!--        android:scaleType="centerCrop"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/image2"-->
+<!--        app:srcCompat="@drawable/bg5"-->
+<!--        tools:ignore="VectorDrawableCompat" />-->
+
+    <TextView
+        android:id="@+id/textEmissionsDaily"
+        android:layout_width="402dp"
+        android:layout_height="75dp"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image2"/>
+
+    <ProgressBar
+        android:id="@+id/intensityProgress"
         android:layout_width="350dp"
-        android:layout_height="150dp"
+        android:layout_height="20dp"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="50dp"
         android:layout_marginTop="5dp"
-        android:foreground="@drawable/border_image"
         android:cropToPadding="true"
         android:scaleType="centerCrop"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image2"
-        app:srcCompat="@drawable/bg5"
-        tools:ignore="VectorDrawableCompat" />
+        app:layout_constraintTop_toBottomOf="@+id/textEmissionsDaily"/>
+
+    <TextView
+        android:id="@+id/textProgressBar"
+        android:layout_width="402dp"
+        android:layout_height="30dp"
+        android:text="    Low                      Medium                   High"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/intensityProgress"/>
+
+    <TextView
+        android:id="@+id/textProgressBarValues"
+        android:layout_width="402dp"
+        android:layout_height="30dp"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textProgressBar"/>
 
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/floatingMenu"
@@ -72,7 +113,7 @@
         fab:menu_labels_singleLine="true"
         fab:menu_fab_label="Cancel"
         android:layout_marginTop="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/image3"
+        app:layout_constraintBottom_toBottomOf="@+id/textProgressBarValues"
         fab:menu_backgroundColor="#ccffffff"
         fab:menu_animationDelayPerItem="0"
         fab:menu_colorNormal="#32CD32"
