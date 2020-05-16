@@ -17,9 +17,10 @@
         android:spinnerMode="dropdown"
         tools:ignore="MissingConstraints" />
 
-    <com.github.mikephil.charting.charts.HorizontalBarChart
+    <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/barchart"
         android:layout_width="350dp"
+        android:visibility="invisible"
         android:layout_height="350dp"
         android:layout_marginTop="30dp"
         android:layout_below="@id/spinnerActivityLevel"
@@ -29,6 +30,7 @@
         android:id = "@+id/pieChart"
         android:layout_width="350dp"
         android:layout_height="350dp"
+        android:visibility="invisible"
         android:layout_marginTop="30dp"
         android:layout_below="@id/spinnerActivityLevel"
         tools:ignore="MissingConstraints" />
@@ -37,6 +39,7 @@
         android:id="@+id/nutrition_bar_chart"
         android:layout_width="350dp"
         android:layout_height="350dp"
+        android:visibility="invisible"
         android:layout_marginTop="30dp"
         android:layout_below="@id/spinnerActivityLevel" />
 
