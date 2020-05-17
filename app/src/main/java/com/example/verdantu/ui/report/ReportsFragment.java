@@ -6,10 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,8 +71,11 @@ public class ReportsFragment extends Fragment {
 
     View root;
 
-    Spinner filterActivity;
+    RadioGroup filterActivity;
+    int radioId;
+    RadioButton checkedReportRadioButton;
     String filterActivityString;
+    TextView textReport;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -85,38 +86,60 @@ public class ReportsFragment extends Fragment {
         deviceId = DeviceData.getDeviceId(root.getContext());
         pieChart = root.findViewById(R.id.pieChart);
         barChart = root.findViewById(R.id.barchart);
+        textReport = root.findViewById(R.id.textView_Report_type);
 
         nutritionChart = root.findViewById(R.id.nutrition_bar_chart);
-        filterActivity = root.findViewById(R.id.spinnerActivityLevel);
-        filterActivity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                filterActivityString = parent.getItemAtPosition(position).toString();
-                if(filterActivityString.equalsIgnoreCase("By Category")){
+        filterActivity = root.findViewById(R.id.reportsRadioCategory);
+        filterActivity.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                radioID = filterActivity.getCheckedRadioButtonId();
+                checkedReportRadioButton = root.findViewById(radioID);
+                filterActivityString = checkedReportRadioButton.getText().toString();
+                if (filterActivityString.equalsIgnoreCase("By Category")) {
+
+                    barChart.invalidate();
                     barChart.clear();
+ nutritionChart.invalidate();
                     nutritionChart.clear();
+                    nutritionChart.setVisibility(View.GONE);
+                    barChart.setVisibility(View.GONE);
+                    pieChart.setVisibility(View.VISIBLE);
+                    textReport.setText(" Report by Category");
+                    textReport.setTextSize(29f);
                     showPieChartByCategory();
-                }else if(filterActivityString.equalsIgnoreCase("By Week")){
+                } else if (filterActivityString.equalsIgnoreCase("By Week")) {
+                    pieChart.invalidate();
                     pieChart.clear();
+                    nutritionChart.invalidate();
                     nutritionChart.clear();
                     //showBarChartByWeek();
+                    pieChart.setVisibility(View.GONE);
+                    nutritionChart.setVisibility(View.GONE);
+                    barChart.setVisibility(View.VISIBLE);
+                    textReport.setText(" Report by Week");
+                    textReport.setTextSize(29f);
                     showChartWeek();
-                }else if(filterActivityString.equalsIgnoreCase("By Nutrition")){
+                } else if (filterActivityString.equalsIgnoreCase("By Nutrition")) {
+                    barChart.invalidate();
                     barChart.clear();
+                    pieChart.invalidate();
                     pieChart.clear();
+                    pieChart.setVisibility(View.GONE);
+                    barChart.setVisibility(View.GONE);
+                    nutritionChart.setVisibility(View.VISIBLE);
+                    textReport.setText(" Report by Nutrition");
+                    textReport.setTextSize(29f);
                     showBarChartForNutrition();
                 }
             }
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
         });
 
-
+        // filterActivityString = parent.getItemAtPosition(position).toString();
         return root;
     }
 
     public void showPieChartByCategory() {
-
-        pieChart.setVisibility(View.VISIBLE);
 
         GetService service = RetrofitClientInstance.getRetrofitInstance().create(GetService.class);
         Call<List<Consumption>> call = service.getReportByCategory(deviceId);
@@ -129,7 +152,7 @@ public class ReportsFragment extends Fragment {
                 System.out.println("List from retrofit : " + emissionsListByCategory);
                 ArrayList<PieEntry> pieEntries = new ArrayList<>();
                 ArrayList<Integer> colors = new ArrayList<>();
-                Integer[] productColors = {Color.DKGRAY, Color.RED, Color.GREEN, Color.BLUE};
+                Integer[] productColors = {Color.rgb(124, 181, 24), Color.rgb(234, 115, 23), Color.rgb(254, 198, 1), Color.rgb(34, 124, 157)};
                 for(int i = 0 ; i < emissionsListByCategory.size() ; i++) {
 
                     PieEntry pieEntry = new PieEntry(emissionsListByCategory.get(i).getEmission(), emissionsListByCategory.get(i).getCategoryName());
@@ -152,7 +175,7 @@ public class ReportsFragment extends Fragment {
                 pieChart.animateXY(5000, 5000);
                 pieChart.invalidate();
                 pieDataSet.setValueTextSize(15f);
- }
+            }
 
             @Override
             public void onFailure(Call<List<Consumption>> call, Throwable t) {
@@ -167,11 +190,6 @@ public class ReportsFragment extends Fragment {
 
     public void showBarChartForNutrition(){
 
-        int maxCapacity = 35;
-        line = new LimitLine(maxCapacity);
-
-
-        nutritionChart.setVisibility(View.VISIBLE);
         System.out.println("Inside nutrition chart");
         GetService service = RetrofitClientInstance.getRetrofitInstance().create(GetService.class);
         Call<List<Food>> call = service.getNutritionReport(deviceId);
@@ -188,7 +206,7 @@ public class ReportsFragment extends Fragment {
                 values.add(new BarEntry(1,nutritionReport.get(0).getFoodProtein()));
                 values.add(new BarEntry(2,nutritionReport.get(0).getFoodCarbs()));
 
-                BarDataSet nutritionDataset = new BarDataSet(values, "Cells");
+                BarDataSet nutritionDataset = new BarDataSet(values, "Nutrition By Week");
 
                 ArrayList<String> labels = new ArrayList<String>();
                 labels.add("Fat");
@@ -202,13 +220,11 @@ public class ReportsFragment extends Fragment {
                 xAxis.setValueFormatter(formatter);
 
                 BarData nutritionData = new BarData(nutritionDataset);
+                nutritionData.setValueTextSize(12f);
                 nutritionChart.setData(nutritionData);
-                nutritionDataset.setColors(Color.YELLOW);
-                nutritionChart.getAxisLeft().addLimitLine(line);
-                line.setLineWidth(4f);
-                line.setTextSize(12f);
-                line.setLineColor(Color.RED);
-                nutritionChart.animateY(5000);
+                nutritionDataset.setColors(Color.rgb(79, 109, 122));
+                nutritionChart.getDescription().setEnabled(false);
+                nutritionChart.animateY(500);
                 nutritionChart.getXAxis().setDrawGridLines(false);
                 nutritionChart.getAxisLeft().setDrawGridLines(false);
                 nutritionChart.getAxisRight().setDrawGridLines(false);
@@ -224,7 +240,9 @@ public class ReportsFragment extends Fragment {
     }
 
     public void showChartWeek(){
-        barChart.setVisibility(View.VISIBLE);
+
+        int maxCapacity = (int) 8.2;
+        line = new LimitLine(maxCapacity);
         GetService service = RetrofitClientInstance.getRetrofitInstance().create(GetService.class);
         Call<List<Consumption>> call = service.getReportByWeek(deviceId);
         emissionsListByDay = new ArrayList<>();
@@ -248,7 +266,7 @@ public class ReportsFragment extends Fragment {
                 BarData data = new BarData(weekBarDataset);
                 barChart.getDescription().setEnabled(false);
                 barChart.setDrawValueAboveBar(true);
-
+                // nutritionDataset.setColors(Color.rgb(79, 109, 122));
                 XAxis xAxis = barChart.getXAxis();
                 xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
                 xAxis.setGranularity(1f);
@@ -257,13 +275,21 @@ public class ReportsFragment extends Fragment {
                 YAxis axisLeft = barChart.getAxisLeft();
                 axisLeft.setGranularity(10f);
                 axisLeft.setAxisMinimum(0);
-
+                weekDataset.setColor(Color.rgb(69, 105, 144));
                 YAxis axisRight = barChart.getAxisRight();
                 axisRight.setGranularity(10f);
                 axisRight.setAxisMinimum(0);
                 data.setValueTextSize(12f);
+                barChart.getAxisLeft().addLimitLine(line);
+                line.setLineWidth(4f);
+                line.setTextSize(12f);
+                line.setLineColor(Color.RED);
                 barChart.setData(data);
                 barChart.invalidate();
+                barChart.getXAxis().setDrawGridLines(false);
+                barChart.getAxisLeft().setDrawGridLines(false);
+                barChart.getAxisRight().setDrawGridLines(false);
+                barChart.setNoDataText("");
             }
 
             @Override

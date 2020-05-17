@@ -11,7 +11,10 @@ import android.widget.TextView;
 import com.example.verdantu.R;
 import com.example.verdantu.models.Consumption;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class UpdateRawFoodListAdapter extends BaseAdapter {
@@ -58,6 +61,11 @@ public class UpdateRawFoodListAdapter extends BaseAdapter {
 
         TextView listFood = (TextView) convertView.findViewById(R.id.listFoodItemsForUpdate);
         listFood.setText(rawFoodList.get(position).getFoods());
+        TextView listDate = convertView.findViewById(R.id.list_date);
+        Date date = rawFoodList.get(position).getConsumedDate();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String strDate = dateFormat.format(date);
+        listDate.setText(strDate);
         return convertView;
     }
 }

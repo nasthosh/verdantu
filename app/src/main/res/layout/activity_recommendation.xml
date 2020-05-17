@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context=".activities.RecipeActivity">
+
+    <TextView
+        android:id="@+id/textPageTitle"
+        android:layout_width="402dp"
+        android:layout_height="40dp"
+        android:textSize="25dp"
+        android:text="           Recommendation Page "
+        android:layout_marginTop="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <RadioGroup
+        android:id="@+id/recommendationRadioCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textPageTitle"
+        tools:ignore="MissingConstraints">
+
+        <RadioButton
+            android:id="@+id/radioFruit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="By Raw Food"
+            android:checked="true" />
+
+        <RadioButton
+            android:id="@+id/radioVeggies"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="By Recipe" />
+    </RadioGroup>
+
+    <ListView
+        android:id="@+id/listRecommendations"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#FFFFFF"
+        android:divider="#FFFFFF"
+        android:dividerHeight="5dp"
+        android:layout_below="@+id/recommendationRadioCategory"
+        android:paddingLeft="1dp"
+        tools:ignore="MissingConstraints" />
+
+</RelativeLayout>

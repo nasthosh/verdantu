@@ -62,13 +62,15 @@ public class IntroScreen extends AppCompatActivity {
         tvSkip = findViewById(R.id.tv_skip);
 
         final List<SplashScreen> mList = new ArrayList<>();
-        mList.add(new SplashScreen("Home","Screen that shows the daily carbon emissions by the user",R.drawable.one));
-        mList.add(new SplashScreen("Show Options","Action button to add and edit the raw food items and recipes!",R.drawable.image_two));
-        mList.add(new SplashScreen("Search","Search for food items/recipes along with the carbon emissions",R.drawable.three));
-        mList.add(new SplashScreen("Report","Report generated based on the user's food consumption",R.drawable.four));
-        mList.add(new SplashScreen("View Items","Before adding a food item, the list of items will be shown based on the category!",R.drawable.five));
-        mList.add(new SplashScreen("Add","Screen that allows the user to add a food item",R.drawable.six));
-        mList.add(new SplashScreen("Edit","Screen that allows the user to edit/delete a food item",R.drawable.seven));
+        mList.add(new SplashScreen("Home","Screen that shows the daily carbon emissions by the user",R.drawable.splash_one));
+        mList.add(new SplashScreen("Show Options","Action button to add and edit the raw food items and recipes!",R.drawable.splash_nine));
+        mList.add(new SplashScreen("Search","Search for food items/recipes along with the carbon emissions",R.drawable.splash_two));
+        mList.add(new SplashScreen("Report","Report generated based on the user's food consumption",R.drawable.splash_four));
+        mList.add(new SplashScreen("View Items","Before adding a food item, the list of items will be shown based on the category!",R.drawable.splash_five));
+        mList.add(new SplashScreen("Add","Screen that allows the user to add a food item",R.drawable.splash_siz));
+        mList.add(new SplashScreen("Edit","Screen that allows the user to edit/delete a food item",R.drawable.splas_seven));
+        mList.add(new SplashScreen("Nutrient Information","Screen that shows the nutrient information of a selected food item in search list",R.drawable.splash_three));
+        mList.add(new SplashScreen("Recommendation","Screen that shows the food recommendation based on the user's input",R.drawable.splash_eight));
 
         screenPager =findViewById(R.id.screen_viewpager);
         splashScreenPageAdapter = new SplashScreenPageAdapter(this,mList);

@@ -28,14 +28,26 @@ public interface GetService {
     @GET("api/Recipe_Carbon_Emission")
     Call<List<Recipe>> getRecipeEmissions();
 
-    @GET("api/Landing_page/{deviceId}") // device id
+    @GET("/api/Landing_page/{deviceId}") // device id
     Call<List<Consumption>> getEmissionForCurrentDay(@Path("deviceId") String deviceId);
 
     @GET("/api/view_food_added/{deviceId}") // device id
     Call<List<Consumption>> getConsumedRawFood(@Path("deviceId") String deviceId);
 
+    @GET("api/view_food_recommendations/{deviceId}") // device id
+    Call<List<Food>> getRecommendedRawFood(@Path("deviceId") String deviceId);
+
+    @GET("/api/view_food_recommendations_newUser")
+    Call<List<Food>> getRecommendedFoodNewUser();
+
+    @GET("/api/view_recipe_recommendations_newUser")
+    Call<List<Recipe>> getRecommendedRecipeNewUser();
+
     @GET("/api/view_recipe_added/{deviceId}") // device id
     Call<List<RecipeConsumption>> getConsumedRecipe(@Path("deviceId") String deviceId);
+
+    @GET("api/view_recipe_recommendations/{deviceId}") // device id
+    Call<List<Recipe>> getRecommendedRecipe(@Path("deviceId") String deviceId);
 
     @GET("api/get_nutrition_food/{deviceId}") // device id
     Call<List<Food>> getNutritionReport(@Path("deviceId") String deviceId);

@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name"></string>
+    <string name="app_name">VerdantU</string>
     <string name="title_activity_home_screen">HomeScreen</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Items</string>
+    <string name="title_dashboard">Food/Nutrient</string>
     <string name="title_notifications">Report</string>
 
 

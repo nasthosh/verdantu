@@ -121,7 +121,7 @@ public class EditActivity extends AppCompatActivity {
                 recipeSelectedName = findViewById(R.id.list_food_name_for_update);
                 recipeSelectedName.setText(recipeName);
                 oldRecipeQty = findViewById(R.id.old_qty_for_update);
-                oldRecipeQty.setText("Old Serving : " + servingAmount);
+                oldRecipeQty.setText("Old Serving :                         " + servingAmount);
                 newRecipeServingAmount = findViewById(R.id.new_qty_for_update);
                 newRecipeServingAmount.setText("New Serving Amount : ");
                 enterRecipeServing = findViewById(R.id.new_qty_for_update_edit);
@@ -136,7 +136,7 @@ public class EditActivity extends AppCompatActivity {
 
                 editRecipe.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-                        if(Float.parseFloat(enterRecipeServing.getText().toString()) > 0) {
+                        if(!(enterRecipeServing.getText().toString().equalsIgnoreCase(""))) {
                             calculateRecipeEmissions();
                             editRecipeEmission();
                         }else{
@@ -169,13 +169,13 @@ public class EditActivity extends AppCompatActivity {
     }
 
     public void showRecipeEmissions(){
-        if(Float.parseFloat(enterRecipeServing.getText().toString()) > 0){
+        if(!enterRecipeServing.getText().toString().equalsIgnoreCase("")){
             calculateRecipeEmissions();
             totalRecipeEmissions = findViewById(R.id.new_carbon_footprint);
             totalRecipeEmissions.setText("New Total Emissions : " + String.valueOf(roundedTotalEmissionsRecipe) + " KgCo2/100g");
             // enterNewFoodQty.setText("");
         }else
-            Toast.makeText(getApplicationContext(), "Please enter the quantity", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Please enter the Servings", Toast.LENGTH_SHORT).show();
     }
 
     public void editRawFoodEmission()
@@ -205,6 +205,7 @@ public class EditActivity extends AppCompatActivity {
             public void onFailure(Call<List<Food>> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
                 System.out.println(" Throwable error : " + t);
+                finish();
             }
         });
     }
@@ -234,6 +235,7 @@ public class EditActivity extends AppCompatActivity {
             public void onFailure(Call<List<Recipe>> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
                 System.out.println(" Throwable error : " + t);
+                finish();
             }
         });
     }
@@ -253,6 +255,7 @@ public class EditActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Post Deleted", Toast.LENGTH_SHORT).show();
             }
         });
+        finish();
     }
 
     public void deleteRecipeFoodEmissions(int id){
@@ -263,6 +266,7 @@ public class EditActivity extends AppCompatActivity {
             public void onResponse(Call<List<RecipeConsumption>> call, Response<List<RecipeConsumption>> response) {
                 if(response.isSuccessful()){
                     Toast.makeText(getApplicationContext(), "Post Deleted", Toast.LENGTH_SHORT).show();
+
                 }
             }
             @Override

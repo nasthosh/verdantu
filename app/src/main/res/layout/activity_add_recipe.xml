@@ -73,7 +73,6 @@
         android:layout_marginTop="50dp"
         android:layout_below="@+id/textView_TotalRecipeEmissions"
         android:ems="10"
-        android:inputType="date"
         android:hint="Enter Date" />
 
     <Button

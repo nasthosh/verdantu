@@ -140,9 +140,10 @@ public class AddRecipe extends AppCompatActivity {
     {
         if(Float.parseFloat(recipeServingAmount.getText().toString()) > 0){
             calculateRecipeEmissions();
-            if((!consumedDatePickerEditTextRecipe.getText().toString().equalsIgnoreCase(""))){
+            if((!consumedDatePickerEditTextRecipe.getText().toString().equalsIgnoreCase(""))) {
                 PostService service = RetrofitClientInstance.getRetrofitInstance().create(PostService.class);
                 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+                Date today = new Date();
                 String dateEntered = consumedDatePickerEditTextRecipe.getText().toString();
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 ArrayList<RecipeConsumption> recipeConsumption = new ArrayList<>();
@@ -153,33 +154,37 @@ public class AddRecipe extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 System.out.println("Emission value from ad food itesm : " + recipeCarbonFootPrint);
-                RecipeConsumption addRecipeConsumption = new RecipeConsumption(deviceId, recipeName, Float.parseFloat(recipeCarbonFootPrint), servingAmount,consumedDate);
-                recipeConsumption.add(addRecipeConsumption);
-                RequestBody postData = RequestBody.create(MediaType.parse("application/json"), gson.toJson(recipeConsumption));
-                service.addRecipeConsumption(postData).enqueue(new Callback<List<Recipe>>() {
-                    @Override
-                    public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
-                        System.out.println("Message response " + response.message());
+                if (today.compareTo(consumedDate) > 0) {
+                    RecipeConsumption addRecipeConsumption = new RecipeConsumption(deviceId, recipeName, Float.parseFloat(recipeCarbonFootPrint), servingAmount, consumedDate);
+                    recipeConsumption.add(addRecipeConsumption);
+                    RequestBody postData = RequestBody.create(MediaType.parse("application/json"), gson.toJson(recipeConsumption));
+                    service.addRecipeConsumption(postData).enqueue(new Callback<List<Recipe>>() {
+                        @Override
+                        public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
+                            System.out.println("Message response " + response.message());
 
-                        if (response.isSuccessful()) {
-                            if(response.body()!=null) {
-                                Toast.makeText(getApplicationContext(), "Recipe Added", Toast.LENGTH_SHORT).show();
-                                finish();
-                            } else {
-                                Log.i("onEmptyResponse", "Returned empty response");//Toast.makeText(getContext(),"Nothing returned",Toast.LENGTH_LONG).show();
+                            if (response.isSuccessful()) {
+                                if (response.body() != null) {
+                                    Toast.makeText(getApplicationContext(), "Recipe Added", Toast.LENGTH_SHORT).show();
+                                    finish();
+                                } else {
+                                    Log.i("onEmptyResponse", "Returned empty response");//Toast.makeText(getContext(),"Nothing returned",Toast.LENGTH_LONG).show();
+                                }
                             }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call<List<Recipe>> call, Throwable t) {
-                        //System.out.println("Body response " + response.message());
-                        Toast.makeText(getApplicationContext(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
-                        System.out.println(" Throwable error : " + t);
-                    }
-                });
-            }
-            else  {
+                        @Override
+                        public void onFailure(Call<List<Recipe>> call, Throwable t) {
+                            //System.out.println("Body response " + response.message());
+                            Toast.makeText(getApplicationContext(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
+                            System.out.println(" Throwable error : " + t);
+                        }
+                    });
+                } else {
+                    System.out.println("todays date less than entered");
+                    Toast.makeText(getApplicationContext(), "Date Cannot be greater than today's date", Toast.LENGTH_SHORT).show();
+                }
+            }else  {
                 Toast.makeText(getApplicationContext(), "Please enter the date", Toast.LENGTH_SHORT).show();
             }
         } else {

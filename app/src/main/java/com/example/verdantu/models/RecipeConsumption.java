@@ -69,6 +69,14 @@ public class RecipeConsumption {
                 '}';
     }
 
+    public Date getConsumedDate() {
+        return consumedDate;
+    }
+
+    public void setConsumedDate(Date consumedDate) {
+        this.consumedDate = consumedDate;
+    }
+
     public int getObjId() {
         return objId;
     }
