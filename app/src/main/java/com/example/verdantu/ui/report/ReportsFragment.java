@@ -105,7 +105,7 @@ public class ReportsFragment extends Fragment {
                     nutritionChart.setVisibility(View.GONE);
                     barChart.setVisibility(View.GONE);
                     pieChart.setVisibility(View.VISIBLE);
-                    textReport.setText(" Report by Category");
+                    textReport.setText(" Weekly Emission Distribution for Different Categories");
                     textReport.setTextSize(29f);
                     showPieChartByCategory();
                 } else if (filterActivityString.equalsIgnoreCase("By Week")) {
@@ -117,7 +117,7 @@ public class ReportsFragment extends Fragment {
                     pieChart.setVisibility(View.GONE);
                     nutritionChart.setVisibility(View.GONE);
                     barChart.setVisibility(View.VISIBLE);
-                    textReport.setText(" Report by Week");
+                    textReport.setText("Weekly Emission Report");
                     textReport.setTextSize(29f);
                     showChartWeek();
                 } else if (filterActivityString.equalsIgnoreCase("By Nutrition")) {
@@ -128,7 +128,7 @@ public class ReportsFragment extends Fragment {
                     pieChart.setVisibility(View.GONE);
                     barChart.setVisibility(View.GONE);
                     nutritionChart.setVisibility(View.VISIBLE);
-                    textReport.setText(" Report by Nutrition");
+                    textReport.setText("Weekly Nutrition Report");
                     textReport.setTextSize(29f);
                     showBarChartForNutrition();
                 }

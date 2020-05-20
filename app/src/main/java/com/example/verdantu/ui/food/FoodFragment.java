@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -62,6 +63,7 @@ public class FoodFragment extends Fragment {
     RecipeListAdapter listViewDataAdapter;
     SearchView search;
     Boolean isDialogShown = false;
+    TextView textListHeading ;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -74,6 +76,7 @@ public class FoodFragment extends Fragment {
 
         foodType = root.findViewById(R.id.radioCategory);
         search = root.findViewById(R.id.inputSearchFragment);
+        textListHeading = root.findViewById(R.id.foodTitle);
 
         foodType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -83,6 +86,7 @@ public class FoodFragment extends Fragment {
                 foodTypeString = checkedButton.getText().toString();
                 if (foodTypeString.equalsIgnoreCase("By Raw Food")) {
                     //isRecipeCalled=false;
+                   textListHeading.setText( "     FoodName                                      Emissions(KgCo2/100g)" );
                     getFoodList();
                     search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                         @Override
@@ -107,6 +111,7 @@ public class FoodFragment extends Fragment {
 
                 } else if (foodTypeString.equalsIgnoreCase("By Recipe")) {
                     //isRecipeCalled=true;
+                   textListHeading.setText( "     FoodName                                          Emissions(per serve)" );
                     getRecipeList();
                     search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                         @Override
@@ -209,7 +214,7 @@ public class FoodFragment extends Fragment {
                 float foodFat = tableFoodList.get(i).getFoodFat();
                 float foodCarbs = tableFoodList.get(i).getFoodCarbs();
                 AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).setIcon(android.R.drawable.ic_dialog_map)
-                        .setTitle("Info").setMessage("Carbohyrates : " + String.valueOf(foodCarbs) + "\n" + "Proteins : " + String.valueOf(foodProtein) + "\n" + "Fats : " + String.valueOf(foodFat))
+                        .setTitle("Info").setMessage("Carbohyrates : " + String.valueOf(foodCarbs) + " grams" + "\n" + "Proteins : " + String.valueOf(foodProtein)+ " grams"  + "\n" + "Fats : " + String.valueOf(foodFat)+ " grams" )
                         .setPositiveButton("Return", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -236,7 +241,7 @@ public class FoodFragment extends Fragment {
                 float foodFat = recipeList.get(i).getRecipeFat();
                 float foodCarbs = recipeList.get(i).getRecipeCarbs();
                 AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).setIcon(android.R.drawable.ic_dialog_map)
-                        .setTitle("Info").setMessage("Carbohyrates : " + String.valueOf(foodCarbs) + "\n" + "Proteins : " + String.valueOf(foodProtein) + "\n" + "Fats : " + String.valueOf(foodFat))
+                        .setTitle("Info").setMessage("Carbohyrates : " + String.valueOf(foodCarbs) + " grams"  + "\n" + "Proteins : " + String.valueOf(foodProtein)  + " grams" + "\n" + "Fats : " + String.valueOf(foodFat)+ " grams" )
                         .setPositiveButton("Return", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {

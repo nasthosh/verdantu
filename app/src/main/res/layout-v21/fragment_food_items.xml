@@ -14,6 +14,8 @@
         android:layout_marginBottom="10dp"
         android:queryHint="Search" />
 
+
+
     <RadioGroup
         android:id="@+id/radioCategory"
         android:layout_width="wrap_content"
@@ -35,6 +37,18 @@
         android:text="By Recipe" />
     </RadioGroup>
 
+    <TextView
+        android:id="@+id/foodTitle"
+        android:layout_width="450dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_below="@+id/radioCategory"
+        tools:ignore="MissingConstraints" />
+
     <ListView
         android:id="@+id/listFoodDetails"
         android:layout_width="fill_parent"
@@ -42,8 +56,8 @@
         android:background="#FFFFFF"
         android:divider="#FFFFFF"
         android:dividerHeight="5dp"
-        android:paddingTop="15dp"
-        android:layout_below="@+id/radioCategory"
+        android:paddingTop="5dp"
+        android:layout_below="@+id/foodTitle"
         android:paddingLeft="1dp"
         tools:ignore="MissingConstraints" />
 
