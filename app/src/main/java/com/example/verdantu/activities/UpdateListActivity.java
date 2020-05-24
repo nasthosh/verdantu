@@ -2,6 +2,7 @@ package com.example.verdantu.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -32,6 +33,8 @@ public class UpdateListActivity extends AppCompatActivity {
     int radioID;
     RadioButton checkedFoodInformation;
 
+    Handler handler;
+
     List<Consumption> consumedRawFoodList;
     List<Consumption> tempConsumedFoodList;
 
@@ -51,11 +54,20 @@ public class UpdateListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
+        this.handler = new Handler();
+        runnable.run();
         listView = findViewById(R.id.listItems);
         deviceId = DeviceData.getDeviceId(getApplicationContext());
         foodInformation = findViewById(R.id.radioCategory);
 
     }
+    private final Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+           // Toast.makeText(UpdateListActivity.this,"in runnable",Toast.LENGTH_SHORT).show();
+            UpdateListActivity.this.handler.postDelayed(runnable,2000);
+        }
+    };
 
     public void onResume() {
         //EditActivity closeActivity = new EditActivity();
@@ -69,6 +81,7 @@ public class UpdateListActivity extends AppCompatActivity {
                 checkedFoodInformation = findViewById(radioID);
                 foodInformationStr = checkedFoodInformation.getText().toString();
                 if (foodInformationStr.equalsIgnoreCase("Raw Food")) {
+
                     getConsumedRawFood();
                 } else if (foodInformationStr.equalsIgnoreCase("Recipe")) {
                     getConsumedRecipe();
@@ -130,7 +143,7 @@ public class UpdateListActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<RecipeConsumption>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UpdateListActivity.this, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
                 System.out.println(" Throwable error : " + t);
             }
         });

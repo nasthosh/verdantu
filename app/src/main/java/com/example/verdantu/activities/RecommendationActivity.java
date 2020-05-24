@@ -1,6 +1,5 @@
 package com.example.verdantu.activities;
 
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.ListView;
@@ -9,7 +8,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.verdantu.R;
@@ -51,19 +49,19 @@ public class RecommendationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recommendation);
-        if(!restorePrefData()) {
-            AlertDialog alertDialog = new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_map)
-                    .setTitle("Info").setMessage("As you're logging in for the first time, we are showing some basic food recommendations but it will vary based on your food input")
-                    .setPositiveButton("Return", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            savePrefsData();
-                            Toast.makeText(getApplicationContext(), "Thanks", Toast.LENGTH_SHORT).show();
-
-                        }
-                    })
-                    .show();
-        }
+//        if(restorePrefData()) {
+//            AlertDialog alertDialog = new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_map)
+//                    .setTitle("Info").setMessage("Please add some food to get better recommendations/suggestions")
+//                    .setPositiveButton("Return", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//                            savePrefsData();
+//                            Toast.makeText(getApplicationContext(), "Thanks", Toast.LENGTH_SHORT).show();
+//
+//                        }
+//                    })
+//                    .show();
+//        }
         listView = findViewById(R.id.listRecommendations);
         deviceId = DeviceData.getDeviceId(this);
         headingRecommendation = findViewById(R.id.recommendation_heading);
@@ -89,11 +87,12 @@ public class RecommendationActivity extends AppCompatActivity {
 
     public void getRecommendedFoods(){
         GetService service = RetrofitClientInstance.getRetrofitInstance().create(GetService.class);
-        if(!restorePrefData()) {
-            call = service.getRecommendedFoodNewUser();
-            savePrefsData();
-        }
-        else
+//        if(restorePrefData()) {
+//
+//            call = service.getRecommendedFoodNewUser();
+//            savePrefsData();
+//        }
+//        else
             call =service.getRecommendedRawFood(deviceId);
         recommendationFoodList = new ArrayList<>();
         call.enqueue(new Callback<List<Recommendation>>() {
@@ -115,10 +114,10 @@ public class RecommendationActivity extends AppCompatActivity {
     public void getRecommendedRecipes()
     {
         GetService service = RetrofitClientInstance.getRetrofitInstance().create(GetService.class);
-        if(!restorePrefData()){
-            recipeCall = service.getRecommendedRecipeNewUser();
-            // savePrefsData();
-        }else
+//        if(restorePrefData()){
+//            recipeCall = service.getRecommendedRecipeNewUser();
+//            // savePrefsData();
+//        }else
             recipeCall = service.getRecommendedRecipe(deviceId);
         recommendationRecipeList = new ArrayList<>();
         recipeCall.enqueue(new Callback<List<Recommendation>>() {

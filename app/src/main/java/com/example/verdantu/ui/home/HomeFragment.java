@@ -131,7 +131,7 @@ public class HomeFragment extends Fragment {
                 System.out.println("List From Retro in daily emission " + dailyEmission);
                 if (response.body() != null) {
                     if (dailyEmission.get(0).getEmission() == 0.0) {
-                        dailyEmissions.setText("              Let add some food for today");
+                        dailyEmissions.setText("              Let's add some food for today");
                         System.out.println("Daily Emissions is called inside null");
                     } else {
                         float foodEmissionsDaily = dailyEmission.get(0).getEmission();
@@ -172,7 +172,7 @@ public class HomeFragment extends Fragment {
                         //intensityValues.setText("    <=2.05                               =4.1                                     >=8.2");
                     }
                 } else {
-                    dailyEmissions.setText("                 Let add some food for today");
+                    dailyEmissions.setText("                 Let's add some food for today");
                     emissionIntensity.setVisibility(View.GONE);
                 }
             }

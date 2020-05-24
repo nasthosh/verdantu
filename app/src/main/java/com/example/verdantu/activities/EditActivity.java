@@ -45,6 +45,8 @@ public class EditActivity extends AppCompatActivity {
     TextView recipeSelectedName;
     TextView oldFoodQty;
     TextView oldRecipeQty;
+    List<Consumption> deleteRawFood;
+    List<RecipeConsumption> deleteRecipeList;
     TextView newFoodQty;
     TextView newRecipeServingAmount;
     EditText enterNewFoodQty;
@@ -259,16 +261,22 @@ public class EditActivity extends AppCompatActivity {
     public void deleteRawFoodEmissions(int id){
         PostService service = RetrofitClientInstance.getRetrofitInstance().create(PostService.class);
         Call<List<Consumption>> call = service.deleteFoodConsumption(id);
+        deleteRawFood = new ArrayList<>();
         call.enqueue(new Callback<List<Consumption>>() {
             @Override
             public void onResponse(Call<List<Consumption>> call, Response<List<Consumption>> response) {
                 if(response.isSuccessful()){
+                    deleteRawFood = response.body();
+                    if(!(deleteRawFood.get(0).getFoods()).equalsIgnoreCase("Record Deleted"))
                     Toast.makeText(getApplicationContext(), "Post Deleted", Toast.LENGTH_SHORT).show();
+                    else
+                        Toast.makeText(getApplicationContext(), "SOMething went wrong", Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
             public void onFailure(Call<List<Consumption>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Post Deleted", Toast.LENGTH_SHORT).show();
+
             }
         });
         finish();
@@ -277,6 +285,7 @@ public class EditActivity extends AppCompatActivity {
     public void deleteRecipeFoodEmissions(int id){
         PostService service = RetrofitClientInstance.getRetrofitInstance().create(PostService.class);
         Call<List<RecipeConsumption>> call = service.deleteRecipeConsumption(id);
+        deleteRecipeList = new ArrayList<>();
         call.enqueue(new Callback<List<RecipeConsumption>>() {
             @Override
             public void onResponse(Call<List<RecipeConsumption>> call, Response<List<RecipeConsumption>> response) {
@@ -287,12 +296,15 @@ public class EditActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<List<RecipeConsumption>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Post Deleted", Toast.LENGTH_SHORT).show();
+               // finish();
+                //Intent updateIntent = new Intent(EditActivity.this, UpdateListActivity.class);
+              //  startActivity(updateIntent);
             }
         });
         finish();
-        // UpdateListActivity resume = new UpdateListActivity();
-        //resume.onResume();
+//         UpdateListActivity resume = new UpdateListActivity();
+//        resume.getConsumedRecipe();
 
     }
 

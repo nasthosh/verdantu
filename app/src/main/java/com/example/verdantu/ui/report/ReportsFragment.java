@@ -134,7 +134,7 @@ public class ReportsFragment extends Fragment {
                     //showBarChartByWeek();
                     pieChart.setVisibility(View.GONE);
                     nutritionChart.setVisibility(View.GONE);
-                    barChart.setVisibility(View.VISIBLE);
+
                     textReport.setText("Weekly Emission Report");
                     textReport.setTextSize(20f);
                     showChartWeek();
@@ -285,7 +285,8 @@ public class ReportsFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Consumption>> call, Response<List<Consumption>> response) {
                 emissionsListByDay = response.body();
-                System.out.println("List from retrofit : " + emissionsListByDay);
+                barChart.setVisibility(View.VISIBLE);
+                System.out.println("List from retrofit in weekly report : " + emissionsListByDay);
                 ArrayList<BarEntry> values = new ArrayList<>();
                 ArrayList<String> labels = new ArrayList<>();
                 for(int i = 0 ; i < emissionsListByDay.size() ; i++) {
@@ -327,7 +328,8 @@ public class ReportsFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<Consumption>> call, Throwable t) {
-                Toast.makeText(root.getContext(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
+                barChart.setVisibility(View.INVISIBLE);
+               // Toast.makeText(root.getContext(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
                 System.out.println(" Throwable error : " + t);
             }
         });

@@ -51,7 +51,7 @@
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/barchart"
         android:layout_width="350dp"
-        android:visibility="invisible"
+        android:visibility="gone"
         android:layout_height="350dp"
         android:layout_marginTop="30dp"
         android:layout_below="@id/textView_Report_type"
@@ -61,7 +61,7 @@
         android:id = "@+id/pieChart"
         android:layout_width="350dp"
         android:layout_height="350dp"
-        android:visibility="invisible"
+        android:visibility="gone"
         android:layout_marginTop="30dp"
         android:layout_below="@id/textView_Report_type"
         tools:ignore="MissingConstraints" />
@@ -70,7 +70,7 @@
         android:id="@+id/nutrition_bar_chart"
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:visibility="invisible"
+        android:visibility="gone"
         android:layout_marginLeft="35dp"
         android:layout_marginTop="3dp"
         android:layout_below="@id/textView_Report_type" />
