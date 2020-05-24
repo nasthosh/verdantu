@@ -77,6 +77,11 @@ public class ReportsFragment extends Fragment {
     String filterActivityString;
     TextView textReport;
 
+    TextView nutrientInformation;
+    TextView carbsInfo;
+    TextView fatInfo;
+    TextView proteinInfo;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         reportsViewModel =
@@ -87,6 +92,10 @@ public class ReportsFragment extends Fragment {
         pieChart = root.findViewById(R.id.pieChart);
         barChart = root.findViewById(R.id.barchart);
         textReport = root.findViewById(R.id.textView_Report_type);
+        nutrientInformation = root.findViewById(R.id.nutrition_information);
+        carbsInfo = root.findViewById(R.id.carbs_information);
+        fatInfo = root.findViewById(R.id.fat_information);
+        proteinInfo = root.findViewById(R.id.protein_information);
 
         nutritionChart = root.findViewById(R.id.nutrition_bar_chart);
         filterActivity = root.findViewById(R.id.reportsRadioCategory);
@@ -97,7 +106,11 @@ public class ReportsFragment extends Fragment {
                 checkedReportRadioButton = root.findViewById(radioID);
                 filterActivityString = checkedReportRadioButton.getText().toString();
                 if (filterActivityString.equalsIgnoreCase("By Category")) {
-
+                    //nutrientInformation.setVisibility(View.GONE);
+                    nutrientInformation.setVisibility(View.GONE);
+                    carbsInfo.setVisibility(View.GONE);
+                    fatInfo.setVisibility(View.GONE);
+                    proteinInfo.setVisibility(View.GONE);
                     barChart.invalidate();
                     barChart.clear();
  nutritionChart.invalidate();
@@ -108,7 +121,12 @@ public class ReportsFragment extends Fragment {
                     textReport.setText("Weekly Emission Distribution for Different Categories");
                     textReport.setTextSize(20f);
                     showPieChartByCategory();
-                } else if (filterActivityString.equalsIgnoreCase("By Week")) {
+                } else if (filterActivityString.equalsIgnoreCase("Seven Days at a Glance")) {
+                    nutrientInformation.setVisibility(View.GONE);
+                    carbsInfo.setVisibility(View.GONE);
+                    fatInfo.setVisibility(View.GONE);
+                    proteinInfo.setVisibility(View.GONE);
+                    //nutrientInformation.setVisibility(View.GONE);
                     pieChart.invalidate();
                     pieChart.clear();
                     nutritionChart.invalidate();
@@ -121,6 +139,10 @@ public class ReportsFragment extends Fragment {
                     textReport.setTextSize(20f);
                     showChartWeek();
                 } else if (filterActivityString.equalsIgnoreCase("By Nutrition")) {
+                    nutrientInformation.setVisibility(View.VISIBLE);
+                    carbsInfo.setVisibility(View.VISIBLE);
+                    fatInfo.setVisibility(View.VISIBLE);
+                    proteinInfo.setVisibility(View.VISIBLE);
                     barChart.invalidate();
                     barChart.clear();
                     pieChart.invalidate();
@@ -201,13 +223,18 @@ public class ReportsFragment extends Fragment {
                 System.out.println("Inside response for nutrition");
                 nutritionReport = response.body();
                 System.out.println("List from retrofit for nutrition : " + nutritionReport);
-                ArrayList<BarEntry> values = new ArrayList<>();
-                values.add(new BarEntry(0,nutritionReport.get(0).getFoodFat()));
-                values.add(new BarEntry(1,nutritionReport.get(0).getFoodProtein()));
-                values.add(new BarEntry(2,nutritionReport.get(0).getFoodCarbs()));
+                ArrayList<BarEntry> actualValues = new ArrayList<>();
+                actualValues.add(new BarEntry(0,nutritionReport.get(0).getFoodFat()));
+                actualValues.add(new BarEntry(1,nutritionReport.get(0).getFoodProtein()));
+                actualValues.add(new BarEntry(2,nutritionReport.get(0).getFoodCarbs()));
 
-                BarDataSet nutritionDataset = new BarDataSet(values, "Nutrition By Week");
+                ArrayList<BarEntry> expectedValues = new ArrayList<>();
+                expectedValues.add(new BarEntry(0,25));
+                expectedValues.add(new BarEntry(1,25));
+                expectedValues.add(new BarEntry(2,50));
 
+                BarDataSet nutritionDatasetActual = new BarDataSet(actualValues, "Nutrition By Week(Percentage)");
+                nutritionDatasetActual.setColors(Color.rgb(79, 109, 122));
                 ArrayList<String> labels = new ArrayList<String>();
                 labels.add("Fat");
                 labels.add("Protein");
@@ -219,16 +246,22 @@ public class ReportsFragment extends Fragment {
                 xAxis.setGranularity(1f);
                 xAxis.setValueFormatter(formatter);
 
-                BarData nutritionData = new BarData(nutritionDataset);
+                BarData nutritionData = new BarData(nutritionDatasetActual);
                 nutritionData.setValueTextSize(12f);
                 nutritionChart.setData(nutritionData);
-                nutritionDataset.setColors(Color.rgb(79, 109, 122));
+
                 nutritionChart.getDescription().setEnabled(false);
                 nutritionChart.animateY(500);
                 nutritionChart.getXAxis().setDrawGridLines(false);
                 nutritionChart.getAxisLeft().setDrawGridLines(false);
                 nutritionChart.getAxisRight().setDrawGridLines(false);
                 nutritionChart.setNoDataText("");
+//                Legend legend = nutritionChart.getLegend();
+//               // legend.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
+//                legend.setForm(Legend.LegendForm.SQUARE);
+//                legend.setFormSize(9f);
+//                legend.setTextSize(11f);
+//                legend.setXEntrySpace(4f);
             }
 
             @Override
@@ -242,7 +275,7 @@ public class ReportsFragment extends Fragment {
     public void showChartWeek(){
 
         int maxCapacity = (int) 8.2;
-        line = new LimitLine(maxCapacity);
+        line = new LimitLine(maxCapacity, "Average Emission");
         GetService service = RetrofitClientInstance.getRetrofitInstance().create(GetService.class);
         Call<List<Consumption>> call = service.getReportByWeek(deviceId);
         emissionsListByDay = new ArrayList<>();
@@ -260,7 +293,7 @@ public class ReportsFragment extends Fragment {
                     String day = emissionsListByDay.get(i).getDay();
                     labels.add(day);
                 }
-                BarDataSet weekDataset = new BarDataSet(values, "Report by Week");
+                BarDataSet weekDataset = new BarDataSet(values, "Report by Week(KgCo2)");
                 ArrayList<IBarDataSet> weekBarDataset = new ArrayList<>();
                 weekBarDataset.add(weekDataset);
                 BarData data = new BarData(weekBarDataset);

@@ -25,7 +25,7 @@
             android:id="@+id/radioRecipe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="By Week" />
+            android:text="Seven Days at a Glance" />
 
         <RadioButton
             android:id="@+id/radioNutrition"
@@ -68,11 +68,69 @@
 
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/nutrition_bar_chart"
-        android:layout_width="350dp"
-        android:layout_height="350dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:visibility="invisible"
+        android:layout_marginLeft="35dp"
         android:layout_marginTop="3dp"
         android:layout_below="@id/textView_Report_type" />
+
+    <TextView
+        android:id="@+id/nutrition_information"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:width="200dp"
+        android:textSize="15sp"
+        android:textAppearance="@style/Widget.AppCompat.ActionBar.Solid"
+        android:textAllCaps="true"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        android:text="         Expected Nutritional Value(Percentage)"
+        android:layout_below="@+id/nutrition_bar_chart"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/protein_information"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:width="200dp"
+        android:textSize="15sp"
+        android:textAppearance="@style/Widget.AppCompat.ActionBar.Solid"
+        android:visibility="gone"
+        android:textAllCaps="true"
+        android:layout_marginTop="10dp"
+        android:text="         Protein                         :           25"
+        android:layout_below="@+id/nutrition_information"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/fat_information"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:width="200dp"
+        android:textSize="15sp"
+        android:textAppearance="@style/Widget.AppCompat.ActionBar.Solid"
+        android:textAllCaps="true"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        android:text="         Fat                                   :           25"
+        android:layout_below="@+id/protein_information"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/carbs_information"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:width="200dp"
+        android:visibility="gone"
+        android:textSize="15sp"
+        android:textAppearance="@style/Widget.AppCompat.ActionBar.Solid"
+        android:textAllCaps="true"
+        android:layout_marginTop="10dp"
+        android:text="         Carbohydrates        :           50"
+        android:layout_below="@+id/fat_information"
+        tools:ignore="MissingConstraints" />
+
 
 
 </RelativeLayout>

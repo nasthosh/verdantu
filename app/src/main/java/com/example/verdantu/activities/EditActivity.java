@@ -1,5 +1,6 @@
 package com.example.verdantu.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.verdantu.R;
@@ -58,6 +60,7 @@ public class EditActivity extends AppCompatActivity {
     Button editRecipe;
     Button deleteFood;
     Button deleteRecipe;
+    Boolean isRawFoodCalled;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,8 +99,13 @@ public class EditActivity extends AppCompatActivity {
                 editRawFood.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         if(!(enterNewFoodQty.getText().toString().equalsIgnoreCase(""))) {
-                            calculateFoodEmissions();
-                            editRawFoodEmission();
+                            if(Float.parseFloat(enterNewFoodQty.getText().toString()) == 0 ) {
+                                deleteAlert(true);
+                                // deleteRawFoodEmissions(Integer.parseInt(foodObjId));
+                            }else{
+                                calculateFoodEmissions();
+                                editRawFoodEmission();
+                            }
                         }else
                         {
                             Toast.makeText(getApplicationContext(), "Please enter the quantity!", Toast.LENGTH_SHORT).show();
@@ -107,7 +115,8 @@ public class EditActivity extends AppCompatActivity {
 
                 deleteFood.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-                        deleteRawFoodEmissions(Integer.parseInt(foodObjId));
+                        deleteAlert(true);
+                        // deleteRawFoodEmissions(Integer.parseInt(foodObjId));
                         System.out.println("Object id for food : " + Integer.parseInt(foodObjId) );
                     }
                 });
@@ -138,8 +147,13 @@ public class EditActivity extends AppCompatActivity {
                 editRecipe.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         if(!(enterRecipeServing.getText().toString().equalsIgnoreCase(""))) {
-                            calculateRecipeEmissions();
-                            editRecipeEmission();
+                            if(Float.parseFloat(enterRecipeServing.getText().toString()) == 0){
+                                deleteAlert(false);
+                                // deleteRecipeFoodEmissions(Integer.parseInt(recipeObjId));
+                            }else {
+                                calculateRecipeEmissions();
+                                editRecipeEmission();
+                            }
                         }else{
                             Toast.makeText(getApplicationContext(), "Please enter the servings!", Toast.LENGTH_SHORT).show();
                         }
@@ -148,7 +162,8 @@ public class EditActivity extends AppCompatActivity {
 
                 deleteRecipe.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-                        deleteRecipeFoodEmissions(Integer.parseInt(recipeObjId));
+                        deleteAlert(false);
+                        //  deleteRecipeFoodEmissions(Integer.parseInt(recipeObjId));
                         System.out.println("Object id for recipe : " + Integer.parseInt(recipeObjId) );
                     }
                 });
@@ -253,7 +268,7 @@ public class EditActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<List<Consumption>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Post Deleted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
             }
         });
         finish();
@@ -272,23 +287,49 @@ public class EditActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<List<RecipeConsumption>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Post Deleted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
             }
         });
         finish();
-       // UpdateListActivity resume = new UpdateListActivity();
+        // UpdateListActivity resume = new UpdateListActivity();
         //resume.onResume();
 
     }
 
     public void calculateFoodEmissions(){
         foodQuantity = Float.parseFloat(enterNewFoodQty.getText().toString());
-        float totalEmissions = (foodQuantity/100) * (Float.parseFloat(foodCarbonFootPrint));
+        float totalEmissions = foodQuantity * (Float.parseFloat(foodCarbonFootPrint)/Float.parseFloat(foodQty));
         roundedTotalEmissions  = (float) ((double) Math.round(totalEmissions * 100000d) / 100000d);
     }
 
     public void calculateRecipeEmissions(){
         float totalEmissionsByServingAmount = Float.parseFloat(enterRecipeServing.getText().toString()) * Float.parseFloat(recipeCarbonFootPrint);
         roundedTotalEmissionsRecipe = (float) ((double) Math.round(totalEmissionsByServingAmount * 100000d) / 100000d);
+    }
+
+    public void deleteAlert(final Boolean isRawFood){
+        AlertDialog alertDialog = new AlertDialog.Builder(EditActivity.this).setIcon(android.R.drawable.ic_dialog_map)
+                .setTitle("Exit?").setMessage("Are you sure to delete ?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        System.out.println("Coming inside alert dialog box !!! ");
+                        //set what would happen when positive button is clicked
+                        if(isRawFood)
+                            deleteRawFoodEmissions(Integer.parseInt(foodObjId));
+                        else
+                            deleteRecipeFoodEmissions(Integer.parseInt(recipeObjId));
+                        //finish();
+                    }
+                })
+
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //set what should happen when negative button is clicked
+                        Toast.makeText(EditActivity.this, "Back to Edit", Toast.LENGTH_LONG).show();
+                    }
+                })
+                .show();
     }
 }

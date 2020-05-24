@@ -87,9 +87,13 @@ public class UpdateListActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<Consumption>>() {
             @Override
             public void onResponse(Call<List<Consumption>> call, Response<List<Consumption>> response) {
+                System.out.println("Response in update activity after delete food : " + response.body());
                 if(response.body()!=null) {
                     consumedRawFoodList = response.body();
+                    if(!(consumedRawFoodList.get(0).getFoods()).equalsIgnoreCase("No food found"))
                     consumedRawFoodList();
+                    else
+                        Toast.makeText(getApplicationContext(), "No food to view", Toast.LENGTH_SHORT).show();
                     System.out.println("List from retrofit : " + consumedRawFoodList);
                 }else{
                     Toast.makeText(getApplicationContext(), "No food to view", Toast.LENGTH_SHORT).show();
@@ -113,8 +117,13 @@ public class UpdateListActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<RecipeConsumption>>() {
             @Override
             public void onResponse(Call<List<RecipeConsumption>> call, Response<List<RecipeConsumption>> response) {
+                System.out.println("Response in update activity after delete food : " + response.body().size());
+                //String responseMessage = response.message();
                 consumedRecipeList = response.body();
+                if(!(consumedRecipeList.get(0).getRecipeName()).equalsIgnoreCase("No recipe found"))
                 consumedRecipeList();
+                else
+                    Toast.makeText(getApplicationContext(), "No recipe found", Toast.LENGTH_SHORT).show();
                // foodByCategory();
                 System.out.println("List from retrofit : " + consumedRecipeList);
             }
