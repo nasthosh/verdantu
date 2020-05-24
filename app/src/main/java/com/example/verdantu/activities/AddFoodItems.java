@@ -171,7 +171,7 @@ public class AddFoodItems extends AppCompatActivity {
                 System.out.println("Todays date is " + formatter.format(d1));
                 if(d1.compareTo(consumedDate) > 0){
                     System.out.println("todays date greater than entered");
-                    Consumption addConsumed = new Consumption(deviceId, foodName, roundDecimalTotalFoodEmission, foodCategory, qty, consumedDate);
+                    Consumption addConsumed = new Consumption(deviceId, foodName, Float.parseFloat(foodCarbonFootPrints), foodCategory, qty, consumedDate);
                     consumedData.add(addConsumed);
                     RequestBody postData = RequestBody.create(MediaType.parse("application/json"), gson.toJson(consumedData));
                     service.addConsumption(postData).enqueue(new Callback<List<Food>>() {
@@ -183,6 +183,8 @@ public class AddFoodItems extends AppCompatActivity {
                                 if (response.body() != null) {
 
                                     Toast.makeText(getApplicationContext(), "Consumption Added", Toast.LENGTH_SHORT).show();
+                                  //  HomeFragment updateDailyEmission = new HomeFragment();
+                                   // updateDailyEmission.onResume();
                                     finish();
                                 } else {
                                     Log.i("onEmptyResponse", "Returned empty response");//Toast.makeText(getContext(),"Nothing returned",Toast.LENGTH_LONG).show();

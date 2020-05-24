@@ -73,6 +73,7 @@ public class EditActivity extends AppCompatActivity {
                 foodCarbonFootPrint = intent.getStringExtra("foodCarbonEmissions");
                 foodQty =  intent.getStringExtra("oldFoodQuantity");
                 foodObjId = intent.getStringExtra("foodObjId");
+                System.out.println(" Edit food name : " + foodName + "Respective Carbon Emission" + foodCarbonFootPrint);
                 foodSelected = findViewById(R.id.list_name_for_update);
                 foodSelected.setText("Food to Edit   : ");
                 foodSelectedName = findViewById(R.id.list_food_name_for_update);
@@ -184,7 +185,7 @@ public class EditActivity extends AppCompatActivity {
         Gson gson = new Gson();
 
         ArrayList<Consumption> editFood = new ArrayList<>();
-        Consumption updateConsumedFood = new Consumption(Integer.parseInt(foodObjId), roundedTotalEmissions, foodQuantity,foodName);
+        Consumption updateConsumedFood = new Consumption(Integer.parseInt(foodObjId), Float.parseFloat(foodCarbonFootPrint), foodQuantity,foodName);
         editFood.add(updateConsumedFood);
         RequestBody putData = RequestBody.create(MediaType.parse("application/json"), gson.toJson(editFood));
         service.updateFoodConsumption(putData).enqueue(new Callback<List<Food>>() {
@@ -275,6 +276,9 @@ public class EditActivity extends AppCompatActivity {
             }
         });
         finish();
+       // UpdateListActivity resume = new UpdateListActivity();
+        //resume.onResume();
+
     }
 
     public void calculateFoodEmissions(){

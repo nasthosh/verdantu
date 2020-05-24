@@ -42,6 +42,7 @@
         android:fontFamily="cursive"
         android:text=" Lets make way to greener and healthier future"
         android:textSize="30dp"
+        android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appLogo"
         app:layout_editor_absoluteX="27dp"

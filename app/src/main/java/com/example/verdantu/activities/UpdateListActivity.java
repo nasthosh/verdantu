@@ -54,17 +54,23 @@ public class UpdateListActivity extends AppCompatActivity {
         listView = findViewById(R.id.listItems);
         deviceId = DeviceData.getDeviceId(getApplicationContext());
         foodInformation = findViewById(R.id.radioCategory);
+
+    }
+
+    public void onResume() {
+        //EditActivity closeActivity = new EditActivity();
+        //closeActivity.finish();
+        super.onResume();
+        //super.onStart();
         foodInformation.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int checkedId)
-            {
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
                 radioID = foodInformation.getCheckedRadioButtonId();
                 checkedFoodInformation = findViewById(radioID);
                 foodInformationStr = checkedFoodInformation.getText().toString();
                 if (foodInformationStr.equalsIgnoreCase("Raw Food")) {
                     getConsumedRawFood();
-                }
-                else if(foodInformationStr.equalsIgnoreCase("Recipe")){
+                } else if (foodInformationStr.equalsIgnoreCase("Recipe")) {
                     getConsumedRecipe();
                 }
 
@@ -72,7 +78,6 @@ public class UpdateListActivity extends AppCompatActivity {
 
         });
     }
-
 
     public void getConsumedRawFood() {
 
@@ -82,9 +87,14 @@ public class UpdateListActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<Consumption>>() {
             @Override
             public void onResponse(Call<List<Consumption>> call, Response<List<Consumption>> response) {
-                consumedRawFoodList = response.body();
-                consumedRawFoodList();
-                System.out.println("List from retrofit : " + consumedRawFoodList);
+                if(response.body()!=null) {
+                    consumedRawFoodList = response.body();
+                    consumedRawFoodList();
+                    System.out.println("List from retrofit : " + consumedRawFoodList);
+                }else{
+                    Toast.makeText(getApplicationContext(), "No food to view", Toast.LENGTH_SHORT).show();
+                   // System.out.println(" Throwable error : " + t);
+                }
             }
 
             @Override

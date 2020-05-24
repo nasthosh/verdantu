@@ -112,71 +112,78 @@ public class HomeFragment extends Fragment {
             }
         }));
 
-                GetService service = RetrofitClientInstance.getRetrofitInstance().create(GetService.class);
-                Call<List<Consumption>> call = service.getEmissionForCurrentDay(deviceId);
-                dailyEmission = new ArrayList<>();
-                call.enqueue(new Callback<List<Consumption>>() {
-                    @Override
-                    public void onResponse(Call<List<Consumption>> call, Response<List<Consumption>> response) {
 
-                        dailyEmission = response.body();
-                        System.out.println("List From Retro in daily emission " + dailyEmission);
-                        if (response.body() != null) {
-                            if (dailyEmission.get(0).getEmission() == 0.0) {
-                                dailyEmissions.setText("              Let add some food for today");
-                                System.out.println("Daily Emissions is called inside null");
-                            } else {
-                                float foodEmissionsDaily = dailyEmission.get(0).getEmission();
-                                String foodEmissionsDailyString = String.valueOf(foodEmissionsDaily);
-                                dailyEmissions.setText("                  Your Emission for Today  " + "\n" + "                         " + foodEmissionsDailyString + " KgCo2/100g" + "\n" + "          Your Scale of Emission for Today ");
+        return root;
+    }
 
-                                if (dailyEmission.get(0).getEmission() > 8.2) {
-                                    intensityLevels.setVisibility(View.VISIBLE);
-                                    dailyEmissions.setText("                         " + foodEmissionsDailyString + " KgCo2/100g" );
-dailyEmissions.setTextColor(Color.RED);
-                                    emissionIntensity.setVisibility(View.VISIBLE);
-                                    emissionIntensity.setMax(100);
-                                    emissionIntensity.getProgressDrawable().setColorFilter(
-                                            Color.RED, android.graphics.PorterDuff.Mode.SRC_IN);
-                                    emissionIntensity.setProgress(100);
-                                } else if ((dailyEmission.get(0).getEmission() >= 4.1) && (dailyEmission.get(0).getEmission() <= 8.2)) {
-                                    intensityLevels.setVisibility(View.VISIBLE);
-                                    dailyEmissions.setText("                         " + foodEmissionsDailyString + " KgCo2/100g" );
-                                    dailyEmissions.setTextColor(Color.rgb(255, 165, 0));
-                                    emissionIntensity.setVisibility(View.VISIBLE);
-                                    emissionIntensity.setMax(100);
-                                    emissionIntensity.getProgressDrawable().setColorFilter(
-                                            Color.rgb(255, 165, 0), android.graphics.PorterDuff.Mode.SRC_IN);
-                                    emissionIntensity.setProgress(50);
-                                } else if ((dailyEmission.get(0).getEmission() <= 4.1)) {
-                                    intensityLevels.setVisibility(View.VISIBLE);
-                                    dailyEmissions.setText("                         " + foodEmissionsDailyString + " KgCo2/100g" );
-                                    dailyEmissions.setTextColor(Color.GREEN);
-                                    emissionIntensity.setVisibility(View.VISIBLE);
-                                    emissionIntensity.setMax(100);
-                                    emissionIntensity.getProgressDrawable().setColorFilter(
-                                            Color.GREEN, android.graphics.PorterDuff.Mode.SRC_IN);
-                                    emissionIntensity.setProgress(25);
-                                }else{
-                                    emissionIntensity.setVisibility(View.GONE);
-                                }
+    public void onResume() {
 
-                                //intensityValues.setText("    <=2.05                               =4.1                                     >=8.2");
-                            }
-                        } else {
-                            dailyEmissions.setText("                 Let add some food for today");
+        super.onResume();
+
+        GetService service = RetrofitClientInstance.getRetrofitInstance().create(GetService.class);
+        Call<List<Consumption>> call = service.getEmissionForCurrentDay(deviceId);
+        dailyEmission = new ArrayList<>();
+        call.enqueue(new Callback<List<Consumption>>() {
+            @Override
+            public void onResponse(Call<List<Consumption>> call, Response<List<Consumption>> response) {
+
+                dailyEmission = response.body();
+                System.out.println("List From Retro in daily emission " + dailyEmission);
+                if (response.body() != null) {
+                    if (dailyEmission.get(0).getEmission() == 0.0) {
+                        dailyEmissions.setText("              Let add some food for today");
+                        System.out.println("Daily Emissions is called inside null");
+                    } else {
+                        float foodEmissionsDaily = dailyEmission.get(0).getEmission();
+                        String foodEmissionsDailyString = String.valueOf(foodEmissionsDaily);
+                        dailyEmissions.setText("                  Your Emission for Today  " + "\n" + "                         " + foodEmissionsDailyString + " KgCo2/100g" + "\n" + "          Your Scale of Emission for Today ");
+
+                        if (dailyEmission.get(0).getEmission() > 8.2) {
+                            intensityLevels.setVisibility(View.VISIBLE);
+                            dailyEmissions.setText("                         " + foodEmissionsDailyString + " KgCo2/100g" );
+                            dailyEmissions.setTextColor(Color.RED);
+                            emissionIntensity.setVisibility(View.VISIBLE);
+                            emissionIntensity.setMax(100);
+                            emissionIntensity.getProgressDrawable().setColorFilter(
+                                    Color.RED, android.graphics.PorterDuff.Mode.SRC_IN);
+                            emissionIntensity.setProgress(100);
+                        } else if ((dailyEmission.get(0).getEmission() >= 4.1) && (dailyEmission.get(0).getEmission() <= 8.2)) {
+                            intensityLevels.setVisibility(View.VISIBLE);
+                            dailyEmissions.setText("                         " + foodEmissionsDailyString + " KgCo2/100g" );
+                            dailyEmissions.setTextColor(Color.rgb(255, 165, 0));
+                            emissionIntensity.setVisibility(View.VISIBLE);
+                            emissionIntensity.setMax(100);
+                            emissionIntensity.getProgressDrawable().setColorFilter(
+                                    Color.rgb(255, 165, 0), android.graphics.PorterDuff.Mode.SRC_IN);
+                            emissionIntensity.setProgress(50);
+                        } else if ((dailyEmission.get(0).getEmission() <= 4.1)) {
+                            intensityLevels.setVisibility(View.VISIBLE);
+                            dailyEmissions.setText("                         " + foodEmissionsDailyString + " KgCo2/100g" );
+                            dailyEmissions.setTextColor(Color.GREEN);
+                            emissionIntensity.setVisibility(View.VISIBLE);
+                            emissionIntensity.setMax(100);
+                            emissionIntensity.getProgressDrawable().setColorFilter(
+                                    Color.GREEN, android.graphics.PorterDuff.Mode.SRC_IN);
+                            emissionIntensity.setProgress(25);
+                        }else{
                             emissionIntensity.setVisibility(View.GONE);
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call<List<Consumption>> call, Throwable t) {
-
-                        Toast.makeText(getContext(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
-                        System.out.println(" Throwable error : " + t);
+                        //intensityValues.setText("    <=2.05                               =4.1                                     >=8.2");
                     }
-                });
-        return root;
+                } else {
+                    dailyEmissions.setText("                 Let add some food for today");
+                    emissionIntensity.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Consumption>> call, Throwable t) {
+
+                Toast.makeText(getContext(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
+                System.out.println(" Throwable error : " + t);
+            }
+        });
     }
 }
 

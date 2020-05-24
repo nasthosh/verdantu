@@ -6,17 +6,16 @@ import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.verdantu.R;
-import com.example.verdantu.adapters.FoodItemsListAdapter;
-import com.example.verdantu.adapters.RecipeListAdapter;
+import com.example.verdantu.adapters.RecommendationListAdapter;
 import com.example.verdantu.modelinterfaces.GetService;
-import com.example.verdantu.models.Food;
-import com.example.verdantu.models.Recipe;
+import com.example.verdantu.models.Recommendation;
 import com.example.verdantu.rest.RetrofitClientInstance;
 
 import java.util.ArrayList;
@@ -29,16 +28,16 @@ import retrofit2.Response;
 public class RecommendationActivity extends AppCompatActivity {
 
 
-    List<Recipe> recommendationRecipeList;
-    List<Recipe> recipeItems;
-    Call<List<Food>> call;
-    Call<List<Recipe>> recipeCall;
+    List<Recommendation> recommendationRecipeList;
+    List<Recommendation> recipeItems;
+    Call<List<Recommendation>> call;
+    Call<List<Recommendation>> recipeCall;
 
-    FoodItemsListAdapter listAdapter;
-    RecipeListAdapter listViewDataAdapter;
+    RecommendationListAdapter listAdapter;
+    RecommendationListAdapter listViewDataAdapter;
 
-    List<Food> recommendationFoodList;
-    List<Food> foodItemsRecommended;
+    List<Recommendation> recommendationFoodList;
+    List<Recommendation> foodItemsRecommended;
 
     ListView listView;
     RadioGroup recommendedFood;
@@ -46,6 +45,7 @@ public class RecommendationActivity extends AppCompatActivity {
     RadioButton checkedItemCategory;
     String checkedItemCat;
     String deviceId;
+    TextView headingRecommendation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +66,7 @@ public class RecommendationActivity extends AppCompatActivity {
         }
         listView = findViewById(R.id.listRecommendations);
         deviceId = DeviceData.getDeviceId(this);
+        headingRecommendation = findViewById(R.id.recommendation_heading);
         recommendedFood = findViewById(R.id.recommendationRadioCategory);
 
         recommendedFood.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -75,9 +76,11 @@ public class RecommendationActivity extends AppCompatActivity {
                 checkedItemCategory = findViewById(radioID);
                 checkedItemCat = checkedItemCategory.getText().toString();
                 if (checkedItemCat.equalsIgnoreCase("By Raw Food")) {
+                    headingRecommendation.setText("      Consumed Food              Recommended Food");
                     getRecommendedFoods();
 
                 }else if(checkedItemCat.equalsIgnoreCase("By Recipe")){
+                    headingRecommendation.setText("      Consumed Food              Recommended Food");
                     getRecommendedRecipes();
                 }
             }
@@ -93,16 +96,16 @@ public class RecommendationActivity extends AppCompatActivity {
         else
             call =service.getRecommendedRawFood(deviceId);
         recommendationFoodList = new ArrayList<>();
-        call.enqueue(new Callback<List<Food>>() {
+        call.enqueue(new Callback<List<Recommendation>>() {
             @Override
-            public void onResponse(Call<List<Food>> call, Response<List<Food>> response) {
+            public void onResponse(Call<List<Recommendation>> call, Response<List<Recommendation>> response) {
                 recommendationFoodList = response.body();
                 System.out.println("List from retrofit  in food recom: " + recommendationFoodList);
                 emissionFromFoods();
             }
 
             @Override
-            public void onFailure(Call<List<Food>> call, Throwable t) {
+            public void onFailure(Call<List<Recommendation>> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
                 System.out.println(" Throwable error : " + t);
             }
@@ -114,20 +117,20 @@ public class RecommendationActivity extends AppCompatActivity {
         GetService service = RetrofitClientInstance.getRetrofitInstance().create(GetService.class);
         if(!restorePrefData()){
             recipeCall = service.getRecommendedRecipeNewUser();
-           // savePrefsData();
+            // savePrefsData();
         }else
             recipeCall = service.getRecommendedRecipe(deviceId);
         recommendationRecipeList = new ArrayList<>();
-        recipeCall.enqueue(new Callback<List<Recipe>>() {
+        recipeCall.enqueue(new Callback<List<Recommendation>>() {
             @Override
-            public void onResponse(Call<List<Recipe>> recipeCall, Response<List<Recipe>> response) {
+            public void onResponse(Call<List<Recommendation>> recipeCall, Response<List<Recommendation>> response) {
                 recommendationRecipeList = response.body();
                 System.out.println("List from retrofit in recipe activity : " + recommendationRecipeList);
                 recipeItems();
             }
 
             @Override
-            public void onFailure(Call<List<Recipe>> recipeCall, Throwable t) {
+            public void onFailure(Call<List<Recommendation>> recipeCall, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
                 System.out.println(" Throwable error : " + t);
             }
@@ -137,7 +140,7 @@ public class RecommendationActivity extends AppCompatActivity {
     public void emissionFromFoods() {
         foodItemsRecommended = recommendationFoodList;
         //tableFoodList = foodEmissionsList;
-        listAdapter = new FoodItemsListAdapter(foodItemsRecommended, this);
+        listAdapter = new RecommendationListAdapter(foodItemsRecommended, this);
         listView.setClickable(true);
         listView.setAdapter(listAdapter);
 
@@ -146,7 +149,7 @@ public class RecommendationActivity extends AppCompatActivity {
     public void recipeItems() {
         recipeItems = recommendationRecipeList;
         //recipeList = recipeItems;
-        listViewDataAdapter = new RecipeListAdapter(recipeItems, this,true);
+        listViewDataAdapter = new RecommendationListAdapter(recipeItems, this);
         listView.setClickable(true);
         listView.setAdapter(listViewDataAdapter);
     }

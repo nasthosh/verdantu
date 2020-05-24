@@ -4,6 +4,7 @@ import com.example.verdantu.models.Consumption;
 import com.example.verdantu.models.Food;
 import com.example.verdantu.models.Recipe;
 import com.example.verdantu.models.RecipeConsumption;
+import com.example.verdantu.models.Recommendation;
 
 import java.util.List;
 
@@ -35,19 +36,19 @@ public interface GetService {
     Call<List<Consumption>> getConsumedRawFood(@Path("deviceId") String deviceId);
 
     @GET("api/view_food_recommendations/{deviceId}") // device id
-    Call<List<Food>> getRecommendedRawFood(@Path("deviceId") String deviceId);
+    Call<List<Recommendation>> getRecommendedRawFood(@Path("deviceId") String deviceId);
 
     @GET("/api/view_food_recommendations_newUser")
-    Call<List<Food>> getRecommendedFoodNewUser();
+    Call<List<Recommendation>> getRecommendedFoodNewUser();
 
     @GET("/api/view_recipe_recommendations_newUser")
-    Call<List<Recipe>> getRecommendedRecipeNewUser();
+    Call<List<Recommendation>> getRecommendedRecipeNewUser();
 
     @GET("/api/view_recipe_added/{deviceId}") // device id
     Call<List<RecipeConsumption>> getConsumedRecipe(@Path("deviceId") String deviceId);
 
     @GET("api/view_recipe_recommendations/{deviceId}") // device id
-    Call<List<Recipe>> getRecommendedRecipe(@Path("deviceId") String deviceId);
+    Call<List<Recommendation>> getRecommendedRecipe(@Path("deviceId") String deviceId);
 
     @GET("api/get_nutrition_food/{deviceId}") // device id
     Call<List<Food>> getNutritionReport(@Path("deviceId") String deviceId);

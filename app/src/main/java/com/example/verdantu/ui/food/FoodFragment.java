@@ -145,7 +145,7 @@ public class FoodFragment extends Fragment {
         super.onResume();
         if(!isDialogShown) {
             AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).setIcon(android.R.drawable.ic_dialog_map)
-                    .setTitle("Info").setMessage("Please select the category to show the list of items based on the category that will be selected!")
+                    .setTitle("Info").setMessage("Select Category for food nutrition information")
                     .setPositiveButton("Return", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {

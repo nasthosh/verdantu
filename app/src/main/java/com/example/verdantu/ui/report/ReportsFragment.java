@@ -105,8 +105,8 @@ public class ReportsFragment extends Fragment {
                     nutritionChart.setVisibility(View.GONE);
                     barChart.setVisibility(View.GONE);
                     pieChart.setVisibility(View.VISIBLE);
-                    textReport.setText(" Weekly Emission Distribution for Different Categories");
-                    textReport.setTextSize(29f);
+                    textReport.setText("Weekly Emission Distribution for Different Categories");
+                    textReport.setTextSize(20f);
                     showPieChartByCategory();
                 } else if (filterActivityString.equalsIgnoreCase("By Week")) {
                     pieChart.invalidate();
@@ -118,7 +118,7 @@ public class ReportsFragment extends Fragment {
                     nutritionChart.setVisibility(View.GONE);
                     barChart.setVisibility(View.VISIBLE);
                     textReport.setText("Weekly Emission Report");
-                    textReport.setTextSize(29f);
+                    textReport.setTextSize(20f);
                     showChartWeek();
                 } else if (filterActivityString.equalsIgnoreCase("By Nutrition")) {
                     barChart.invalidate();
@@ -129,7 +129,7 @@ public class ReportsFragment extends Fragment {
                     barChart.setVisibility(View.GONE);
                     nutritionChart.setVisibility(View.VISIBLE);
                     textReport.setText("Weekly Nutrition Report");
-                    textReport.setTextSize(29f);
+                    textReport.setTextSize(20f);
                     showBarChartForNutrition();
                 }
             }
@@ -159,7 +159,7 @@ public class ReportsFragment extends Fragment {
                     pieEntries.add(pieEntry);
                     colors.add(productColors[i]);
                 }
-                PieDataSet pieDataSet = new PieDataSet(pieEntries, "Category Report");
+                PieDataSet pieDataSet = new PieDataSet(pieEntries, "");
                 pieDataSet.setColors(colors);
                 PieData pieData = new PieData(pieDataSet);
                 pieData.setDataSet(pieDataSet);

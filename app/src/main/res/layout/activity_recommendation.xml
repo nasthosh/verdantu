@@ -38,6 +38,18 @@
             android:text="By Recipe" />
     </RadioGroup>
 
+    <TextView
+        android:id="@+id/recommendation_heading"
+        android:layout_width="450dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_below="@+id/recommendationRadioCategory"
+        tools:ignore="MissingConstraints" />
+
     <ListView
         android:id="@+id/listRecommendations"
         android:layout_width="fill_parent"
@@ -45,7 +57,7 @@
         android:background="#FFFFFF"
         android:divider="#FFFFFF"
         android:dividerHeight="5dp"
-        android:layout_below="@+id/recommendationRadioCategory"
+        android:layout_below="@+id/recommendation_heading"
         android:paddingLeft="1dp"
         tools:ignore="MissingConstraints" />
 

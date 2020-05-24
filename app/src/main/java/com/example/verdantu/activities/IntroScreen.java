@@ -55,7 +55,7 @@ public class IntroScreen extends AppCompatActivity {
 
         setContentView(R.layout.activity_intro_screen);
 
-        btnNext = findViewById(R.id.btn_next);
+      //  btnNext = findViewById(R.id.btn_next);
         btnGetStarted = findViewById(R.id.btn_get_started);
         tabIndicator = findViewById(R.id.tab_indicator);
         btnAnim = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.button_animation);
@@ -80,22 +80,22 @@ public class IntroScreen extends AppCompatActivity {
 
         // next button click Listner
 
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                position = screenPager.getCurrentItem();
-                if (position < mList.size()) {
-
-                    position++;
-                    screenPager.setCurrentItem(position);
-                }
-
-                if (position == mList.size()-1) { // when we rech to the last screen
-                    loaddLastScreen();
-                }
-            }
-        });
+//        btnNext.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                position = screenPager.getCurrentItem();
+//                if (position < mList.size()) {
+//
+//                    position++;
+//                    screenPager.setCurrentItem(position);
+//                }
+//
+//                if (position == mList.size()-1) { // when we rech to the last screen
+//                    loaddLastScreen();
+//                }
+//            }
+//        });
 
         tabIndicator.addOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
             @Override
@@ -148,7 +148,7 @@ public class IntroScreen extends AppCompatActivity {
     }
 
     private void loaddLastScreen() {
-        btnNext.setVisibility(View.INVISIBLE);
+       // btnNext.setVisibility(View.INVISIBLE);
         btnGetStarted.setVisibility(View.VISIBLE);
         tvSkip.setVisibility(View.INVISIBLE);
         tabIndicator.setVisibility(View.INVISIBLE);
